@@ -1,0 +1,83 @@
+.main {
+  min-height: 100vh;
+  padding: 4rem 0;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.form__container {
+  background-image: url("/img/login/blob-haikei.png");
+  background-size: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  padding: 150px 350px;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 1rem;
+}
+
+.form {
+  width: 100%;
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+}
+
+.input {
+  width:  100%;
+  margin-bottom: 20px;
+  outline: none !important;
+  border: none;
+  padding: 10px;
+  background-color: #fff;
+  color: #000;
+  border-radius: 10px
+}
+
+.input:focus {
+  outline: none !important;
+}
+
+.input:-webkit-autofill,
+.input:-webkit-autofill:hover, 
+.input:-webkit-autofill:focus, 
+.input:-webkit-autofill:active  {
+  transition: background-color 5000s;
+  -webkit-text-fill-color: #000 !important;
+}
+
+.forgot__label {
+  font-size: 1rem;
+  color: #fff;
+  margin-top: -0.5rem;
+  text-decoration: underline;
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+
+.submit__btn {
+  background-color: #D24244;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.submit__btn:hover {
+  transform: scale(1.08);
+}
