@@ -1,6 +1,10 @@
+/* 
+  Program that modifies the state of redux
+*/
+
 import * as t from "./types";
 
-import type { AppState, AppThunk } from '../../../redux/store';
+import type { AppState } from '../../../redux/store';
 
 const initialState = {
   user: null

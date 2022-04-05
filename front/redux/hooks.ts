@@ -1,3 +1,7 @@
+/* 
+  Program that creates functions that can be used to dispatch actions.
+*/
+
 import type { ChangeEvent } from 'react'
 import { useEffect, useRef } from 'react'
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'

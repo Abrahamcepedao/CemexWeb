@@ -1,3 +1,7 @@
+/* 
+  Component that renders to login page
+*/
+
 import type { NextPage } from 'next'
 
 /* React */
@@ -23,10 +27,8 @@ const Home: NextPage = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   /* Redux */
-  const dispatch = useAppDispatch()
-  //const user = useSelector(state => state.userState.user);
-  const user = useAppSelector(selectUser)
-  //const { user, setCurrentUser } = props
+  const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
+  const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
   useEffect(() => {
     console.log('user: ', user)
@@ -37,6 +39,9 @@ const Home: NextPage = (props) => {
     }
   }, [isLoggedIn]);
 
+  /* Functions */
+
+  /* Handle submit */
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggedIn(true);
@@ -56,14 +61,19 @@ const Home: NextPage = (props) => {
           {/* Form */}
           <div className={styles.form__container}>
             <div className={styles.logo__container}>
+              {/* logo */}
               <Image src={Logo} width={100} height={100} />
             </div>
             <h2 className={styles.title}>Welcome to Cemex Fix</h2>
             <form onSubmit={(e) => {handleSubmit(e)}}>
               <div className={styles.form}>
-                <input type="text" id="username" placeholder='username' className={styles.input} onChange={(e) => {setUsername(e.target.value)}}/>
-                <input type="password" id="password" placeholder='password' className={styles.input} onChange={(e) => {setPassword(e.target.value)}}/>
+                {/* username */}
+                <input type="text" id="username" placeholder='username' className={styles.input} value={username} onChange={(e) => {setUsername(e.target.value)}}/>
+                {/* password */}
+                <input type="password" id="password" placeholder='password' className={styles.input} value={password} onChange={(e) => {setPassword(e.target.value)}}/>
+                {/* forgot password */}
                 <a href='#forgot_password' className={styles.forgot__label}>Forgot password?</a>
+                {/* submit */}
                 <button className={styles.submit__btn} type='submit'>Login</button>
               </div>
             </form>

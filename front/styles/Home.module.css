@@ -1,8 +1,8 @@
+/* ------main container------ */
 .main {
   min-height: 100vh;
   display: flex;
   flex-direction: row;
-  //justify-content: center;
   justify-content: between;
   align-items: center;
   background-image: url("/img/login/blob-scene-haikei.svg");
@@ -11,11 +11,10 @@
   background-position: center;
 }
 
-
+/* ------form container------ */
 .form__container {
   padding: 50px;
   margin: auto;
-  /* From https://css.glass */
   background: rgba(255, 255, 255, 0.19);
   border-radius: 15px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -24,11 +23,13 @@
   border: 1px solid rgba(255, 255, 255, 0.21);
 }
 
+/* ------logo container------ */
 .logo__container {
   margin: auto;
   width: 100px;
 }
 
+/* ------form__title------ */
 .title {
   font-size: 2rem;
   font-weight: bold;
@@ -38,6 +39,8 @@
   opacity: 0.6;
 }
 
+
+/* ------form------ */
 .form {
   width: 100%;
   max-width: 250px;
@@ -48,6 +51,7 @@
   margin: auto;
 }
 
+/* ------form__input------ */
 .input {
   width:  100%;
   margin-bottom: 20px;
@@ -71,6 +75,8 @@
   -webkit-text-fill-color: #fff !important;
 }
 
+
+/* ------forgot__label------ */
 .forgot__label {
   font-size: 1rem;
   color: #fff;
@@ -82,6 +88,7 @@
 }
 
 
+/* ------form__submit__btn------ */
 .submit__btn {
   background-color: #D24244;
   color: #fff;

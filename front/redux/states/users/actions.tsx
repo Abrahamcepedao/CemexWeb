@@ -1,3 +1,7 @@
+/* 
+  Program that creates that functions that will be used to dispatch actions to the reducer.
+*/
+
 import { User } from './state'
 
 import * as t from "./types";

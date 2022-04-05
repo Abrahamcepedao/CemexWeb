@@ -1,3 +1,7 @@
+/* 
+  Program to store the state of the application in Redux.
+*/
+
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import userReducer from './states/users/reducer'
 
