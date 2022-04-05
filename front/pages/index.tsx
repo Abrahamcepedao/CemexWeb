@@ -4,13 +4,14 @@ import type { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { connect } from "react-redux"
 import { setCurrentUser } from "../redux/actions"
 import { selectUser } from "../redux/states/users/reducer"
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
-import { useSelector, useDispatch } from 'react-redux';
+
 /* Components */
 import Head from 'next/head'
+import Image from 'next/image'
+import Logo from '../public/logo.png'
 
 /* CSS */
 import styles from '../styles/Home.module.css'
@@ -43,9 +44,6 @@ const Home: NextPage = (props) => {
   };
 
 
-
-
-
   return (
     <div className={styles.container}>
       <Head>
@@ -55,17 +53,21 @@ const Home: NextPage = (props) => {
       </Head>
 
       <main className={styles.main}>
-        <div className={styles.form__container}>
-          <h2 className={styles.title}>Welcome to Cemex Fix</h2>
-          <form onSubmit={(e) => {handleSubmit(e)}}>
-            <div className={styles.form}>
-              <input type="text" id="username" placeholder='username' className={styles.input} onChange={(e) => {setUsername(e.target.value)}}/>
-              <input type="password" id="password" placeholder='password' className={styles.input} onChange={(e) => {setPassword(e.target.value)}}/>
-              <a href='#forgot_password' className={styles.forgot__label}>Forgot password?</a>
-              <button className={styles.submit__btn} type='submit'>Login</button>
+          {/* Form */}
+          <div className={styles.form__container}>
+            <div className={styles.logo__container}>
+              <Image src={Logo} width={100} height={100} />
             </div>
-          </form>
-        </div>
+            <h2 className={styles.title}>Welcome to Cemex Fix</h2>
+            <form onSubmit={(e) => {handleSubmit(e)}}>
+              <div className={styles.form}>
+                <input type="text" id="username" placeholder='username' className={styles.input} onChange={(e) => {setUsername(e.target.value)}}/>
+                <input type="password" id="password" placeholder='password' className={styles.input} onChange={(e) => {setPassword(e.target.value)}}/>
+                <a href='#forgot_password' className={styles.forgot__label}>Forgot password?</a>
+                <button className={styles.submit__btn} type='submit'>Login</button>
+              </div>
+            </form>
+          </div>
       </main>
     </div>
   )
