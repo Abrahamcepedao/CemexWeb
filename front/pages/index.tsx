@@ -5,8 +5,10 @@ import React, { useEffect, useState } from 'react'
 
 /* Redux */
 import { connect } from "react-redux"
-import { setCurrentUser } from "../redux/actions/main"
-
+import { setCurrentUser } from "../redux/actions"
+import { selectUser } from "../redux/states/users/reducer"
+import { useAppSelector, useAppDispatch } from '../redux/hooks'
+import { useSelector, useDispatch } from 'react-redux';
 /* Components */
 import Head from 'next/head'
 
@@ -20,9 +22,13 @@ const Home: NextPage = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   /* Redux */
+  const dispatch = useAppDispatch()
+  //const user = useSelector(state => state.userState.user);
+  const user = useAppSelector(selectUser)
   //const { user, setCurrentUser } = props
 
   useEffect(() => {
+    console.log('user: ', user)
     if (isLoggedIn) {
       console.log('logged in');
     } else {
@@ -33,6 +39,7 @@ const Home: NextPage = (props) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggedIn(true);
+    dispatch(setCurrentUser({ username }));
   };
 
 
@@ -64,12 +71,4 @@ const Home: NextPage = (props) => {
   )
 }
 
-const mapStateToProps = (state: { main: { user: any } }) => {
- return { user: state.main.user }
-}
-
-const mapDispatchToProps = {
-  setCurrentUser
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home)
+export default Home
