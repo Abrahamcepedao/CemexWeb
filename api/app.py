@@ -3,6 +3,7 @@ import os
 from os.path import join, dirname, realpath
 from functions.bertGroups import parseCSV
 from functions.ldaclusters import parseCSVLDA
+from database.users import *
 
 def create_app():
     app = Flask(__name__)
@@ -19,6 +20,11 @@ app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 def index():
     #return a json object with a message
     return jsonify({'message': 'Hello World!'})
+
+
+#----------------------------------------------------------------------------------------------------------------------
+#CLUSTERING ROUTES
+#----------------------------------------------------------------------------------------------------------------------
 
 #Clusterize the data from files with BERT
 @app.route("/clusterize", methods=['POST'])
@@ -49,6 +55,53 @@ def uploadFilesLDA(number_topics):
 
     # return the resulting dataframe
     return result
+
+
+#----------------------------------------------------------------------------------------------------------------------
+#USER ROUTES
+#----------------------------------------------------------------------------------------------------------------------
+
+#Create user
+@app.route("/user/create", methods=['POST'])
+def createUser():
+    request_json = request.get_json()
+    user = request_json.get('user')
+    pasword = request_json.get('password')
+
+    #check if user and password are not empty
+    if user and pasword:
+        #check if user exists
+        if create_user(user,pasword):
+            return jsonify({'message': 'User created successfully'})
+        else:
+            return jsonify({'message': 'User already exists'})
+
+    else:
+        return jsonify({'message': 'User or password cannot be empty'})
+
+
+#Login user
+@app.route("/user/login", methods=['POST'])
+def loginUser():
+    request_json = request.get_json()
+    user = request_json.get('user')
+    pasword = request_json.get('password')
+
+    #check if user and password are not empty
+    if user and pasword:
+        #check if user exists
+        accepted,access_token = login_user(user,pasword)
+        if accepted:
+            return jsonify({'message': 'User logged in successfully', 'accessToken': access_token})
+        else:
+            return jsonify({'message': 'User does not exist or credentials are incorrect'})
+
+    else:
+        return jsonify({'message': 'User or password cannot be empty'})
+
+#----------------------------------------------------------------------------------------------------------------------
+#MAIN
+#----------------------------------------------------------------------------------------------------------------------
 
 if __name__ == '__main__':
     app.run(debug=True,)
