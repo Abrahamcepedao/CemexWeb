@@ -7,11 +7,26 @@ API for Cemex Go defect clusterization with natural language processing techniqu
 - [x] BERT Topic Clusterization
 - [x] LDA Topic Clusterization (with parameters No.Topics)
 - [x] Connection to MongoDB
-- [ ] Upload data from CSV to database (with user that uploads it)
-- [ ] Change filename to filename with timestamp
+- [x] Upload data from CSV to database (with user that uploads it)
+
 - [x] Login system
 - [x] Access Tokens
-- [ ] Implement Access Token for clusterization and read/write db operations
+- [x] Implement Access Token for clusterization and read/write db operations
+
+- [x] Get defects general
+- [x] Get defects by user
+
+
+- [ ] Get defects by date range by user
+- [ ] Get defects by date range general
+
+- [ ] Get defects by category by user
+- [ ] Get defects by category general
+
+- [ ] Get defects by category by date range by user
+- [ ] Get defects by category by date range general
+
+- [ ] Change filename to filename with timestamp
 - [ ] Security for API (anti JSON bombing, inyection attacks, etc)
 - [ ] Refactor code into folders based on functionalities
 

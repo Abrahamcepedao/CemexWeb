@@ -4,6 +4,7 @@ from os.path import join, dirname, realpath
 from functions.bertGroups import parseCSV
 from functions.ldaclusters import parseCSVLDA
 from database.users import *
+from database.retrieveUserDefects import *
 from security.validateUser import *
 import json
 
@@ -58,7 +59,7 @@ def uploadFiles():
             # set the file path
             uploaded_file.save(file_path)
             # save the file
-            result = parseCSV(file_path)
+            result = parseCSV(file_path, username)
 
         # return the resulting dataframe
         return result
@@ -83,13 +84,51 @@ def uploadFilesLDA(number_topics):
             # set the file path
             uploaded_file.save(file_path)
             # save the file
-            result = parseCSVLDA(file_path, number_topics)
+            result = parseCSVLDA(file_path, username, number_topics)
 
         # return the resulting dataframe
         return result
     else:
         return jsonify({'message': 'Access token is invalid'})
 
+#----------------------------------------------------------------------------------------------------------------------
+#DEFECTS OPERATIONS ROUTES
+#----------------------------------------------------------------------------------------------------------------------
+
+#Retrieve all defects
+@app.route("/defects", methods=['POST'])
+def retrieveAllDefects():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+    if validateUser(username, access_token):
+        #retrieve all defects
+        result = retrieve_all_defects()
+
+        if result:
+            return result
+        else:
+            return jsonify({'message': 'Database is empty'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
+
+#Get all defects uploaded by a user
+@app.route("/defects/get", methods=['POST'])
+def getUserDefects():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+
+    if validateUser(username, access_token):
+        data = retrieve_user_defects(username)
+        if data:
+            return data
+        else:
+            return jsonify({'message': 'User has no defects'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
 
 #----------------------------------------------------------------------------------------------------------------------
 #USER ROUTES
@@ -132,6 +171,8 @@ def loginUser():
 
     else:
         return jsonify({'message': 'User or password cannot be empty'})
+
+
 
 #----------------------------------------------------------------------------------------------------------------------
 #MAIN
