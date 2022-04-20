@@ -3,7 +3,9 @@ from pymongo import MongoClient
 from functions.auxiliary import *
 from security.accessToken import *
 from functions.auxiliary import *
+from functions.changeDateFormat import *
 import pandas as pd
+
 
 
 def create_data_defects(df):
@@ -18,6 +20,9 @@ def create_data_defects(df):
 
     #drop Data column
     df = df.drop(columns=["Data"])
+
+    #convert Created column to iso8601
+    df["Created"] = df["Created"].apply(to_iso8601)
 
     #check if the issue already exists in the database
     for index, row in df.iterrows():

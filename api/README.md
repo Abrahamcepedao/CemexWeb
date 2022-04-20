@@ -16,19 +16,24 @@ API for Cemex Go defect clusterization with natural language processing techniqu
 - [x] Get defects general
 - [x] Get defects by user
 
+- [x] Get defects by date range by user
+- [x] Get defects by date range general
 
-- [ ] Get defects by date range by user
-- [ ] Get defects by date range general
+- [x] Get defects by issue type by user
+- [x] Get defects by issue type general
 
-- [ ] Get defects by category by user
-- [ ] Get defects by category general
+- [x] Get defects by issue type by date range by user
+- [x] Get defects by issue type by date range general
 
-- [ ] Get defects by category by date range by user
-- [ ] Get defects by category by date range general
+- [x] Change filename to filename with timestamp
 
-- [ ] Change filename to filename with timestamp
 - [ ] Security for API (anti JSON bombing, inyection attacks, etc)
 - [ ] Refactor code into folders based on functionalities
+
+## **Exploration**
+
+- [ ] Perform analysis for each get?
+- [ ] User Downloads the results as csv and then reupload its to perform analysis?
 
 ## **API Documentation**
 

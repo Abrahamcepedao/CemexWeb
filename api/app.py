@@ -7,6 +7,8 @@ from database.users import *
 from database.retrieveUserDefects import *
 from security.validateUser import *
 import json
+import time
+
 
 def create_app():
     app = Flask(__name__)
@@ -54,8 +56,15 @@ def uploadFiles():
 
         # get the uploaded file
         uploaded_file = request.files['file']
+
+        #rename the file to filename+timestamp+username+filetype
+        filename = uploaded_file.filename
+        filename = filename.split('.')
+        filename = filename[0] + '_' + str(int(time.time())) + '_' + username + '.' + filename[1]
+
+
         if uploaded_file.filename != '':
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             # set the file path
             uploaded_file.save(file_path)
             # save the file
@@ -79,8 +88,14 @@ def uploadFilesLDA(number_topics):
     if validateUser(username, access_token):
         # get the uploaded file
         uploaded_file = request.files['file']
+
+        #rename the file to filename+timestamp+username+filetype
+        filename = uploaded_file.filename
+        filename = filename.split('.')
+        filename = filename[0] + '_' + str(int(time.time())) + '_' + username + '.' + filename[1]
+
         if uploaded_file.filename != '':
-            file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             # set the file path
             uploaded_file.save(file_path)
             # save the file
@@ -130,6 +145,142 @@ def getUserDefects():
     else:
         return jsonify({'message': 'Access token is invalid'})
 
+#Retrieve all defects by date range
+@app.route("/defects/date", methods=['POST'])
+def retrieveDefectsByDate():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+    if validateUser(username, access_token):
+        #get the date range
+        start_date = request.json['startDate']
+        end_date = request.json['endDate']
+
+        #retrieve all defects
+        result = retrieve_defects_date_range(start_date, end_date)
+
+        if result:
+            return result
+        else:
+            return jsonify({'message': 'No defects in the specified date range'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
+
+#Retrieve all defects by date range by user
+@app.route("/defects/date/get", methods=['POST'])
+def retrieveDefectsByDateUser():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+    if validateUser(username, access_token):
+        #get the date range
+        start_date = request.json['startDate']
+        end_date = request.json['endDate']
+
+        #retrieve all defects
+        result = retrieve_user_defects_date_range(username, start_date, end_date)
+
+        if result:
+            return result
+        else:
+            return jsonify({'message': 'No defects in the specified date range'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
+
+#Retrieve all defects by Issue Type
+@app.route("/defects/issue", methods=['POST'])
+def retrieveDefectsByIssue():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+    if validateUser(username, access_token):
+        #get the issue type
+        issue_type = request.json['issueType']
+
+        #retrieve all defects
+        result = retrieve_defects_by_issue_type(issue_type)
+
+        if result:
+            return result
+        else:
+            return jsonify({'message': 'No defects of the specified issue type'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
+
+#Retrieve all defects by Issue Type by user
+@app.route("/defects/issue/get", methods=['POST'])
+def retrieveDefectsByIssueUser():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+    if validateUser(username, access_token):
+        #get the issue type
+        issue_type = request.json['issueType']
+
+        #retrieve all defects
+        result = retrieve_defects_by_issue_type_user(issue_type,username)
+
+        if result:
+            return result
+        else:
+            return jsonify({'message': 'No defects of the specified issue type'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
+
+#Retrieve defects by category by date range
+@app.route("/defects/category/date", methods=['POST'])
+
+#retrieve defects by Issue Type by date range
+@app.route("/defects/issue/date", methods=['POST'])
+def retrieveDefectsByCategoryIssueDate():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+    if validateUser(username, access_token):
+        #get the category and issue type
+        issue_type = request.json['issueType']
+        start_date = request.json['startDate']
+        end_date = request.json['endDate']
+
+        #retrieve all defects
+        result = retrieve_defects_by_issue_type_date_range(issue_type, start_date, end_date)
+
+        if result:
+            return result
+        else:
+            return jsonify({'message': 'No defects of the specified issue type or date range'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
+
+#Retrieve defects by category by date range by user
+@app.route("/defects/category/date/get", methods=['POST'])
+def retrieveDefectsByCategoryIssueDateUser():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+    if validateUser(username, access_token):
+        #get the category and issue type
+        issue_type = request.json['issueType']
+        start_date = request.json['startDate']
+        end_date = request.json['endDate']
+
+        #retrieve all defects
+        result = retrieve_defects_by_issue_type_user_date_range(issue_type, username, start_date, end_date)
+
+        if result:
+            return result
+        else:
+            return jsonify({'message': 'No defects of the specified issue type or date range'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
+
+
 #----------------------------------------------------------------------------------------------------------------------
 #USER ROUTES
 #----------------------------------------------------------------------------------------------------------------------
@@ -171,7 +322,6 @@ def loginUser():
 
     else:
         return jsonify({'message': 'User or password cannot be empty'})
-
 
 
 #----------------------------------------------------------------------------------------------------------------------
