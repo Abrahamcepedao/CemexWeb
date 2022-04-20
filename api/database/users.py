@@ -8,11 +8,6 @@ def create_user(user,password):
 
   myclient = MongoClient("mongodb+srv://SeaWar741:CemexGo2022@cluster0.4glnz.mongodb.net")
 
-  print(myclient.list_database_names())
-
-
-  dblist = myclient.list_database_names()
-
   mydb = myclient["defectsCemex"]
 
   mycol = mydb["users"]
@@ -57,4 +52,25 @@ def login_user(user,password):
     print("User does not exist or credentials are incorrect")
     return False
 
-   
+#validate username with user_id and username
+def validate_userID(user_id,username):
+  myclient = MongoClient("mongodb+srv://SeaWar741:CemexGo2022@cluster0.4glnz.mongodb.net")
+
+  mydb = myclient["defectsCemex"]
+
+  mycol = mydb["users"]
+
+  #check if user exists
+  if mycol.find_one({"_id":ObjectId(user_id)}):
+    #check if username is correct
+    if mycol.find_one({"_id":ObjectId(user_id),"user":username}):
+      print("User name is correct")
+      return True
+    else:
+      print("User data is incorrect")
+      return False
+  else:
+    print("User does not exist")
+    return False
+
+  

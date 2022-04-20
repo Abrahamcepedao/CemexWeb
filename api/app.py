@@ -4,6 +4,8 @@ from os.path import join, dirname, realpath
 from functions.bertGroups import parseCSV
 from functions.ldaclusters import parseCSVLDA
 from database.users import *
+from security.validateUser import *
+import json
 
 def create_app():
     app = Flask(__name__)
@@ -22,6 +24,18 @@ def index():
     return jsonify({'message': 'Hello World!'})
 
 
+#testing access token route
+@app.route('/test-token', methods=['POST'])
+def test():
+    #get the username and access token from json
+    username = request.json['user']
+    access_token = request.json['accessToken']
+
+    if validateUser(username, access_token):
+        return jsonify({'message': 'Access token is valid'})
+    else:
+        return jsonify({'message': 'Access token is invalid'})
+
 #----------------------------------------------------------------------------------------------------------------------
 #CLUSTERING ROUTES
 #----------------------------------------------------------------------------------------------------------------------
@@ -29,32 +43,52 @@ def index():
 #Clusterize the data from files with BERT
 @app.route("/clusterize", methods=['POST'])
 def uploadFiles():
-    # get the uploaded file
-    uploaded_file = request.files['file']
-    if uploaded_file.filename != '':
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
-        # set the file path
-        uploaded_file.save(file_path)
-        # save the file
-        result = parseCSV(file_path)
+    #get the username and access token from data sent by the client
+    json_data = json.loads(request.form["data"])
 
-    # return the resulting dataframe
-    return result
+    username = json_data['user']
+    access_token = json_data['accessToken']
+
+    if validateUser(username, access_token):
+
+        # get the uploaded file
+        uploaded_file = request.files['file']
+        if uploaded_file.filename != '':
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+            # set the file path
+            uploaded_file.save(file_path)
+            # save the file
+            result = parseCSV(file_path)
+
+        # return the resulting dataframe
+        return result
+    else:
+        return jsonify({'message': 'Access token is invalid'})
 
 #Clusterize the data from files with LDA with custom number of topics
 @app.route("/clusterize/<number_topics>", methods=['POST'])
 def uploadFilesLDA(number_topics):
-    # get the uploaded file
-    uploaded_file = request.files['file']
-    if uploaded_file.filename != '':
-        file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
-        # set the file path
-        uploaded_file.save(file_path)
-        # save the file
-        result = parseCSVLDA(file_path, number_topics)
 
-    # return the resulting dataframe
-    return result
+    #get the username and access token from data sent by the client
+    json_data = json.loads(request.form["data"])
+
+    username = json_data['user']
+    access_token = json_data['accessToken']
+
+    if validateUser(username, access_token):
+        # get the uploaded file
+        uploaded_file = request.files['file']
+        if uploaded_file.filename != '':
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+            # set the file path
+            uploaded_file.save(file_path)
+            # save the file
+            result = parseCSVLDA(file_path, number_topics)
+
+        # return the resulting dataframe
+        return result
+    else:
+        return jsonify({'message': 'Access token is invalid'})
 
 
 #----------------------------------------------------------------------------------------------------------------------
