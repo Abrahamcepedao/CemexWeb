@@ -19,7 +19,7 @@ import Logo from '../public/logo.png'
 import SideBar from '../../components/admin/SideBar'
 
 /* CSS */
-import styles from '../../styles/admin/Dashboard.module.css'
+import styles from '../../styles/admin/Usuarios.module.css'
 
 const Usuarios: NextPage = (props) => {
   /* useState - new user */
@@ -29,6 +29,9 @@ const Usuarios: NextPage = (props) => {
   const [role, setRole] = useState('');
 
   /* useState - list of users */
+  const [users, setUsers] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [searchBy, setSearchBy] = useState('username');
 
   /* useState - current user */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -59,7 +62,7 @@ const Usuarios: NextPage = (props) => {
 
       <main className={styles.main}>
           <SideBar/>
-          <div className={styles.dashboard__container}>
+          <div className={styles.usuarios__container}>
             <h1>Usuarios</h1>
             {/* form para agregar usuarios */}
             <form className={styles.form}>
@@ -90,15 +93,28 @@ const Usuarios: NextPage = (props) => {
 
                 {/* submit */}
                 <div className={styles.form__container__submit}>
-                  <button type="submit" onClick={() => {
-                    dispatch(setCurrentUser({
-                      username,
-                    }))
-                    setIsLoggedIn(true)
-                  }}>Agregar</button>
+                  <button type="submit">Agregar</button>
                 </div>
               </div>
             </form>
+
+
+
+            {/* lista de usuarios */}
+            {/* header */}
+            <div className={styles.list__header}>
+              <input type="text" id="searchText" placeholder='Type info here' className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+              
+              <select id="searchBy" value={role} className={styles.input} onChange={(e) => setSearchBy(e.target.value)}>
+                <option value="username">Username</option>
+                <option value="email">Email</option>
+              </select>
+            </div>
+
+            {/* lista */}
+            <div className={styles.user__container}>
+
+            </div>
           </div>
           
       </main>

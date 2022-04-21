@@ -1,0 +1,32 @@
+.main {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: row;
+    justify-content: between;
+    align-items: center;
+    background-image: url("/img/login/blob-scene-haikei.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    padding: 50px;
+}
+
+/* container */
+.usuarios__container {
+    padding: 50px;
+    margin: auto;
+    background: rgba(255, 255, 255, 0.19);
+    border-radius: 15px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(11.7px);
+    -webkit-backdrop-filter: blur(11.7px);
+    border: 1px solid rgba(255, 255, 255, 0.21);
+    min-height: calc(100vh - 100px);
+    color: white;
+    flex: 1;
+}
+
+/* users list */
+.user__container {
+    
+}
