@@ -20,7 +20,13 @@ import Logo from '../../public/logo.png'
 /* CSS */
 import styles from '../../styles/components/admin/SideBar.module.css'
 
-const SideBar: NextPage = (props) => {
+/* Material - UI */
+//import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import { IconContext } from "react-icons";
+import { MdPerson, MdOutlineAccessTimeFilled, MdAnalytics, MdLogout } from 'react-icons/md';
+
+
+const SideBar: NextPage = () => {
   /* useState */
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -62,7 +68,12 @@ const SideBar: NextPage = (props) => {
         <div className={styles.menu__item}>
             <a href='/admin/usuarios' className={styles.item__link}>
                 {/* icono */}
-                Usuarios
+                <IconContext.Provider value={{ color: "white", style:{marginRight: "10px", fontSize: "1.2em"}, className: "item__icon" }}>
+                  <div>
+                    <MdPerson />
+                  </div>
+                </IconContext.Provider>
+                <p>Usuarios</p>
             </a>
         </div>
 
@@ -70,7 +81,12 @@ const SideBar: NextPage = (props) => {
         <div className={styles.menu__item}>
             <a href='/admin/historial' className={styles.item__link}>
                 {/* icono */}
-                Historial
+                <IconContext.Provider value={{ color: "white", style:{marginRight: "10px", marginBottom: "0px", fontSize: "1.2em"}, className: "item__icon" }}>
+                  <div>
+                    <MdOutlineAccessTimeFilled />
+                  </div>
+                </IconContext.Provider>
+                <p>Historial</p>
             </a>
         </div>
 
@@ -78,14 +94,24 @@ const SideBar: NextPage = (props) => {
         <div className={styles.menu__item}>
             <a href='/admin/dashboard' className={styles.item__link}>
                 {/* icono */}
-                Dashboard
+                <IconContext.Provider value={{ color: "white", style:{marginRight: "10px", fontSize: "1.2em"}, className: "item__icon" }}>
+                  <div>
+                    <MdAnalytics />
+                  </div>
+                </IconContext.Provider>
+                <p>Dashboard</p>
             </a>
         </div>
         </div>
 
         {/* other actions (logout) */}
         <div className={styles.logout__container}>
-        <p>Logout</p>
+          <IconContext.Provider value={{ color: "white", style:{marginRight: "10px", fontSize: "1.2em"}, className: "item__icon" }}>
+            <div>
+              <MdLogout />
+            </div>
+          </IconContext.Provider>
+          <p>Logout</p>
         </div>
       </main>
     </div>
