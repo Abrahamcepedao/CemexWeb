@@ -1,8 +1,8 @@
 from flask import Flask, jsonify, render_template, request, redirect, url_for
 import os
 from os.path import join, dirname, realpath
-from functions.bertGroups import parseCSV
-from functions.ldaclusters import parseCSVLDA
+from functions.bertGroups import parseCSV, bert_clusters
+from functions.ldaclusters import parseCSVLDA, lda_clusters
 from database.users import *
 from database.retrieveUserDefects import *
 from security.validateUser import *
@@ -116,13 +116,22 @@ def retrieveAllDefects():
     #get the username and access token from json
     username = request.json['user']
     access_token = request.json['accessToken']
+    analysis = request.json['analysis']
 
     if validateUser(username, access_token):
         #retrieve all defects
         result = retrieve_all_defects()
 
         if result:
-            return result
+            if analysis == "none":
+                return result.to_json(orient='records')
+            elif analysis == "default":
+                return bert_clusters(result)
+            #check if analysis is a number
+            elif analysis.isdigit():
+                return lda_clusters(result, analysis)
+            else:
+                return result.to_json(orient='records')
         else:
             return jsonify({'message': 'Database is empty'})
     else:
@@ -134,12 +143,21 @@ def getUserDefects():
     #get the username and access token from json
     username = request.json['user']
     access_token = request.json['accessToken']
+    analysis = request.json['analysis']
 
 
     if validateUser(username, access_token):
-        data = retrieve_user_defects(username)
-        if data:
-            return data
+        result = retrieve_user_defects(username)
+        if result:
+            if analysis == "none":
+                return result.to_json(orient='records')
+            elif analysis == "default":
+                return bert_clusters(result)
+            #check if analysis is a number
+            elif analysis.isdigit():
+                return lda_clusters(result, analysis)
+            else:
+                return result.to_json(orient='records')
         else:
             return jsonify({'message': 'User has no defects'})
     else:
@@ -151,6 +169,7 @@ def retrieveDefectsByDate():
     #get the username and access token from json
     username = request.json['user']
     access_token = request.json['accessToken']
+    analysis = request.json['analysis']
 
     if validateUser(username, access_token):
         #get the date range
@@ -161,7 +180,15 @@ def retrieveDefectsByDate():
         result = retrieve_defects_date_range(start_date, end_date)
 
         if result:
-            return result
+            if analysis == "none":
+                return result.to_json(orient='records')
+            elif analysis == "default":
+                return bert_clusters(result)
+            #check if analysis is a number
+            elif analysis.isdigit():
+                return lda_clusters(result, analysis)
+            else:
+                return result.to_json(orient='records')
         else:
             return jsonify({'message': 'No defects in the specified date range'})
     else:
@@ -173,6 +200,7 @@ def retrieveDefectsByDateUser():
     #get the username and access token from json
     username = request.json['user']
     access_token = request.json['accessToken']
+    analysis = request.json['analysis']
 
     if validateUser(username, access_token):
         #get the date range
@@ -183,7 +211,15 @@ def retrieveDefectsByDateUser():
         result = retrieve_user_defects_date_range(username, start_date, end_date)
 
         if result:
-            return result
+            if analysis == "none":
+                return result.to_json(orient='records')
+            elif analysis == "default":
+                return bert_clusters(result)
+            #check if analysis is a number
+            elif analysis.isdigit():
+                return lda_clusters(result, analysis)
+            else:
+                return result.to_json(orient='records')
         else:
             return jsonify({'message': 'No defects in the specified date range'})
     else:
@@ -195,6 +231,7 @@ def retrieveDefectsByIssue():
     #get the username and access token from json
     username = request.json['user']
     access_token = request.json['accessToken']
+    analysis = request.json['analysis']
 
     if validateUser(username, access_token):
         #get the issue type
@@ -204,7 +241,15 @@ def retrieveDefectsByIssue():
         result = retrieve_defects_by_issue_type(issue_type)
 
         if result:
-            return result
+            if analysis == "none":
+                return result.to_json(orient='records')
+            elif analysis == "default":
+                return bert_clusters(result)
+            #check if analysis is a number
+            elif analysis.isdigit():
+                return lda_clusters(result, analysis)
+            else:
+                return result.to_json(orient='records')
         else:
             return jsonify({'message': 'No defects of the specified issue type'})
     else:
@@ -216,6 +261,7 @@ def retrieveDefectsByIssueUser():
     #get the username and access token from json
     username = request.json['user']
     access_token = request.json['accessToken']
+    analysis = request.json['analysis']
 
     if validateUser(username, access_token):
         #get the issue type
@@ -225,14 +271,20 @@ def retrieveDefectsByIssueUser():
         result = retrieve_defects_by_issue_type_user(issue_type,username)
 
         if result:
-            return result
+            if analysis == "none":
+                return result.to_json(orient='records')
+            elif analysis == "default":
+                return bert_clusters(result)
+            #check if analysis is a number
+            elif analysis.isdigit():
+                return lda_clusters(result, analysis)
+            else:
+                return result.to_json(orient='records')
         else:
             return jsonify({'message': 'No defects of the specified issue type'})
     else:
         return jsonify({'message': 'Access token is invalid'})
 
-#Retrieve defects by category by date range
-@app.route("/defects/category/date", methods=['POST'])
 
 #retrieve defects by Issue Type by date range
 @app.route("/defects/issue/date", methods=['POST'])
@@ -240,6 +292,7 @@ def retrieveDefectsByCategoryIssueDate():
     #get the username and access token from json
     username = request.json['user']
     access_token = request.json['accessToken']
+    analysis = request.json['analysis']
 
     if validateUser(username, access_token):
         #get the category and issue type
@@ -251,7 +304,15 @@ def retrieveDefectsByCategoryIssueDate():
         result = retrieve_defects_by_issue_type_date_range(issue_type, start_date, end_date)
 
         if result:
-            return result
+            if analysis == "none":
+                return result.to_json(orient='records')
+            elif analysis == "default":
+                return bert_clusters(result)
+            #check if analysis is a number
+            elif analysis.isdigit():
+                return lda_clusters(result, analysis)
+            else:
+                return result.to_json(orient='records')
         else:
             return jsonify({'message': 'No defects of the specified issue type or date range'})
     else:
@@ -263,6 +324,7 @@ def retrieveDefectsByCategoryIssueDateUser():
     #get the username and access token from json
     username = request.json['user']
     access_token = request.json['accessToken']
+    analysis = request.json['analysis']
 
     if validateUser(username, access_token):
         #get the category and issue type
@@ -274,7 +336,15 @@ def retrieveDefectsByCategoryIssueDateUser():
         result = retrieve_defects_by_issue_type_user_date_range(issue_type, username, start_date, end_date)
 
         if result:
-            return result
+            if analysis == "none":
+                return result.to_json(orient='records')
+            elif analysis == "default":
+                return bert_clusters(result)
+            #check if analysis is a number
+            elif analysis.isdigit():
+                return lda_clusters(result, analysis)
+            else:
+                return result.to_json(orient='records')
         else:
             return jsonify({'message': 'No defects of the specified issue type or date range'})
     else:

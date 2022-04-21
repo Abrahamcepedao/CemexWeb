@@ -32,3 +32,9 @@ def parseCSVLDA(filePath, user, number_topics):
 
     #convert the dataframe to a json object and return it
     return dataframeClusters.to_json(orient='records')
+
+def lda_clusters(df,number_topics):
+    dataframeClusters = generateClustersLDA(df,number_topics)
+
+    #convert the dataframe to a json object and return it
+    return dataframeClusters.to_json(orient='records')
