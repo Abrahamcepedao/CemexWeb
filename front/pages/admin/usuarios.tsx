@@ -58,6 +58,86 @@ const Usuarios: NextPage = (props) => {
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraham cepedao',
+      email: 'abrahamgolf@gmail.com',
+      role: 'admin'
+    }
 ]);
   const [searchText, setSearchText] = useState('');
   const [searchBy, setSearchBy] = useState('username');
@@ -153,38 +233,43 @@ const Usuarios: NextPage = (props) => {
 
             {/* lista */}
             {users.length !== 0 ? (
-              <div className={styles.user__container}>
-                  {/* table header */}
-                  <div className={styles.table__header}>
-                    <div className={styles.table__header__username}>Username</div>
-                    <div className={styles.table__header__email}>Email</div>
-                    <div className={styles.table__header__role}>Role</div>
-                  </div>
+              <>
+                {/* table header */}
+                <div className={styles.table__header}>
+                  <div className={styles.table__header__username}>Username</div>
+                  <div className={styles.table__header__email}>Email</div>
+                  <div className={styles.table__header__role}>Role</div>
+                </div>
 
-                  {users.map((user, index) => (
-                    <div className={styles.user__item} key={index}>
-                      <div className={styles.user__info}>
-                        <div className={styles.user__info__username}>
-                          <p>{user.username}</p>
+                <div className={styles.user__container}>
+                  
+
+                    {users.map((user, index) => (
+                      <div className={styles.user__item} key={index}>
+                        <div className={styles.user__info}>
+                          <div className={styles.user__info__username}>
+                            <p>{user.username}</p>
+                          </div>
+                          <div className={styles.user__info__email}>
+                            <p>{user.email}</p>
+                          </div>
+                          <div className={styles.user__info__role}>
+                            <p>{user.role}</p>
+                          </div>
                         </div>
-                        <div className={styles.user__info__email}>
-                          <p>{user.email}</p>
-                        </div>
-                        <div className={styles.user__info__role}>
-                          <p>{user.role}</p>
+                        <div className={styles.user__actions}>
+                          <IconButton>
+                            <CreateRoundedIcon className={styles.icon}/>
+                          </IconButton>
+                          <IconButton>
+                            <DeleteRoundedIcon className={styles.icon}/>
+                          </IconButton>
                         </div>
                       </div>
-                      <div className={styles.user__actions}>
-                        <IconButton>
-                          <CreateRoundedIcon className={styles.icon}/>
-                        </IconButton>
-                        <IconButton>
-                          <DeleteRoundedIcon className={styles.icon}/>
-                        </IconButton>
-                      </div>
-                    </div>
-                  ))}
-              </div>
+                    ))}
+                </div>
+              </>
+              
             ) : (
               <div>
                 <h2>No hay usuarios</h2>

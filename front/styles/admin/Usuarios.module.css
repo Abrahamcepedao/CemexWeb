@@ -94,6 +94,10 @@
 
 
 /* users - list */
+.user__container {
+    overflow-y: scroll;
+    max-height: calc(100vh - 400px);
+} 
 .user__item {
     display: flex;
     flex-direction: row;

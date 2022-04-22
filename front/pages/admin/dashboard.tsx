@@ -21,11 +21,16 @@ import SideBar from '../../components/admin/SideBar'
 /* CSS */
 import styles from '../../styles/admin/Dashboard.module.css'
 
+/* Material - UI */
+import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
+
 const Dashboard: NextPage = (props) => {
-  /* useState */
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  /* useState - currrent user */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  /* useState - upload */
+  const [file, setFile] = useState("");
+  const [loading, setLoading] = useState(false);
 
   /* Redux */
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
@@ -54,7 +59,20 @@ const Dashboard: NextPage = (props) => {
       <main className={styles.main}>
           <SideBar/>
           <div className={styles.dashboard__container}>
-            <h1>Dashboard</h1>
+            {file === "" ? (
+              <div className={styles.upload__container}>
+                <div className={styles.upload__drop}>
+                  <UploadFileRoundedIcon className={styles.upload__icon} />
+                  <p className={styles.drag__text}>Drag and drop file</p>
+                  <p className={styles.or__text}>or</p>
+                  <button className={styles.browse__btn}>Browse</button>
+                </div>
+              </div>
+            ) : (
+              <>
+
+              </>
+            )}
           </div>
           
       </main>
