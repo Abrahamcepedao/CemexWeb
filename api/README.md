@@ -27,11 +27,16 @@ API for Cemex Go defect clusterization with natural language processing techniqu
 
 - [x] Change filename to filename with timestamp
 
-- [ ] Perform analysis for each get (json body indicates: none, default(BERT), #number(LDA) )
+- [x] Perform analysis for each get (json body indicates: none, default(BERT), #number(LDA) )
 
-- [ ] Security for API (anti JSON bombing, inyection attacks, etc)
-- [ ] Refactor code into folders based on functionalities
+- [x] Admin can check for other users
+- [x] Try catch on all endpoints
 
+- [x] Security for API (anti JSON bombing, inyection attacks, etc)
+- [x] Refactor code into folders based on functionalities 
+- [x] Don't allow incorrect files or files without data
+
+- [x] Route to download template csv file
 
 ## **API Documentation**
 

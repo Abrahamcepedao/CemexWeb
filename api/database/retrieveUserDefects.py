@@ -227,3 +227,27 @@ def retrieve_defects_by_issue_type_user_date_range(issue_type, user, start_date,
         #convert the dataframe to json
         return df
 
+
+
+#retrieve all the issues types
+def retrieve_issue_types():
+    
+        mydb = myclient["defectsCemex"]
+    
+        mycol = mydb["defects"]
+    
+        #get unique values for the issue type column
+
+        mydoc = mycol.find().distinct("Issue Type")
+
+        #convert to array
+        df = pd.DataFrame(list(mydoc))
+        
+        #if the database is empty, return an empty list
+        if df.empty:
+            return False
+        else:
+            #convert the dataframe to json
+            return df
+
+    
