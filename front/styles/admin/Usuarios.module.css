@@ -26,7 +26,96 @@
     flex: 1;
 }
 
-/* users list */
+/* users - header */
+.list__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.21);
+    background: rgba(255, 255, 255, 0.19);
+    color: white;
+    flex: 1;
+    margin-right: 10px;
+    outline: none;
+}
+.input::placeholder {
+    color: white;
+    opacity: 0.5;
+}
+
+.select {
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.21);
+    background: rgba(255, 255, 255, 0.19);
+    color: white;
+    outline: none;
+    margin-right: 10px;
+}
+
+.icon {
+    color: white;
+    transition: transform 450ms;
+}
+
+.icon:hover {
+    transform: scale(1.2);
+}
+
 .user__container {
     
+}
+
+/* users - list header */
+.table__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    margin-bottom: 20px;
+    opacity: 0.5;
+}
+.table__header__username, .table__header__email, .table__header__role {
+    margin-right: 10px;
+}
+.table__header__username, .table__header__email {
+    width: 200px;
+}
+.table__header__role {
+    width: 50px;
+}
+
+
+/* users - list */
+.user__item {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.user__info {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center;
+    flex: 1;
+    
+}
+
+.user__info__username, .user__info__email, .user__info__role {
+    margin-right: 10px;
+}
+.user__info__username, .user__info__email {
+    width: 200px;
+}
+.user__info__role {
+    width: 50px;
 }
