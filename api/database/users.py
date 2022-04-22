@@ -19,7 +19,7 @@ def create_user(user,password):
 
   #else, create user
   else:
-    userData = {"user":user,"password": hash_password(password),"createdAt":get_current_date(),"UpdatedAt":get_current_date(),"accessToken":"","validUntil":get_current_date()}
+    userData = {"user":user,"password": hash_password(password),"createdAt":get_current_date(),"UpdatedAt":get_current_date(),"accessToken":"","validUntil":get_current_date(),"type":"user"}
 
     x = mycol.insert_one(userData)
 
@@ -50,7 +50,7 @@ def login_user(user,password):
     return True, access_token
   else:
     print("User does not exist or credentials are incorrect")
-    return False
+    return False, ""
 
 #validate username with user_id and username
 def validate_userID(user_id,username):
@@ -66,6 +66,10 @@ def validate_userID(user_id,username):
     if mycol.find_one({"_id":ObjectId(user_id),"user":username}):
       print("User name is correct")
       return True
+    #check if user_id is admin
+    elif mycol.find_one({"_id":ObjectId(user_id),"type":"admin"}):
+      print("User is admin")
+      return True
     else:
       print("User data is incorrect")
       return False
@@ -73,4 +77,25 @@ def validate_userID(user_id,username):
     print("User does not exist")
     return False
 
-  
+#change password of user
+def change_password(username, new_password):
+  myclient = MongoClient("mongodb+srv://SeaWar741:CemexGo2022@cluster0.4glnz.mongodb.net")
+
+  mydb = myclient["defectsCemex"]
+
+  mycol = mydb["users"]
+
+  #check if user exists
+  if mycol.find_one({"user":username}):
+      #get user id
+      user_id = mycol.find_one({"user":username})['_id']
+
+      #update password
+      mycol.update_one({"_id":user_id},{"$set":{"password":hash_password(new_password),"UpdatedAt":get_current_date()}})
+      
+      print("Password changed")
+
+      return True
+  else:
+    print("User does not exist")
+    return False

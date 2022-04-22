@@ -48,3 +48,26 @@ def parseCSV(filePath, user):
 
     #convert the dataframe to a json object and return it
     return csvData.to_json(orient='records')
+
+def bert_clusters(df):
+     # Loop through the Rows
+    for i,row in df.iterrows():
+        #print the current row and how many rows are left
+        print(i,df.shape[0]-i)
+        data = str(row["Summary"]) + " " + str(row["Description"])
+        # Clean the text
+        data = cleanText(data)
+        # Translate the text <-------------------------------------- TODO
+        #data = translateText(data)
+        
+        # Add the data to the row
+        df.loc[i,"Data"] = data
+
+    #convert column of data to a list
+    dataList = df["Data"].tolist()
+    topics, probabilities = generateClusters(dataList)
+    #add the column of clusters to the dataframe
+    df["Cluster"] = topics
+
+    #convert the dataframe to a json object and return it
+    return df.to_json(orient='records')

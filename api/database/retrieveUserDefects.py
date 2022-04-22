@@ -29,7 +29,7 @@ def retrieve_all_defects():
         df = df.drop(columns=['_id','User'])
 
         #convert the dataframe to json
-        return df.to_json(orient='records')
+        return df
 
 
 
@@ -56,7 +56,7 @@ def retrieve_user_defects(user):
         df = df.drop(columns=['_id','User'])
 
         #convert the dataframe to json
-        return df.to_json(orient='records')
+        return df
 
 
 
@@ -87,7 +87,7 @@ def retrieve_defects_date_range(start_date, end_date):
         df = df.drop(columns=['_id','User'])
 
         #convert the dataframe to json
-        return df.to_json(orient='records')
+        return df
 
 
 
@@ -117,7 +117,7 @@ def retrieve_user_defects_date_range(user, start_date, end_date):
         df = df.drop(columns=['_id','User'])
 
         #convert the dataframe to json
-        return df.to_json(orient='records')
+        return df
 
 
 
@@ -144,7 +144,7 @@ def retrieve_defects_by_issue_type(issue_type):
         df = df.drop(columns=['_id','User'])
 
         #convert the dataframe to json
-        return df.to_json(orient='records')
+        return df
 
 
 
@@ -171,7 +171,7 @@ def retrieve_defects_by_issue_type_user(issue_type, user):
         df = df.drop(columns=['_id','User'])
 
         #convert the dataframe to json
-        return df.to_json(orient='records')
+        return df
 
 
 
@@ -198,7 +198,7 @@ def retrieve_defects_by_issue_type_date_range(issue_type, start_date, end_date):
         df = df.drop(columns=['_id','User'])
 
         #convert the dataframe to json
-        return df.to_json(orient='records')
+        return df
 
 
 
@@ -225,4 +225,29 @@ def retrieve_defects_by_issue_type_user_date_range(issue_type, user, start_date,
         df = df.drop(columns=['_id','User'])
 
         #convert the dataframe to json
-        return df.to_json(orient='records')
+        return df
+
+
+
+#retrieve all the issues types
+def retrieve_issue_types():
+    
+        mydb = myclient["defectsCemex"]
+    
+        mycol = mydb["defects"]
+    
+        #get unique values for the issue type column
+
+        mydoc = mycol.find().distinct("Issue Type")
+
+        #convert to array
+        df = pd.DataFrame(list(mydoc))
+        
+        #if the database is empty, return an empty list
+        if df.empty:
+            return False
+        else:
+            #convert the dataframe to json
+            return df
+
+    
