@@ -14,18 +14,25 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
 import Head from 'next/head'
-import Image from 'next/image'
-import Logo from '../public/logo.png'
 import SideBar from '../../components/admin/SideBar'
 
 /* CSS */
 import styles from '../../styles/admin/Dashboard.module.css'
 
+/* Material - UI */
+import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
+
+/* Loader Spinner */
+import { InfinitySpin } from 'react-loader-spinner'
+
 const Dashboard: NextPage = (props) => {
-  /* useState */
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  /* useState - currrent user */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  /* useState - upload */
+  const [file, setFile] = useState("");
+  const [fileName, setFileName] = useState("");
+  const [loading, setLoading] = useState(true);
 
   /* Redux */
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
@@ -54,7 +61,28 @@ const Dashboard: NextPage = (props) => {
       <main className={styles.main}>
           <SideBar/>
           <div className={styles.dashboard__container}>
-            <h1>Dashboard</h1>
+            {file === "" ? (
+              <div className={styles.upload__container}>
+                <div className={styles.upload__drop}>
+                  <UploadFileRoundedIcon className={styles.upload__icon} />
+                  <p className={styles.drag__text}>Drag and drop file (.csv)</p>
+                  <p className={styles.or__text}>or</p>
+                  <button className={styles.browse__btn}>BROWSE FILES</button>
+                </div>
+              </div>
+            ) : (
+              <>
+                {loading ? (
+                  <div className={styles.loader__container}>
+                    <InfinitySpin color="white"  width='200'/>
+                  </div>
+                ) : (
+                  <>
+
+                  </>
+                )}
+              </>
+            )}
           </div>
           
       </main>
