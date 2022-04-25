@@ -25,7 +25,7 @@ import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
-
+import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 
 const SideBar: NextPage = () => {
   /* useState */
@@ -70,7 +70,7 @@ const SideBar: NextPage = () => {
             <a href='/admin/usuarios' className={styles.item__link}>
                 {/* icono */}
                 <PersonRoundedIcon className={styles.item__icon}/>
-                <p>Usuarios</p>
+                <p>Users</p>
             </a>
         </div>
 
@@ -78,7 +78,15 @@ const SideBar: NextPage = () => {
         <div className={styles.menu__item}>
             <a href='/admin/historial' className={styles.item__link}>
                 <WatchLaterRoundedIcon className={styles.item__icon}/>
-                <p>Historial</p>
+                <p>History</p>
+            </a>
+        </div>
+
+        {/* Defectos */}
+        <div className={styles.menu__item}>
+            <a href='/admin/defects' className={styles.item__link}>
+                <ListAltRoundedIcon className={styles.item__icon}/>
+                <p>Defects</p>
             </a>
         </div>
 
