@@ -44,9 +44,9 @@ const Usuarios: NextPage = (props) => {
   /* useState - list of users */
   const [users, setUsers] = useState<Array<User>>([
     {
-      username: 'Abraham cepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
+      username: 'Andres Limon',
+      email: 'LOL1234@gmail.com',
+      role: 'God'
     },
     {
       username: 'Abraham cepedao',
