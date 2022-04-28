@@ -23,16 +23,70 @@ import styles from '../../styles/admin/Usuarios.module.css'
 
 /* Material - UI */
 import { IconButton } from '@mui/material'
+import { styled, alpha } from '@mui/material/styles';
+import Menu, { MenuProps } from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import Modal from '@mui/material/Modal';
+//import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
+import TextField from '@mui/material/TextField';
+
+/* Material - UI - icons */
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
 import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
+import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 
+/* Interfaces */
 interface User {
   username: string,
   email: string,
   role: string,
 }
+
+/* Styled menu for filter button */
+const StyledMenu = styled((props: MenuProps) => (
+  <Menu
+    elevation={0}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'right',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'right',
+    }}
+    {...props}
+  />
+))(({ theme }) => ({
+  '& .MuiPaper-root': {
+    borderRadius: 6,
+    marginTop: theme.spacing(1),
+    minWidth: 180,
+    color:
+      theme.palette.mode === 'light' ? 'rgb(55, 65, 81)' : theme.palette.grey[300],
+    boxShadow:
+      'rgb(255, 255, 255) 0px 0px 0px 0px, rgba(0, 0, 0, 0.05) 0px 0px 0px 1px, rgba(0, 0, 0, 0.1) 0px 10px 15px -3px, rgba(0, 0, 0, 0.05) 0px 4px 6px -2px',
+    '& .MuiMenu-list': {
+      padding: '4px 0',
+    },
+    '& .MuiMenuItem-root': {
+      '& .MuiSvgIcon-root': {
+        fontSize: 18,
+        color: theme.palette.text.secondary,
+        marginRight: theme.spacing(1.5),
+      },
+      '&:active': {
+        backgroundColor: alpha(
+          theme.palette.primary.main,
+          theme.palette.action.selectedOpacity,
+        ),
+      },
+    },
+  },
+}));
 
 const Usuarios: NextPage = (props) => {
   /* useState - new user */
@@ -40,6 +94,14 @@ const Usuarios: NextPage = (props) => {
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
   const [role, setRole] = useState('');
+
+  /* modal */
+  const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
+
+  /* menu filter */
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
+  
 
   /* useState - list of users */
   const [users, setUsers] = useState<Array<User>>([
@@ -158,8 +220,25 @@ const Usuarios: NextPage = (props) => {
     }
   }, [isLoggedIn]);
 
-  /* Functions */
+  /* <----Functions----> */
 
+  /* Menu Filter functions */
+  const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  /* Modal functions */
+  const handleCreateUserModalChange = () => {
+    setOpenCreateUserModal(!openCreateUserModal);
+  };
+
+  /* Create user functions */
+  const createUser = () => {
+    console.log('create user');
+  };
 
   return (
     <div className={styles.container}>
@@ -173,46 +252,12 @@ const Usuarios: NextPage = (props) => {
           <SideBar/>
           <div className={styles.usuarios__container}>
             <h1>Usuarios</h1>
-            {/* form para agregar usuarios */}
-            {/* <form className={styles.form}>
-              <div className={styles.form__container}>
-                
-                <div className={styles.form__container__input}>
-                  <input type="text" id="username" placeholder='username' className={styles.input} value={username} onChange={(e) => setUsername(e.target.value)} />
-                </div>
-
-               
-                <div className={styles.form__container__input}>
-                  <input type="email" id="email" placeholder='email' className={styles.input} value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-
-               
-                <div className={styles.form__container__input}>
-                  <input type="password" id="password" placeholder='password' className={styles.input} value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-
-              
-                <div className={styles.form__container__input}>
-                  <select id="role" value={role} className={styles.input} onChange={(e) => setRole(e.target.value)}>
-                    <option value="" defaultChecked>Select role</option>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                  </select>
-                </div>
-
-                
-                <div className={styles.form__container__submit}>
-                  <button type="submit">Agregar</button>
-                </div>
-              </div>
-            </form> */}
-
 
             {/* lista de usuarios */}
             {/* header */}
             <div className={styles.list__header}>
               {/* search input */}
-              <input type="text" id="searchText" placeholder='Type info here' className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+              <input type="text" id="searchText" placeholder={`Type ${searchBy === 'username' ? 'username' : 'email'} here`} className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
               
               {/* search by */}
               <select id="searchBy" value={searchBy} className={styles.select} onChange={(e) => setSearchBy(e.target.value)}>
@@ -221,12 +266,36 @@ const Usuarios: NextPage = (props) => {
               </select>
 
               {/* filter button */}
-              <IconButton>
+              <IconButton onClick={handleClick}>
                 <FilterAltRoundedIcon className={styles.icon}/>
               </IconButton>
 
+              {/* Filter menu */}
+              <StyledMenu
+                id="demo-customized-menu"
+                MenuListProps={{
+                  'aria-labelledby': 'demo-customized-button',
+                }}
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+              >
+                <MenuItem onClick={handleClose} disableRipple>
+                  <PersonRoundedIcon />
+                  Username
+                </MenuItem>
+                <MenuItem onClick={handleClose} disableRipple>
+                  <EmailRoundedIcon />
+                  Email
+                </MenuItem>
+                <MenuItem onClick={handleClose} disableRipple>
+                  <AdminPanelSettingsRoundedIcon />
+                  Role
+                </MenuItem>
+              </StyledMenu>
+
               {/* Add button */}
-              <IconButton>
+              <IconButton onClick={handleCreateUserModalChange}>
                 <AddCircleRoundedIcon className={styles.icon}/>
               </IconButton>
             </div>
@@ -242,8 +311,6 @@ const Usuarios: NextPage = (props) => {
                 </div>
 
                 <div className={styles.user__container}>
-                  
-
                     {users.map((user, index) => (
                       <div className={styles.user__item} key={index}>
                         <div className={styles.user__info}>
@@ -277,6 +344,51 @@ const Usuarios: NextPage = (props) => {
             )}
             
           </div>
+
+
+          {/* <----Modals----> */}
+
+          {/* Create user modal */}
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={styles.modal}
+            open={openCreateUserModal}
+            onClose={handleCreateUserModalChange}
+          >
+            <form className={styles.form} onSubmit={createUser}>
+              <div className={styles.form__container}>
+                
+                <div className={styles.form__container__input}>
+                  <input type="text" id="username" placeholder='username' className={styles.form__input} value={username} onChange={(e) => setUsername(e.target.value)} />
+                </div>
+
+               
+                <div className={styles.form__container__input}>
+                  <input type="email" id="email" placeholder='email' className={styles.form__input} value={email} onChange={(e) => setEmail(e.target.value)} />
+                </div>
+
+               
+                <div className={styles.form__container__input}>
+                  <input type="password" id="password" placeholder='password' className={styles.form__input} value={password} onChange={(e) => setPassword(e.target.value)} />
+                </div>
+
+              
+                <div className={styles.form__container__input}>
+                  <select id="role" value={role} className={styles.form__input} onChange={(e) => setRole(e.target.value)}>
+                    <option value="" defaultChecked>Select role</option>
+                    <option value="admin">Admin</option>
+                    <option value="user">User</option>
+                  </select>
+                </div>
+
+                
+                <div>
+                  <button type="submit" className={styles.form__btn} onSubmit={createUser}>Agregar</button>
+                </div>
+              </div>
+            </form>
+          </Modal>
           
       </main>
     </div>

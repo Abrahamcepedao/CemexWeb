@@ -37,6 +37,7 @@
     font-size: 1.5rem;
     font-weight: bold;
     margin-right: 20px; 
+    min-width: 180px;
 }
 .input, .select__input {
     padding: 10px;

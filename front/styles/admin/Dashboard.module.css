@@ -63,13 +63,13 @@
 .or__text {
     font-size: 15px;
 }
-.browse__btn {
+
+.generate__btn {
     font-size: 15px;
-    padding: 10px;
     border-radius: 25px;
     border: none;
     background: rgb(14, 51, 127);
     color: white;
     padding: 10px 40px;
     cursor: pointer;
-}
+} 

@@ -4,10 +4,14 @@
 
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import userReducer from './states/users/reducer'
+import fileReducer from './states/file/reducer'
 
 export function makeStore() {
   return configureStore({
-    reducer: { userState: userReducer },
+    reducer: { 
+      userState: userReducer,
+      fileState: fileReducer
+    },
   })
 }
 

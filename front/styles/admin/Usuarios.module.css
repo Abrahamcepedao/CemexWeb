@@ -123,3 +123,53 @@
 .user__info__role {
     width: 50px;
 }
+
+
+/* <----Modals----> */
+
+/* Modal - create user */
+.form{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 15px;
+    //box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(11.7px);
+    -webkit-backdrop-filter: blur(11.7px);
+    border: 1px solid rgba(255, 255, 255, 0.21);
+}
+
+.form__container {
+    width: 100%;
+}
+
+.form__input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid rgba(14, 51, 127, 0.21);
+    color: gray;
+    flex: 1;
+    outline: none;
+    margin-bottom: 20px;
+}
+
+.form__btn {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 25px;
+    border: none;
+    background: rgb(14, 51, 127);
+    color: white;
+    padding: 10px 40px;
+    cursor: pointer;
+    transition: transform 450ms;
+}
+
+.form__btn:hover {
+    transform: scale(1.02);
+}
