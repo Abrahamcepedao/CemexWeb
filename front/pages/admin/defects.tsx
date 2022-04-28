@@ -65,9 +65,17 @@ const Defects: NextPage = (props) => {
           <SideBar/>
           <div className={styles.defects__container}>
             <div className={styles.defects__search__bar}>
-                <p className={styles.search__title}>Search defects</p>
+                <p className={styles.search__title} style={{flex: searchBy === "all" ? "1" : "0"}}>Search defects</p>
                 {(searchBy === "user" || searchBy === "date_user") && (
                     <input type="text" className={styles.input} placeholder="Enter username" value={username} onChange={(e) => setUsername(e.target.value)}/>
+                )}
+
+                {(searchBy === "date" || searchBy === "date_user") && (
+                    <input type="date" className={styles.input} value={date1} onChange={(e) => setDate1(e.target.value)}/>
+                )}
+
+                {(searchBy === "date" || searchBy === "date_user") && (
+                    <input type="date" className={styles.input} value={date2} onChange={(e) => setDate2(e.target.value)}/>
                 )}
                 
                 
