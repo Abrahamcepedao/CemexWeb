@@ -24,6 +24,10 @@
     min-height: calc(100vh - 100px);
     color: white;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* users - header */
@@ -33,6 +37,7 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    width: 100%;
 }
 .input {
     width: 100%;
@@ -69,10 +74,6 @@
     transform: scale(1.2);
 }
 
-.user__container {
-    
-}
-
 /* users - list header */
 .table__header {
     display: flex;
@@ -95,8 +96,7 @@
 
 /* users - list */
 .user__container {
-    overflow-y: scroll;
-    max-height: calc(100vh - 400px);
+    width: 100%;
 } 
 .user__item {
     display: flex;

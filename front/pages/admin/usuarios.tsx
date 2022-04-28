@@ -27,8 +27,15 @@ import { styled, alpha } from '@mui/material/styles';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
-//import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker';
-import TextField from '@mui/material/TextField';
+import Box from '@mui/material/Box';
+import Collapse from '@mui/material/Collapse';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TablePagination from '@mui/material/TablePagination';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 
 /* Material - UI - icons */
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
@@ -38,6 +45,8 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 /* Interfaces */
 interface User {
@@ -88,6 +97,33 @@ const StyledMenu = styled((props: MenuProps) => (
   },
 }));
 
+/* Styles table components */
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  [`&.${tableCellClasses.head}`]: {
+    backgroundColor: 'rgba(0,0,0,0)',
+    color: theme.palette.common.white,
+    border: 0,
+    fontWeight: 'bold',
+    opacity: '0.6'
+  },
+  [`&.${tableCellClasses.body}`]: {
+    fontSize: 14,
+    color: theme.palette.common.white,
+    border: 0,
+  },
+}));
+
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+  '&:nth-of-type(odd)': {
+    backgroundColor: 'rgba(0,0,0,0)',
+    border: 0,
+  },
+  // hide last border
+  '&:last-child td, &:last-child th': {
+    border: 0,
+  },
+}));
+
 const Usuarios: NextPage = (props) => {
   /* useState - new user */
   const [username, setUsername] = useState('');
@@ -116,93 +152,97 @@ const Usuarios: NextPage = (props) => {
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrahdsam cepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrahavfrm cepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrahrgeram cepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abragfham cepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abraham fdsdcepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abraham cepdfedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrdfaham cepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abraham cepefedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrwfeaham cepedao',
+      email: 'abrahamgoweflf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abrahafewm cefepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrfwaham cepedao',
+      email: 'abrahafwemgolf@gmail.com',
+      role: 'admin'
+    },
+    {
+      username: 'Abraefwham cepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrahaewm cepffeedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrafeeham cepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abrahamef ceefpedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
+      username: 'Abraefeham cfepedao',
       email: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abraham cepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abraham cepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abraham cepedao',
-      email: 'abrahamgolf@gmail.com',
+      username: 'Abferaham cepedfao',
+      email: 'abraheeamgolf@gmail.com',
       role: 'admin'
     }
 ]);
   const [searchText, setSearchText] = useState('');
   const [searchBy, setSearchBy] = useState('username');
+
+  /* useState - table pagination */
+  const [page, setPage] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
 
   /* useState - current user */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -240,6 +280,53 @@ const Usuarios: NextPage = (props) => {
     console.log('create user');
   };
 
+  /* table functions */
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
+  // Avoid a layout jump when reaching the last page with empty rows.
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+
+  /* Row of defects table */
+  function Row(props: { row: User }) {
+    const { row } = props;
+
+    return (
+      <React.Fragment>
+        <StyledTableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+          <StyledTableCell component="th" scope="row">
+            {row.username}
+          </StyledTableCell>
+          <StyledTableCell align="left">{row.email ? row.email : "--"}</StyledTableCell>
+          <StyledTableCell align="left">{row.role ? row.role : "--"}</StyledTableCell>
+          <StyledTableCell align="right">
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              style={{ color: 'white' }}
+            >
+              <CreateRoundedIcon/>
+            </IconButton>
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              style={{ color: 'white' }}
+            >
+              <DeleteRoundedIcon/>
+            </IconButton>
+          </StyledTableCell>
+        </StyledTableRow>
+      </React.Fragment>
+    );
+  }
+
+
   return (
     <div className={styles.container}>
       <Head>
@@ -251,7 +338,6 @@ const Usuarios: NextPage = (props) => {
       <main className={styles.main}>
           <SideBar/>
           <div className={styles.usuarios__container}>
-            <h1>Usuarios</h1>
 
             {/* lista de usuarios */}
             {/* header */}
@@ -303,37 +389,43 @@ const Usuarios: NextPage = (props) => {
             {/* lista */}
             {users.length !== 0 ? (
               <>
-                {/* table header */}
-                <div className={styles.table__header}>
-                  <div className={styles.table__header__username}>Username</div>
-                  <div className={styles.table__header__email}>Email</div>
-                  <div className={styles.table__header__role}>Role</div>
-                </div>
-
                 <div className={styles.user__container}>
-                    {users.map((user, index) => (
-                      <div className={styles.user__item} key={index}>
-                        <div className={styles.user__info}>
-                          <div className={styles.user__info__username}>
-                            <p>{user.username}</p>
-                          </div>
-                          <div className={styles.user__info__email}>
-                            <p>{user.email}</p>
-                          </div>
-                          <div className={styles.user__info__role}>
-                            <p>{user.role}</p>
-                          </div>
-                        </div>
-                        <div className={styles.user__actions}>
-                          <IconButton>
-                            <CreateRoundedIcon className={styles.icon}/>
-                          </IconButton>
-                          <IconButton>
-                            <DeleteRoundedIcon className={styles.icon}/>
-                          </IconButton>
-                        </div>
-                      </div>
-                    ))}
+                    <TableContainer sx={{ maxHeight: 'calc(100vh - 350px)', minHeight: 'cacl(100vh - 350px)' }}>
+                      <Table aria-label="collapsible table" >
+                        <TableHead>
+                          <TableRow>
+                            <StyledTableCell>Username</StyledTableCell>
+                            <StyledTableCell align="left">Email</StyledTableCell>
+                            <StyledTableCell align="left">Role</StyledTableCell>
+                            <StyledTableCell align="right"/>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                            <Row key={row.username} row={row} />
+                          ))}
+                          {emptyRows > 0 && (
+                            <TableRow
+                              style={{
+                                height: (53) * emptyRows,
+                              }}
+                            >
+                              <StyledTableCell colSpan={6} />
+                            </TableRow>
+                          )}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
+                    <TablePagination
+                      rowsPerPageOptions={[15, 25, 50]}
+                      component="div"
+                      style={{color: 'white !important'}}
+                      count={users.length}
+                      rowsPerPage={rowsPerPage}
+                      page={page}
+                      onPageChange={handleChangePage}
+                      onRowsPerPageChange={handleChangeRowsPerPage}
+                    />
                 </div>
               </>
               

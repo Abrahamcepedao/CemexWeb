@@ -21,7 +21,6 @@ import styles from '../../styles/admin/Defects.module.css'
 
 /* Material - UI */
 import { IconButton } from '@mui/material'
-import { alpha } from '@mui/material/styles';
 import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
@@ -32,8 +31,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Typography from '@mui/material/Typography';
-import Paper from '@mui/material/Paper';
 
 /* Material UI - icons */
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
@@ -88,51 +85,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 
 
-/* Row of defects table */
-function Row(props: { row: Defect }) {
-  const { row } = props;
-  const [open, setOpen] = React.useState(false);
 
-  return (
-    <React.Fragment>
-      <StyledTableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
-        <StyledTableCell component="th" scope="row">
-          {row["Issue key"]}
-        </StyledTableCell>
-        <StyledTableCell align="right">{row["Created"] ? row["Created"] : "--"}</StyledTableCell>
-        <StyledTableCell align="right">{row["Assignee"] ? row["Assignee"] : "--"}</StyledTableCell>
-        <StyledTableCell align="right">{row["Status"] ? row["Status"] : "--"}</StyledTableCell>
-        <StyledTableCell align="right">{row["Priority"] ? row["Priority"] : "--"}</StyledTableCell>
-        <StyledTableCell align="right">
-          <IconButton
-            aria-label="expand row"
-            size="small"
-            onClick={() => setOpen(!open)}
-            style={{ color: 'white' }}
-          >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </StyledTableCell>
-      </StyledTableRow>
-      <StyledTableRow>
-        <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box sx={{ margin: 0 }}>
-              <div>
-                <p className={styles.info__item}><b>Severity: </b>{row["Custom field (Severity)"]}</p>
-                <p className={styles.info__item}><b>Issue Type: </b>{row["Issue Type"]}</p>
-                <p className={styles.info__item}><b>Digital Service: </b>{row["Custom field (Digital Service)"]}</p>
-                <p className={styles.info__item}><b>Summary: </b>{row["Summary"]}</p>
-                <p className={styles.info__item}><b>Description: </b>{row["Description"]}</p>
-              </div>
-              
-            </Box>
-          </Collapse>
-        </StyledTableCell>
-      </StyledTableRow>
-    </React.Fragment>
-  );
-}
 
 
 const Defects: NextPage = (props) => {
@@ -146,12 +99,11 @@ const Defects: NextPage = (props) => {
   const [date2, setDate2] = useState("");
   const [loading, setLoading] = useState(false);
 
-  /* useState - defects */
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
+  /* useState - table pagination */
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [rows, setRows] = React.useState([]);
+  const [rowsPerPage, setRowsPerPage] = React.useState(15);
+
+  /* useState - defects */
   const [defects, setDefects] = useState<Array<Defect>>([
     {
     "Issue key": "DCM021CX0118-22389",
@@ -454,6 +406,51 @@ const Defects: NextPage = (props) => {
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - defects.length) : 0;
 
+  /* Row of defects table */
+  function Row(props: { row: Defect }) {
+    const { row } = props;
+    const [open, setOpen] = React.useState(false);
+
+    return (
+      <React.Fragment>
+        <StyledTableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
+          <StyledTableCell component="th" scope="row">
+            {row["Issue key"]}
+          </StyledTableCell>
+          <StyledTableCell align="right">{row["Created"] ? row["Created"] : "--"}</StyledTableCell>
+          <StyledTableCell align="right">{row["Assignee"] ? row["Assignee"] : "--"}</StyledTableCell>
+          <StyledTableCell align="right">{row["Status"] ? row["Status"] : "--"}</StyledTableCell>
+          <StyledTableCell align="right">{row["Priority"] ? row["Priority"] : "--"}</StyledTableCell>
+          <StyledTableCell align="right">
+            <IconButton
+              aria-label="expand row"
+              size="small"
+              onClick={() => setOpen(!open)}
+              style={{ color: 'white' }}
+            >
+              {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </StyledTableCell>
+        </StyledTableRow>
+        <StyledTableRow>
+          <StyledTableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box sx={{ margin: 0 }}>
+                <div>
+                  <p className={styles.info__item}><b>Severity: </b>{row["Custom field (Severity)"]}</p>
+                  <p className={styles.info__item}><b>Issue Type: </b>{row["Issue Type"]}</p>
+                  <p className={styles.info__item}><b>Digital Service: </b>{row["Custom field (Digital Service)"]}</p>
+                  <p className={styles.info__item}><b>Summary: </b>{row["Summary"]}</p>
+                  <p className={styles.info__item}><b>Description: </b>{row["Description"]}</p>
+                </div>
+                
+              </Box>
+            </Collapse>
+          </StyledTableCell>
+        </StyledTableRow>
+      </React.Fragment>
+    );
+  }
 
   return (
     <div className={styles.container}>
@@ -501,9 +498,9 @@ const Defects: NextPage = (props) => {
                 <>
                     {/* list of defects */}
                     <div className={styles.defects__list__container}>
-                        <TableContainer sx={{ maxHeight: 'calc(100vh - 396px)', minHeight: 'cacl(100vh - 396px)', borderTopLeftRadius: '15px', borderTopRightRadius: '15px' }}>
+                        <TableContainer sx={{ maxHeight: 'calc(100vh - 396px)', minHeight: 'cacl(100vh - 396px)'}}>
                           <Table aria-label="collapsible table" >
-                            <TableHead style={{borderTopLeftRadius: '15px'}}>
+                            <TableHead>
                               <TableRow>
                                 <StyledTableCell>Issue key</StyledTableCell>
                                 <StyledTableCell align="right">Date</StyledTableCell>
@@ -520,7 +517,7 @@ const Defects: NextPage = (props) => {
                               {emptyRows > 0 && (
                                 <TableRow
                                   style={{
-                                    height: (dense ? 33 : 53) * emptyRows,
+                                    height: (53) * emptyRows,
                                   }}
                                 >
                                   <StyledTableCell colSpan={6} />
@@ -530,7 +527,7 @@ const Defects: NextPage = (props) => {
                           </Table>
                         </TableContainer>
                         <TablePagination
-                          rowsPerPageOptions={[5, 10, 25]}
+                          rowsPerPageOptions={[15, 25, 50]}
                           component="div"
                           style={{color: 'white !important'}}
                           count={defects.length}
