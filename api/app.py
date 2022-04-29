@@ -527,11 +527,12 @@ def createUser():
         request_json = request.get_json()
         user = request_json.get('user')
         pasword = request_json.get('password')
+        role = request_json.get('role')
 
         #check if user and password are not empty
         if user and pasword:
             #check if user exists
-            if create_user(user,pasword):
+            if create_user(user,pasword, role):
                 return jsonify({'message': 'User created successfully'})
             else:
                 return jsonify({'message': 'User already exists'})
