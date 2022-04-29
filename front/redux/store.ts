@@ -5,12 +5,14 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import userReducer from './states/users/reducer'
 import fileReducer from './states/file/reducer'
+import headerReducer from './states/header/reducer'
 
 export function makeStore() {
   return configureStore({
     reducer: { 
       userState: userReducer,
-      fileState: fileReducer
+      fileState: fileReducer,
+      headerState: headerReducer
     },
   })
 }

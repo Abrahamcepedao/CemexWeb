@@ -10,6 +10,7 @@ import React, { useEffect, useState } from 'react'
 /* Redux */
 import { setCurrentUser } from "../../redux/actions"
 import { selectUser } from "../../redux/states/users/reducer"
+import { selectTab } from "../../redux/states/header/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
@@ -22,7 +23,6 @@ import styles from '../../styles/components/admin/SideBar.module.css'
 
 /* Material - UI */
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import WatchLaterRoundedIcon from '@mui/icons-material/WatchLaterRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
@@ -36,6 +36,7 @@ const SideBar: NextPage = () => {
   /* Redux */
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
+  const tab = useAppSelector(selectTab) //function that allows to get the current user from the redux state
 
   useEffect(() => {
     console.log('user: ', user)
@@ -44,6 +45,7 @@ const SideBar: NextPage = () => {
     } else {
       console.log('not logged in');
     }
+    
   }, [isLoggedIn]);
 
   /* Functions */
@@ -70,15 +72,7 @@ const SideBar: NextPage = () => {
             <a href='/admin/usuarios' className={styles.item__link}>
                 {/* icono */}
                 <PersonRoundedIcon className={styles.item__icon}/>
-                <p>Users</p>
-            </a>
-        </div>
-
-        {/* historial */}
-        <div className={styles.menu__item}>
-            <a href='/admin/historial' className={styles.item__link}>
-                <WatchLaterRoundedIcon className={styles.item__icon}/>
-                <p>History</p>
+                <p style={{fontWeight: tab === "users" ? "bold": "normal", fontSize: tab === "users" ? "22px": "18px"}}>Users</p>
             </a>
         </div>
 
@@ -86,7 +80,7 @@ const SideBar: NextPage = () => {
         <div className={styles.menu__item}>
             <a href='/admin/defects' className={styles.item__link}>
                 <ListAltRoundedIcon className={styles.item__icon}/>
-                <p>Defects</p>
+                <p style={{fontWeight: tab === "defects" ? "bold": "normal", fontSize: tab === "defects" ? "22px": "18px"}}>Defects</p>
             </a>
         </div>
 
@@ -94,7 +88,7 @@ const SideBar: NextPage = () => {
         <div className={styles.menu__item}>
             <a href='/admin/dashboard' className={styles.item__link}>
                 <DashboardRoundedIcon className={styles.item__icon}/>
-                <p>Dashboard</p>
+                <p style={{fontWeight: tab === "dashboard" ? "bold": "normal", fontSize: tab === "dashboard" ? "22px": "18px"}}>Dashboard</p>
             </a>
         </div>
         </div>

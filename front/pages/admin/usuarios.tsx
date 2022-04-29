@@ -8,7 +8,7 @@ import type { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setCurrentUser } from "../../redux/actions"
+import { setCurrentUser, setCurrentTab } from "../../redux/actions"
 import { selectUser } from "../../redux/states/users/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
@@ -249,6 +249,9 @@ const Usuarios: NextPage = (props) => {
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
   useEffect(() => {
+    /* Set current tab */
+    dispatch(setCurrentTab('users'));
+
     console.log('user: ', user)
     if (isLoggedIn) {
       console.log('logged in');
