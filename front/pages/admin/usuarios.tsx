@@ -107,6 +107,7 @@ const Usuarios: NextPage = (props) => {
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
 
   /* menu filter */
+  const [sortBy, setSortBy] = useState('username');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   
@@ -245,7 +246,26 @@ const Usuarios: NextPage = (props) => {
   const handleClick = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleClose = () => {
+  const handleClose = (value: string) => {
+    /* Filter users by value */
+    let tempUsers = [...users];
+    if (value === 'username') {
+      tempUsers = tempUsers.sort((a, b) =>
+        a.username.localeCompare(b.username),
+      );
+    } else if (value === 'email') {
+      tempUsers = tempUsers.sort((a, b) =>
+        a.email.localeCompare(b.email),
+      );
+    } else if (value === 'role') {
+      tempUsers = tempUsers.sort((a, b) =>
+        a.role.localeCompare(b.role),
+      );
+    }
+
+    /* Set new state */
+    setUsers(tempUsers);
+    setSortBy(value);
     setAnchorEl(null);
   };
 
@@ -351,15 +371,15 @@ const Usuarios: NextPage = (props) => {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose} disableRipple>
+                <MenuItem onClick={() => {handleClose('username')}} disableRipple>
                   <PersonRoundedIcon />
                   Username
                 </MenuItem>
-                <MenuItem onClick={handleClose} disableRipple>
+                <MenuItem onClick={() => {handleClose('email')}} disableRipple>
                   <EmailRoundedIcon />
                   Email
                 </MenuItem>
-                <MenuItem onClick={handleClose} disableRipple>
+                <MenuItem onClick={() => {handleClose('role')}} disableRipple>
                   <AdminPanelSettingsRoundedIcon />
                   Role
                 </MenuItem>
