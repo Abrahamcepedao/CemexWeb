@@ -15,19 +15,19 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 /* Components */
 import Head from 'next/head'
 import SideBar from '../../components/admin/SideBar'
-import { WhiteInput, TransparentInput } from '../../components/admin/Selects'
+import { TransparentInput } from '../../components/admin/Selects'
+import { StyledTableRow } from '../../components/admin/StyledTableRow'
+import { StyledTableCell } from '../../components/admin/StyledTableCell'
 
 /* CSS */
 import styles from '../../styles/admin/Defects.module.css'
 
 /* Material - UI */
 import { IconButton } from '@mui/material'
-import { styled } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Collapse from '@mui/material/Collapse';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
@@ -58,35 +58,6 @@ interface Defect {
   "Summary": string,
   "Description": string,
 }
-
-
-/* Styles table components */
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: 'rgba(0,0,0,0)',
-    color: theme.palette.common.white,
-    border: 0,
-    fontWeight: 'bold',
-    opacity: '0.6'
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    color: theme.palette.common.white,
-    border: 0,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: 'rgba(0,0,0,0)',
-    border: 0,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
-  },
-}));
-
 
 
 const Defects: NextPage = (props) => {

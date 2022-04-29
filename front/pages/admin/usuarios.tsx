@@ -16,6 +16,8 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import Head from 'next/head'
 import SideBar from '../../components/admin/SideBar'
 import { WhiteInput, TransparentInput } from '../../components/admin/Selects'
+import { StyledTableRow } from '../../components/admin/StyledTableRow'
+import { StyledTableCell } from '../../components/admin/StyledTableCell'
 
 /* CSS */
 import styles from '../../styles/admin/Usuarios.module.css'
@@ -28,7 +30,6 @@ import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
-import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
@@ -90,33 +91,6 @@ const StyledMenu = styled((props: MenuProps) => (
         ),
       },
     },
-  },
-}));
-
-/* Styles table components */
-const StyledTableCell = styled(TableCell)(({ theme }) => ({
-  [`&.${tableCellClasses.head}`]: {
-    backgroundColor: 'rgba(0,0,0,0)',
-    color: theme.palette.common.white,
-    border: 0,
-    fontWeight: 'bold',
-    opacity: '0.6'
-  },
-  [`&.${tableCellClasses.body}`]: {
-    fontSize: 14,
-    color: theme.palette.common.white,
-    border: 0,
-  },
-}));
-
-const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(odd)': {
-    backgroundColor: 'rgba(0,0,0,0)',
-    border: 0,
-  },
-  // hide last border
-  '&:last-child td, &:last-child th': {
-    border: 0,
   },
 }));
 
