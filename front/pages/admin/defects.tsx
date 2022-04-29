@@ -15,6 +15,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 /* Components */
 import Head from 'next/head'
 import SideBar from '../../components/admin/SideBar'
+import { WhiteInput, TransparentInput } from '../../components/admin/Selects'
 
 /* CSS */
 import styles from '../../styles/admin/Defects.module.css'
@@ -31,6 +32,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
 
 /* Material UI - icons */
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
@@ -83,8 +86,6 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     border: 0,
   },
 }));
-
-
 
 
 
@@ -476,14 +477,19 @@ const Defects: NextPage = (props) => {
                 {(searchBy === "date" || searchBy === "date_user") && (
                     <input type="date" className={styles.input} value={date2} onChange={(e) => setDate2(e.target.value)}/>
                 )}
-                
-                
-                <select className={styles.select__input} value={searchBy} onChange={(e) => setSearchBy(e.target.value)}>
-                    <option value="all">All defects</option>
-                    <option value="user">By user</option>
-                    <option value="date">By date range</option>
-                    <option value="date_user">By date range and user</option>
-                </select>
+
+                <Select
+                  labelId="demo-customized-select-label"
+                  id="demo-customized-select"
+                  value={searchBy}
+                  onChange={(e) => setSearchBy(e.target.value)}
+                  input={<TransparentInput />}
+                >
+                  <MenuItem value={"all"}>All defects</MenuItem>
+                  <MenuItem value={"user"}>By user</MenuItem>
+                  <MenuItem value={"date"}>By date range</MenuItem>
+                  <MenuItem value={"date_user"}>By date range and user</MenuItem>
+                </Select>
 
                 <IconButton>
                     <ArrowCircleRightRoundedIcon className={styles.icon} />
