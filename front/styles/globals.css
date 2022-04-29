@@ -31,3 +31,7 @@ input:-webkit-autofill:active  {
   color: gray;
   -webkit-text-fill-color: gray !important;
 }
+
+.MuiTablePagination-selectLabel, .MuiTablePagination-selectIcon, .MuiTablePagination-root		 {
+  color: #fff !important;
+}

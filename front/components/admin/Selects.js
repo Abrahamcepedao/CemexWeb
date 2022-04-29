@@ -52,7 +52,7 @@ const WhiteInput = styled(InputBase)(({ theme }) => ({
     position: 'relative',
     background: 'white',
     border: '1px solid rgba(14, 51, 127, 0.21)',
-    fontSize: 16,
+    fontSize: 12,
     color: 'gray',
     padding: '8px 10px',
     //marginBottom: '20px',

@@ -77,3 +77,7 @@
 .defects__list__container {
     width: 100%;
 }
+
+.MuiTablePagination-selectLabel {
+    color: white !important;
+}

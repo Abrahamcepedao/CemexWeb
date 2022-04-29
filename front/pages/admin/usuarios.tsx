@@ -19,6 +19,8 @@ import SideBar from '../../components/admin/SideBar'
 import { WhiteInput, TransparentInput } from '../../components/admin/Selects'
 import { StyledTableRow } from '../../components/admin/StyledTableRow'
 import { StyledTableCell } from '../../components/admin/StyledTableCell'
+import ErrorMessage from '../../components/admin/ErrorMessage'
+import SuccessMessage from '../../components/admin/SuccessMessage'
 
 /* CSS */
 import styles from '../../styles/admin/Usuarios.module.css'
@@ -49,7 +51,6 @@ import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSetting
 /* Interfaces */
 interface User {
   username: string,
-  email: string,
   role: string,
 }
 
@@ -100,8 +101,10 @@ const Usuarios: NextPage = (props) => {
   /* useState - new user */
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [role, setRole] = useState('user');
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
 
   /* modal */
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
@@ -115,100 +118,45 @@ const Usuarios: NextPage = (props) => {
   /* useState - list of users */
   const [users, setUsers] = useState<Array<User>>([
     {
-      username: 'Andres Limon',
-      email: 'LOL1234@gmail.com',
+      username: 'LOL1234@gmail.com',
       role: 'God'
     },
     {
-      username: 'Abraham cepedao',
-      email: 'abrahamgolf@gmail.com',
+      username: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abrahdsam cepedao',
-      email: 'abrahamgolf@gmail.com',
+      username: 'LOL1234@gmail.com',
+      role: 'God'
+    },
+    {
+      username: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abrahavfrm cepedao',
-      email: 'abrahamgolf@gmail.com',
+      username: 'LOL1234@gmail.com',
+      role: 'God'
+    },
+    {
+      username: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abrahrgeram cepedao',
-      email: 'abrahamgolf@gmail.com',
+      username: 'LOL1234@gmail.com',
+      role: 'God'
+    },
+    {
+      username: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
     {
-      username: 'Abragfham cepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
+      username: 'LOL1234@gmail.com',
+      role: 'God'
     },
     {
-      username: 'Abraham fdsdcepedao',
-      email: 'abrahamgolf@gmail.com',
+      username: 'abrahamgolf@gmail.com',
       role: 'admin'
     },
-    {
-      username: 'Abraham cepdfedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abrdfaham cepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abraham cepefedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abrwfeaham cepedao',
-      email: 'abrahamgoweflf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abrahafewm cefepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abrfwaham cepedao',
-      email: 'abrahafwemgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abraefwham cepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abrahaewm cepffeedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abrafeeham cepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abrahamef ceefpedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abraefeham cfepedao',
-      email: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'Abferaham cepedfao',
-      email: 'abraheeamgolf@gmail.com',
-      role: 'admin'
-    }
 ]);
   const [searchText, setSearchText] = useState('');
   const [searchBy, setSearchBy] = useState('username');
@@ -229,7 +177,7 @@ const Usuarios: NextPage = (props) => {
     dispatch(setCurrentTab('users'));
 
     /* Redirect user if needed */
-    console.log(user);
+    /* console.log(user);
     if (!user) {
       Router.push('/');
     } else {
@@ -237,7 +185,7 @@ const Usuarios: NextPage = (props) => {
       if(user.role !== 'admin') {
         Router.push('/admin/dashboard');
       }
-    }
+    } */
   }, [isLoggedIn]);
 
   /* <----Functions----> */
@@ -250,14 +198,12 @@ const Usuarios: NextPage = (props) => {
     /* Filter users by value */
     let tempUsers = [...users];
     if (value === 'username') {
+      //filter by username
       tempUsers = tempUsers.sort((a, b) =>
         a.username.localeCompare(b.username),
       );
-    } else if (value === 'email') {
-      tempUsers = tempUsers.sort((a, b) =>
-        a.email.localeCompare(b.email),
-      );
     } else if (value === 'role') {
+      //filter by role
       tempUsers = tempUsers.sort((a, b) =>
         a.role.localeCompare(b.role),
       );
@@ -271,12 +217,51 @@ const Usuarios: NextPage = (props) => {
 
   /* Modal functions */
   const handleCreateUserModalChange = () => {
+    if(openCreateUserModal) setError(''); //clear error message on close
+    
     setOpenCreateUserModal(!openCreateUserModal);
   };
 
   /* Create user functions */
-  const createUser = () => {
-    console.log('create user');
+  const validateCreateUser = () => {
+    if (username.length === 0) {
+      setError('Enter a username');
+      return false;
+    }
+    if (password.length === 0) {
+      setError('Enter a password');
+      return false;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return false;
+    }
+    return true;
+  };
+
+  const createUser = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('creating user');
+    if (validateCreateUser()) {
+      //add user to database
+
+      //set state of users
+      let tempUsers = [...users];
+      tempUsers.push({
+        username: username,
+        role: role,
+      });
+      setUsers(tempUsers); 
+
+      //reset new user state
+      setError('');
+      setUsername('');
+      setPassword('');
+      setConfirmPassword('');
+
+      //set success message
+      setSuccess('User created successfully');
+    }
   };
 
   /* table functions */
@@ -302,7 +287,6 @@ const Usuarios: NextPage = (props) => {
           <StyledTableCell component="th" scope="row">
             {row.username}
           </StyledTableCell>
-          <StyledTableCell align="left">{row.email ? row.email : "--"}</StyledTableCell>
           <StyledTableCell align="left">{row.role ? row.role : "--"}</StyledTableCell>
           <StyledTableCell align="right">
             <IconButton
@@ -375,10 +359,6 @@ const Usuarios: NextPage = (props) => {
                   <PersonRoundedIcon />
                   Username
                 </MenuItem>
-                <MenuItem onClick={() => {handleClose('email')}} disableRipple>
-                  <EmailRoundedIcon />
-                  Email
-                </MenuItem>
                 <MenuItem onClick={() => {handleClose('role')}} disableRipple>
                   <AdminPanelSettingsRoundedIcon />
                   Role
@@ -400,7 +380,6 @@ const Usuarios: NextPage = (props) => {
                         <TableHead>
                           <TableRow>
                             <StyledTableCell>Username</StyledTableCell>
-                            <StyledTableCell align="left">Email</StyledTableCell>
                             <StyledTableCell align="left">Role</StyledTableCell>
                             <StyledTableCell align="right"/>
                           </TableRow>
@@ -455,26 +434,30 @@ const Usuarios: NextPage = (props) => {
           >
             <>
               <input type="hidden" value="something"/>
-              <form className={styles.form} onSubmit={createUser} autoComplete="off">
+              <form className={styles.form} onSubmit={(e) => {createUser(e)}} autoComplete="off">
                 <div className={styles.form__container}>
+                  {/* header */}
                   <div className={styles.form__head}>
                     <h4>Create User</h4>
                     <PersonRoundedIcon/>
                   </div>
+
+                  {/* username */}
                   <div className={styles.form__container__input}>
                     <input type="text" id="username" autoComplete='off' placeholder='username' className={styles.form__input} value={username} onChange={(e) => setUsername(e.target.value)} />
                   </div>
 
-                
-                  <div className={styles.form__container__input}>
-                    <input type="email" id="email" autoComplete='email' placeholder='email' className={styles.form__input} value={email} onChange={(e) => setEmail(e.target.value)} />
-                  </div>
-
-                
+                  {/* password */}
                   <div className={styles.form__container__input}>
                     <input type="password" id="password" autoComplete='new-password' placeholder='password' className={styles.form__input} value={password} onChange={(e) => setPassword(e.target.value)} />
                   </div>
 
+                  {/* confirm password */}
+                  <div className={styles.form__container__input}>
+                    <input type="password" id="password" autoComplete='new-password' placeholder='confirm password' className={styles.form__input} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                  </div>
+
+                  {/* role */}
                   <Select
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"
@@ -487,9 +470,20 @@ const Usuarios: NextPage = (props) => {
                     <MenuItem value={"user"}>User</MenuItem>
                   </Select>
                   
+                  {/* submit */}
                   <div>
-                    <button type="submit" className={styles.form__btn} onSubmit={createUser}>Agregar</button>
+                    <button type="submit" className={styles.form__btn}>Agregar</button>
                   </div>
+
+                  {/* Error message */}
+                  {error !== "" && (
+                    <ErrorMessage message={error}/>
+                  )}
+
+                  {/* Success message */}
+                  {success !== "" && (
+                    <SuccessMessage message={success}/>
+                  )}
                 </div>
               </form>
             </>
