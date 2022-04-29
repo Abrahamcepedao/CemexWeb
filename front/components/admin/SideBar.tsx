@@ -3,12 +3,14 @@
 */
 
 import type { NextPage } from 'next'
+import Link from 'next/link'
+import Router from 'next/router'
 
 /* React */
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setCurrentUser } from "../../redux/actions"
+import { logoutUser } from "../../redux/actions"
 import { selectUser } from "../../redux/states/users/reducer"
 import { selectTab } from "../../redux/states/header/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
@@ -29,8 +31,6 @@ import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 
 const SideBar: NextPage = () => {
   /* useState */
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   /* Redux */
@@ -49,10 +49,15 @@ const SideBar: NextPage = () => {
   }, [isLoggedIn]);
 
   /* Functions */
-
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    dispatch(logoutUser());
+    Router.push('/');
+  }
 
   return (
     <div className={styles.container}>
+      
       <Head>
         <title>Cemex Fix - Dashboard</title>
         <meta name="description" content="Cemex Fix web application - developed by DFuture" />
@@ -67,34 +72,48 @@ const SideBar: NextPage = () => {
 
         {/* links */}
         <div className={styles.links__container}>
-        {/* usuarios */}
-        <div className={styles.menu__item}>
-            <a href='/admin/usuarios' className={styles.item__link}>
-                {/* icono */}
-                <PersonRoundedIcon className={styles.item__icon}/>
-                <p style={{fontWeight: tab === "users" ? "bold": "normal", fontSize: tab === "users" ? "22px": "18px"}}>Users</p>
-            </a>
-        </div>
+          {/* usuarios */}
+          {user !== null && user.role === "admin" && (
+              <div className={styles.menu__item}>
+                <Link href="/admin/usuarios">
+                  <a className={styles.item__link}>
+                      {/* icono */}
+                      <PersonRoundedIcon className={styles.item__icon}/>
+                      <p style={{fontWeight: tab === "users" ? "bold": "normal", fontSize: tab === "users" ? "22px": "18px"}}>Users</p>
+                  </a>
+                </Link>
+              </div>
+          )}
+          
 
-        {/* Defectos */}
-        <div className={styles.menu__item}>
-            <a href='/admin/defects' className={styles.item__link}>
-                <ListAltRoundedIcon className={styles.item__icon}/>
-                <p style={{fontWeight: tab === "defects" ? "bold": "normal", fontSize: tab === "defects" ? "22px": "18px"}}>Defects</p>
-            </a>
-        </div>
+          {/* Defectos */}
+          <div className={styles.menu__item}>
+            <Link href="/admin/defects">
+              <a className={styles.item__link}>
+                  {/* icono */}
+                  <ListAltRoundedIcon className={styles.item__icon}/>
+                  <p style={{fontWeight: tab === "defects" ? "bold": "normal", fontSize: tab === "defects" ? "22px": "18px"}}>Defects</p>
+              </a>
+            </Link>
+          </div>
 
-        {/* Dashboard */}
-        <div className={styles.menu__item}>
-            <a href='/admin/dashboard' className={styles.item__link}>
-                <DashboardRoundedIcon className={styles.item__icon}/>
-                <p style={{fontWeight: tab === "dashboard" ? "bold": "normal", fontSize: tab === "dashboard" ? "22px": "18px"}}>Dashboard</p>
-            </a>
-        </div>
+          {/* Dashboard */}
+          {user !== null && user.role === "user" && (
+              <div className={styles.menu__item}>
+            <Link href="/admin/dashboard">
+              <a className={styles.item__link}>
+                  {/* icono */}
+                  <DashboardRoundedIcon className={styles.item__icon}/>
+                  <p style={{fontWeight: tab === "dashboard" ? "bold": "normal", fontSize: tab === "dashboard" ? "22px": "18px"}}>Dashboard</p>
+              </a>
+            </Link>
+          </div>
+          )}
+        
         </div>
 
         {/* other actions (logout) */}
-        <div className={styles.logout__container}>
+        <div className={styles.logout__container} onClick={handleLogout}>
           <LogoutRoundedIcon className={styles.item__icon}/>
           <p>Logout</p>
         </div>

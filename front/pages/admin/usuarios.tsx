@@ -3,6 +3,7 @@
 */
 
 import type { NextPage } from 'next'
+import Router from 'next/router'
 
 /* React */
 import React, { useEffect, useState } from 'react'
@@ -226,11 +227,15 @@ const Usuarios: NextPage = (props) => {
     /* Set current tab */
     dispatch(setCurrentTab('users'));
 
-    console.log('user: ', user)
-    if (isLoggedIn) {
-      console.log('logged in');
+    /* Redirect user if needed */
+    console.log(user);
+    if (!user) {
+      Router.push('/');
     } else {
-      console.log('not logged in');
+      setIsLoggedIn(true);
+      if(user.role !== 'admin') {
+        Router.push('/admin/dashboard');
+      }
     }
   }, [isLoggedIn]);
 

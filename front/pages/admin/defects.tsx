@@ -3,6 +3,7 @@
 */
 
 import type { NextPage } from 'next'
+import Router from 'next/router'
 
 /* React */
 import React, { useEffect, useState } from 'react'
@@ -360,11 +361,12 @@ const Defects: NextPage = (props) => {
     /* set current tab */
     dispatch(setCurrentTab("defects"));
 
-    console.log('user: ', user)
-    if (isLoggedIn) {
-      console.log('logged in');
+    /* Redirect user if needed */
+    console.log(user);
+    if (!user) {
+      Router.push('/');
     } else {
-      console.log('not logged in');
+      setIsLoggedIn(true);
     }
   }, [isLoggedIn]);
 

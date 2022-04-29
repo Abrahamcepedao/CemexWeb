@@ -3,5 +3,7 @@
 */
 
 export interface User {
-  username: string
+  username: string,
+  email: string,
+  role: string,
 }

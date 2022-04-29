@@ -3,7 +3,7 @@
 */
 
 import type { NextPage } from 'next'
-
+import Router from 'next/router'
 /* React */
 import React, { useEffect, useState } from 'react'
 
@@ -45,7 +45,8 @@ const Home: NextPage = (props) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggedIn(true);
-    dispatch(setCurrentUser({ username }));
+    dispatch(setCurrentUser({ username, 'email': username, role: 'admin' }));
+    Router.push('/admin/dashboard');
   };
 
 
