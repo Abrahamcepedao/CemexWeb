@@ -504,7 +504,7 @@ const Defects: NextPage = (props) => {
                 <>
                     {/* list of defects */}
                     <div className={styles.defects__list__container}>
-                        <TableContainer sx={{ maxHeight: 'calc(100vh - 396px)', minHeight: 'cacl(100vh - 396px)'}}>
+                        <TableContainer sx={{ maxHeight: 'calc(100vh - 350px)', minHeight: 'cacl(100vh - 350px)'}}>
                           <Table aria-label="collapsible table" >
                             <TableHead>
                               <TableRow>
