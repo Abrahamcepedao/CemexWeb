@@ -63,6 +63,7 @@
     color: white;
     outline: none;
     margin-right: 10px;
+    //-webkit-appearance: none;
 }
 
 .icon {
@@ -146,6 +147,14 @@
 .form__container {
     width: 100%;
 }
+.form__head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    color: gray;
+}
 
 .form__input {
     width: 100%;
@@ -172,4 +181,61 @@
 
 .form__btn:hover {
     transform: scale(1.02);
+}
+
+
+
+/* select */
+.select {
+    padding: 10px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.21);
+    background: rgba(255, 255, 255, 0.19);
+    color: white;
+    outline: none;
+    margin-right: 10px;
+    //-webkit-appearance: none;
+}
+.searchBy {
+    padding: 8px;
+    border-radius: 25px;
+    border: 1px solid rgba(255, 255, 255, 0.21);
+    background: rgba(255, 255, 255, 0.19);
+    color: white;
+    outline: none;
+    margin-right: 10px;
+}
+.dropdown{
+    background: rgba(255, 255, 255, 0.0);
+    color: white;
+    border: none;
+    outline: none;
+    margin-right: 15px;
+    -webkit-appearance: none;
+    position: relative;
+    top: -2px;
+}
+.dropdown:focus{
+    outline: none;
+}
+.plainSelector{
+    margin: 0 3px;
+}
+.plainSelector::after{
+    content: "";
+    position: absolute;
+    z-index: 2;
+    bottom: 30%;
+    margin-top: -3px;
+    height: 0;
+    width: 0;
+    right: 0;
+    border-top: 6px solid white;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    pointer-events: none;
+}
+
+.outSelector{
+    position: relative;
 }

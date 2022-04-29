@@ -14,9 +14,8 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
 import Head from 'next/head'
-import Image from 'next/image'
-import Logo from '../public/logo.png'
 import SideBar from '../../components/admin/SideBar'
+import { WhiteInput, TransparentInput } from '../../components/admin/Selects'
 
 /* CSS */
 import styles from '../../styles/admin/Usuarios.module.css'
@@ -27,8 +26,6 @@ import { styled, alpha } from '@mui/material/styles';
 import Menu, { MenuProps } from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import Modal from '@mui/material/Modal';
-import Box from '@mui/material/Box';
-import Collapse from '@mui/material/Collapse';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell, { tableCellClasses } from '@mui/material/TableCell';
@@ -36,6 +33,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Select from '@mui/material/Select';
 
 /* Material - UI - icons */
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
@@ -45,8 +43,6 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 /* Interfaces */
 interface User {
@@ -124,12 +120,13 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
+
 const Usuarios: NextPage = (props) => {
   /* useState - new user */
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [email, setEmail] = useState('');
-  const [role, setRole] = useState('');
+  const [role, setRole] = useState('user');
 
   /* modal */
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
@@ -346,10 +343,16 @@ const Usuarios: NextPage = (props) => {
               <input type="text" id="searchText" placeholder={`Type ${searchBy === 'username' ? 'username' : 'email'} here`} className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
               
               {/* search by */}
-              <select id="searchBy" value={searchBy} className={styles.select} onChange={(e) => setSearchBy(e.target.value)}>
-                <option value="username">Username</option>
-                <option value="email">Email</option>
-              </select>
+              <Select
+                labelId="demo-customized-select-label"
+                id="demo-customized-select"
+                value={searchBy}
+                onChange={(e) => setSearchBy(e.target.value)}
+                input={<TransparentInput />}
+              >
+                <MenuItem value={"username"}>Username</MenuItem>
+                <MenuItem value={"email"}>Email</MenuItem>
+              </Select>
 
               {/* filter button */}
               <IconButton onClick={handleClick}>
@@ -448,38 +451,46 @@ const Usuarios: NextPage = (props) => {
             open={openCreateUserModal}
             onClose={handleCreateUserModalChange}
           >
-            <form className={styles.form} onSubmit={createUser}>
-              <div className={styles.form__container}>
-                
-                <div className={styles.form__container__input}>
-                  <input type="text" id="username" placeholder='username' className={styles.form__input} value={username} onChange={(e) => setUsername(e.target.value)} />
-                </div>
-
-               
-                <div className={styles.form__container__input}>
-                  <input type="email" id="email" placeholder='email' className={styles.form__input} value={email} onChange={(e) => setEmail(e.target.value)} />
-                </div>
-
-               
-                <div className={styles.form__container__input}>
-                  <input type="password" id="password" placeholder='password' className={styles.form__input} value={password} onChange={(e) => setPassword(e.target.value)} />
-                </div>
-
-              
-                <div className={styles.form__container__input}>
-                  <select id="role" value={role} className={styles.form__input} onChange={(e) => setRole(e.target.value)}>
-                    <option value="" defaultChecked>Select role</option>
-                    <option value="admin">Admin</option>
-                    <option value="user">User</option>
-                  </select>
-                </div>
+            <>
+              <input type="hidden" value="something"/>
+              <form className={styles.form} onSubmit={createUser} autoComplete="off">
+                <div className={styles.form__container}>
+                  <div className={styles.form__head}>
+                    <h4>Create User</h4>
+                    <PersonRoundedIcon/>
+                  </div>
+                  <div className={styles.form__container__input}>
+                    <input type="text" id="username" autoComplete='off' placeholder='username' className={styles.form__input} value={username} onChange={(e) => setUsername(e.target.value)} />
+                  </div>
 
                 
-                <div>
-                  <button type="submit" className={styles.form__btn} onSubmit={createUser}>Agregar</button>
+                  <div className={styles.form__container__input}>
+                    <input type="email" id="email" autoComplete='email' placeholder='email' className={styles.form__input} value={email} onChange={(e) => setEmail(e.target.value)} />
+                  </div>
+
+                
+                  <div className={styles.form__container__input}>
+                    <input type="password" id="password" autoComplete='new-password' placeholder='password' className={styles.form__input} value={password} onChange={(e) => setPassword(e.target.value)} />
+                  </div>
+
+                  <Select
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    value={role}
+                    onChange={(e) => setRole(e.target.value)}
+                    input={<WhiteInput />}
+                    style={{ width: '100%', marginBottom: '20px' }}
+                  >
+                    <MenuItem value={"admin"} defaultChecked>Admin</MenuItem>
+                    <MenuItem value={"user"}>User</MenuItem>
+                  </Select>
+                  
+                  <div>
+                    <button type="submit" className={styles.form__btn} onSubmit={createUser}>Agregar</button>
+                  </div>
                 </div>
-              </div>
-            </form>
+              </form>
+            </>
           </Modal>
           
       </main>
