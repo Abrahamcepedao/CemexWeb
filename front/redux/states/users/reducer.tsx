@@ -24,6 +24,11 @@ const reducer = (state = initialState, action:any) => {
         ...state,
         user: action.payload
       };
+    case t.LOGOUT_USER:
+      return {
+        ...state,
+        user: null
+      };
       
     default:
       return {...state};

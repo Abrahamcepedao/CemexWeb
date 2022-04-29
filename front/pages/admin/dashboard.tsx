@@ -3,6 +3,7 @@
 */
 
 import type { NextPage } from 'next'
+import Router from 'next/router'
 
 /* React */
 import React, { useEffect, useState, useRef } from 'react'
@@ -63,12 +64,17 @@ const Dashboard: NextPage = (props) => {
     dispatch(setCurrentTab('dashboard'));
 
 
-    console.log('user: ', user)
-    if (isLoggedIn) {
-      console.log('logged in');
+    /* Redirect user if needed */
+    console.log(user);
+    if (!user) {
+      Router.push('/');
     } else {
-      console.log('not logged in');
+      setIsLoggedIn(true);
+      if(user.role !== 'user') {
+        Router.push('/admin/usuarios');
+      }
     }
+    
   }, [isLoggedIn]);
 
   /* Functions - handle drag and drop */
