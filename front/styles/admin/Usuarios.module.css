@@ -99,31 +99,6 @@
 .user__container {
     width: 100%;
 } 
-.user__item {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 20px;
-}
-.user__info {
-    display: flex;
-    flex-direction: row;
-    justify-content: left;
-    align-items: center;
-    flex: 1;
-    
-}
-
-.user__info__username, .user__info__email, .user__info__role {
-    margin-right: 10px;
-}
-.user__info__username, .user__info__email {
-    width: 200px;
-}
-.user__info__role {
-    width: 50px;
-}
 
 
 /* <----Modals----> */

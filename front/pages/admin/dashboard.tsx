@@ -8,7 +8,7 @@ import type { NextPage } from 'next'
 import React, { useEffect, useState, useRef } from 'react'
 
 /* Redux */
-import { setCurrentUser, setDropDepth, setInDropZone } from "../../redux/actions"
+import { setCurrentUser, setDropDepth, setInDropZone, setCurrentTab } from "../../redux/actions"
 import { selectDropDepth } from "../../redux/states/file/reducer"
 import { selectUser } from "../../redux/states/users/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
@@ -59,6 +59,10 @@ const Dashboard: NextPage = (props) => {
   
 
   useEffect(() => {
+    /* Set current tab */
+    dispatch(setCurrentTab('dashboard'));
+
+
     console.log('user: ', user)
     if (isLoggedIn) {
       console.log('logged in');

@@ -8,7 +8,7 @@ import type { NextPage } from 'next'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setCurrentUser } from "../../redux/actions"
+import { setCurrentUser, setCurrentTab } from "../../redux/actions"
 import { selectUser } from "../../redux/states/users/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
@@ -386,6 +386,9 @@ const Defects: NextPage = (props) => {
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
   useEffect(() => {
+    /* set current tab */
+    dispatch(setCurrentTab("defects"));
+
     console.log('user: ', user)
     if (isLoggedIn) {
       console.log('logged in');
@@ -504,7 +507,7 @@ const Defects: NextPage = (props) => {
                 <>
                     {/* list of defects */}
                     <div className={styles.defects__list__container}>
-                        <TableContainer sx={{ maxHeight: 'calc(100vh - 396px)', minHeight: 'cacl(100vh - 396px)'}}>
+                        <TableContainer sx={{ maxHeight: 'calc(100vh - 350px)', minHeight: 'cacl(100vh - 350px)'}}>
                           <Table aria-label="collapsible table" >
                             <TableHead>
                               <TableRow>

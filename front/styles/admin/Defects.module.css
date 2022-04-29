@@ -23,6 +23,10 @@
     min-height: calc(100vh - 100px);
     color: white;
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 } 
 
 /* search bar */
@@ -32,12 +36,14 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+    width: 100%;
 }
 .search__title {
     font-size: 1.5rem;
     font-weight: bold;
     margin-right: 20px; 
     min-width: 180px;
+    line-height: 0px;
 }
 .input, .select__input {
     padding: 10px;
@@ -69,12 +75,5 @@
 
 /* table */
 .defects__list__container {
-    //background: rgba(255, 255, 255, 0.19);
-    border-radius: 15px;
-    //box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-    //backdrop-filter: blur(11.7px);
-    //-webkit-backdrop-filter: blur(11.7px);
-    //border: 1px solid rgba(255, 255, 255, 0.21);
-    padding: 20px;
-    min-height: calc(100vh - 296px);
+    width: 100%;
 }
