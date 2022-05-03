@@ -45,7 +45,7 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 
 /* Interfaces */
@@ -116,6 +116,48 @@ const Usuarios: NextPage = (props) => {
   
 
   /* useState - list of users */
+  const [allUsers, setAllUsers] = useState<Array<User>>([
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      },
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      },
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      },
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      },
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      }
+  ]);
   const [users, setUsers] = useState<Array<User>>([
     {
       username: 'LOL1234@gmail.com',
@@ -159,7 +201,6 @@ const Usuarios: NextPage = (props) => {
     },
 ]);
   const [searchText, setSearchText] = useState('');
-  const [searchBy, setSearchBy] = useState('username');
 
   /* useState - table pagination */
   const [page, setPage] = React.useState(0);
@@ -177,7 +218,7 @@ const Usuarios: NextPage = (props) => {
     dispatch(setCurrentTab('users'));
 
     /* Redirect user if needed */
-    /* console.log(user);
+    console.log(user);
     if (!user) {
       Router.push('/');
     } else {
@@ -185,7 +226,7 @@ const Usuarios: NextPage = (props) => {
       if(user.role !== 'admin') {
         Router.push('/admin/dashboard');
       }
-    } */
+    }
   }, [isLoggedIn]);
 
   /* <----Functions----> */
@@ -196,21 +237,31 @@ const Usuarios: NextPage = (props) => {
   };
   const handleClose = (value: string) => {
     /* Filter users by value */
-    let tempUsers = [...users];
+    
     if (value === 'username') {
       //filter by username
+      let tempUsers = [...users];
       tempUsers = tempUsers.sort((a, b) =>
         a.username.localeCompare(b.username),
       );
+      /* Set new state */
+      setUsers(tempUsers);
     } else if (value === 'role') {
       //filter by role
+      let tempUsers = [...users];
       tempUsers = tempUsers.sort((a, b) =>
         a.role.localeCompare(b.role),
       );
+      /* Set new state */
+      setUsers(tempUsers);
+    } else if (value === 'clear') {
+      //clear filter
+      let tempUsers = [...allUsers];
+      /* Set new state */
+      setUsers(tempUsers);
     }
 
     /* Set new state */
-    setUsers(tempUsers);
     setSortBy(value);
     setAnchorEl(null);
   };
@@ -322,24 +373,11 @@ const Usuarios: NextPage = (props) => {
           <SideBar/>
           <div className={styles.usuarios__container}>
 
-            {/* lista de usuarios */}
             {/* header */}
             <div className={styles.list__header}>
               {/* search input */}
-              <input type="text" id="searchText" placeholder={`Type ${searchBy === 'username' ? 'username' : 'email'} here`} className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+              <input type="text" id="searchText" placeholder="Tyoe username here" className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
               
-              {/* search by */}
-              <Select
-                labelId="demo-customized-select-label"
-                id="demo-customized-select"
-                value={searchBy}
-                onChange={(e) => setSearchBy(e.target.value)}
-                input={<TransparentInput />}
-              >
-                <MenuItem value={"username"}>Username</MenuItem>
-                <MenuItem value={"email"}>Email</MenuItem>
-              </Select>
-
               {/* filter button */}
               <IconButton onClick={handleClick}>
                 <FilterAltRoundedIcon className={styles.icon}/>
@@ -355,6 +393,10 @@ const Usuarios: NextPage = (props) => {
                 open={open}
                 onClose={handleClose}
               >
+                <MenuItem onClick={() => {handleClose('clear')}} disableRipple>
+                  <HighlightOffRoundedIcon />
+                  Clear filters
+                </MenuItem>
                 <MenuItem onClick={() => {handleClose('username')}} disableRipple>
                   <PersonRoundedIcon />
                   Username
@@ -371,7 +413,7 @@ const Usuarios: NextPage = (props) => {
               </IconButton>
             </div>
 
-            {/* lista */}
+            {/* lista de usuarios */}
             {users.length !== 0 ? (
               <>
                 <div className={styles.user__container}>
@@ -385,8 +427,8 @@ const Usuarios: NextPage = (props) => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                            <Row key={row.username} row={row} />
+                          {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
+                            <Row key={`${row.username}__${i}`} row={row} />
                           ))}
                           {emptyRows > 0 && (
                             <TableRow
