@@ -6,13 +6,15 @@ import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import userReducer from './states/users/reducer'
 import fileReducer from './states/file/reducer'
 import headerReducer from './states/header/reducer'
+import historicReportReducer from './states/historicReport/reducer'
 
 export function makeStore() {
   return configureStore({
     reducer: { 
       userState: userReducer,
       fileState: fileReducer,
-      headerState: headerReducer
+      headerState: headerReducer,
+      historicReportState: historicReportReducer,
     },
   })
 }

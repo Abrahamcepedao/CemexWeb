@@ -47,7 +47,7 @@ const Home: NextPage = (props) => {
     setIsLoggedIn(true);
     let role = 'admin';
     dispatch(setCurrentUser({ username, 'email': username, role: role }));
-    role === 'admin' ? Router.push('/admin/usuarios') : Router.push('/admin/dashboard');
+    Router.push('/admin/dashboard');
   };
 
 

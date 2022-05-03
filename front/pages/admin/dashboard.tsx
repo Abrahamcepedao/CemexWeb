@@ -19,12 +19,18 @@ import Head from 'next/head'
 import SideBar from '../../components/admin/SideBar'
 import FileBtn from '../../components/admin/FileBtn'
 import ErrorMessage from '../../components/admin/ErrorMessage'
+import { TransparentInput } from '../../components/admin/Selects'
 
 /* CSS */
 import styles from '../../styles/admin/Dashboard.module.css'
 
 /* Material - UI */
+import Select from '@mui/material/Select';
+import MenuItem from '@mui/material/MenuItem';
+
+/* Material UI - icons */
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
+import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
 
 /* Loader Spinner */
 import { InfinitySpin } from 'react-loader-spinner'
@@ -40,7 +46,10 @@ const Dashboard: NextPage = (props) => {
     loading: false,
     error: "",
     success: false,
-    isLoggedIn: false
+    isLoggedIn: false,
+    step: 0,
+    reportType: "bert", // (BERT or LDA)
+    numClusters: 0
   });
 
   const [file, setFile] = useState<File>();
@@ -71,9 +80,6 @@ const Dashboard: NextPage = (props) => {
       Router.push('/');
     } else {
       setIsLoggedIn(true);
-      if(user.role !== 'user') {
-        Router.push('/admin/usuarios');
-      }
     }
     
   }, [isLoggedIn]);
@@ -178,7 +184,39 @@ const Dashboard: NextPage = (props) => {
     }
   };
 
-  /* functio to generate report */
+  /* Function to go to next step */
+  const handleNextClick = (num: number) => {
+    if(num === 1) {
+      setState({
+        ...state,
+        step: num,
+      });
+    } else if(num === 2) {
+      if(state.reportType === "lda") {
+        if(state.numClusters <= 1) {
+          setState({
+            ...state,
+            error: 'You must select at least 2 clusters',
+            loading: false
+          });
+        } else {
+          setState({
+          ...state,
+          step: num,
+          loading: true,
+        });
+        }
+      } else {
+        setState({
+          ...state,
+          step: num,
+          loading: true,
+        });
+      }
+    } 
+  }
+
+  /* function to generate report */
   const generateReport = async () => {
     console.log('generate report');
     setState({
@@ -201,7 +239,9 @@ const Dashboard: NextPage = (props) => {
       <main className={styles.main}>
           <SideBar/>
           <div className={styles.dashboard__container}>
-            {state.success === false ? (
+
+            {/* Upload file - step 0 */}
+            {state.step === 0 && (
               <div className={styles.upload__container}>
                 <div className={styles.upload__drop}
                   onDrop={e => handleDrop(e)}
@@ -227,14 +267,60 @@ const Dashboard: NextPage = (props) => {
                   )}
 
                   {state.fileName !== "" && (
-                    <button className={styles.generate__btn} onClick={generateReport}>Generate report</button>
+                    <button className={styles.next__btn} onClick={() => {handleNextClick(1)}}>Next</button>
                   )}
                   
 
 
                 </div>
               </div>
-            ) : (
+            )}
+
+            {/* Select type of report - step 1 */}
+            {state.step === 1 && (
+              <div className={styles.report__container}>
+                <div className={styles.report__inner__container}>
+                  <div className={styles.report__header}>
+                    <h3 className={styles.report__title}>Select type of report</h3>
+                    <AssessmentRoundedIcon className={styles.report__icon} />
+                  </div>
+
+                  {/* Select type of report */}
+                  <div className={styles.select__container}>
+                    <Select
+                      labelId="demo-customized-select-label"
+                      id="demo-customized-select"
+                      value={state.reportType}
+                      onChange={(e) => setState({...state, reportType: e.target.value})}
+                      input={<TransparentInput />}
+                      style={{width: '100%'}}
+                    >
+                      <MenuItem value={"bert"}>Recommend clusters</MenuItem>
+                      <MenuItem value={"lda"}>Select number of clusters</MenuItem>
+                    </Select>
+                  </div>
+
+                  {/* number of clusters if lda selected */}
+                  {state.reportType === "lda" && (
+                    <div className={styles.select__container}>
+                      <p>Enter the number of clusters (min 2)</p>
+                      <input type="number" className={styles.input} value={state.numClusters} onChange={(e) => {setState({...state, numClusters: Number(e.target.value)})}}/>
+                    </div>
+                  )}
+
+                  {/* next btn */}
+                  <button className={styles.next__btn} onClick={() => {handleNextClick(2)}}>Next</button>
+
+                  {/* Error message */}
+                  {state.error !== "" && (
+                    <ErrorMessage message={state.error}/>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Loading - step 2 */}
+            {state.step === 2 && (
               <>
                 {state.loading ? (
                   <div className={styles.loader__container}>

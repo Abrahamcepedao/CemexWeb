@@ -98,8 +98,7 @@ const SideBar: NextPage = () => {
           </div>
 
           {/* Dashboard */}
-          {user !== null && user.role === "user" && (
-              <div className={styles.menu__item}>
+          <div className={styles.menu__item}>
             <Link href="/admin/dashboard">
               <a className={styles.item__link}>
                   {/* icono */}
@@ -108,7 +107,7 @@ const SideBar: NextPage = () => {
               </a>
             </Link>
           </div>
-          )}
+          
         
         </div>
 

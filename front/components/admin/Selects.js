@@ -8,13 +8,13 @@ const TransparentInput = styled(InputBase)(({ theme }) => ({
   '& .MuiInputBase-input': {
     width: '100%',
     borderRadius: 25,
+    flex: 1,
     position: 'relative',
     background: 'rgba(255, 255, 255, 0.19)',
     border: '1px solid rgba(255, 255, 255, 0.21)',
     fontSize: 12,
     color: 'white',
     padding: '6px 10px',
-    marginRight: '10px',
     outline: 'none',
     transition: theme.transitions.create(['border-color', 'box-shadow']),
     // Use the system font instead of the default Roboto font.

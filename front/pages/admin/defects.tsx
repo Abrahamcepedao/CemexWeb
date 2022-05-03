@@ -928,6 +928,7 @@ const Defects: NextPage = (props) => {
                   id="demo-customized-select"
                   value={searchBy}
                   onChange={(e) => handleSearchByChange(e.target.value)}
+                  style={{width: "100% !important"}}
                   input={<TransparentInput />}
                 >
                   <MenuItem value={"all"}>All defects</MenuItem>
