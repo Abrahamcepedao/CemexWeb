@@ -45,7 +45,7 @@ const Home: NextPage = (props) => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggedIn(true);
-    dispatch(setCurrentUser({ username, 'email': username, role: 'admin' }));
+    dispatch(setCurrentUser({ username, 'email': username, role: 'user' }));
     Router.push('/admin/dashboard');
   };
 

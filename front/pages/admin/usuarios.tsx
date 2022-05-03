@@ -123,7 +123,7 @@ const Usuarios: NextPage = (props) => {
       },
       {
         username: 'abrahamgolf@gmail.com',
-        role: 'admin'
+        role: 'user'
       },
       {
         username: 'LOL1234@gmail.com',
@@ -165,7 +165,7 @@ const Usuarios: NextPage = (props) => {
     },
     {
       username: 'abrahamgolf@gmail.com',
-      role: 'admin'
+      role: 'user'
     },
     {
       username: 'LOL1234@gmail.com',
@@ -208,6 +208,16 @@ const Usuarios: NextPage = (props) => {
 
   /* useState - current user */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  /* useState - edit user */
+  const [openEditUserModal, setOpenEditUserModal] = useState(false);
+  const [editUser, setEditUser] = useState<null | User>(null);
+  const [editUsername, setEditUsername] = useState('');
+  const [editRole, setEditRole] = useState('user');
+
+  /* useState - delete user */
+  const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
+  const [deleteUser, setDeleteUser] = useState<null | User>(null);
 
   /* Redux */
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
@@ -325,6 +335,65 @@ const Usuarios: NextPage = (props) => {
     setPage(0);
   };
 
+  /* Edit user functions */
+  const handleEditUserModalChange = (user: User) => {
+    if(openCreateUserModal) {
+      setError('')
+      setEditUser(null);
+      setEditUsername('');
+      setEditRole('');
+    };
+    setOpenEditUserModal(!openEditUserModal);
+    if(user) {
+      //set edit state
+      console.log(user);
+      setEditUser(user);
+      setEditUsername(user.username);
+      setEditRole(user.role);
+    }
+  };
+
+  const validateEditUser = () => {
+    if (editUsername.length === 0) {
+      setError('Enter a username');
+      return false;
+    }
+    if (editRole.length === 0) {
+      setError('Enter a role');
+      return false;
+    }
+    return true;
+  };
+
+  const handleEditUser = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('editing user');
+    if (validateEditUser()) {
+      //edit user in database
+    }
+    //set state of users
+    let tempUsers = [...users];
+    tempUsers.push({
+      username: editUsername,
+      role: editRole,
+    });
+    setUsers(tempUsers);
+  }
+
+  /* Delete user functions */
+  const handleDeleteUserModalChange = (user: User) => {
+    if(openCreateUserModal) {
+      setError('')
+      setDeleteUser(null);
+    };
+    setOpenDeleteUserModal(!openDeleteUserModal);
+    if(user) {
+      //set delete state
+      console.log(user);
+      setDeleteUser(user);
+    }
+  };
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
@@ -341,9 +410,9 @@ const Usuarios: NextPage = (props) => {
           <StyledTableCell align="left">{row.role ? row.role : "--"}</StyledTableCell>
           <StyledTableCell align="right">
             <IconButton
-              aria-label="expand row"
               size="small"
               style={{ color: 'white' }}
+              onClick={() => handleEditUserModalChange(row)}
             >
               <CreateRoundedIcon/>
             </IconButton>
@@ -351,6 +420,7 @@ const Usuarios: NextPage = (props) => {
               aria-label="expand row"
               size="small"
               style={{ color: 'white' }}
+              onClick={() => handleDeleteUserModalChange(row)}
             >
               <DeleteRoundedIcon/>
             </IconButton>
@@ -530,7 +600,92 @@ const Usuarios: NextPage = (props) => {
               </form>
             </>
           </Modal>
+
+
+          {/* Edit user modal */}
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={styles.modal}
+            open={openEditUserModal}
+            onClose={handleEditUserModalChange}
+          >
+            <>
+              <input type="hidden" value="something"/>
+              <form className={styles.form} onSubmit={(e) => {handleEditUser(e)}} autoComplete="off">
+                <div className={styles.form__container}>
+                  {/* header */}
+                  <div className={styles.form__head}>
+                    <h4>Edit User</h4>
+                    <PersonRoundedIcon/>
+                  </div>
+
+                  {/* username */}
+                  <div className={styles.form__container__input}>
+                    <input type="text" id="username" autoComplete='off' placeholder='username' className={styles.form__input} value={editUsername} onChange={(e) => setEditUsername(e.target.value)} />
+                  </div>
+
+                  {/* role */}
+                  <Select
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    value={editRole}
+                    onChange={(e) => setEditRole(e.target.value)}
+                    input={<WhiteInput />}
+                    style={{ width: '100%', marginBottom: '20px' }}
+                  >
+                    <MenuItem value={"admin"} defaultChecked>Admin</MenuItem>
+                    <MenuItem value={"user"}>User</MenuItem>
+                  </Select>
+                  
+                  {/* submit */}
+                  <div>
+                    <button type="submit" className={styles.form__btn}>Guardar cambios</button>
+                  </div>
+
+                  {/* Error message */}
+                  {error !== "" && (
+                    <ErrorMessage message={error}/>
+                  )}
+
+                  {/* Success message */}
+                  {success !== "" && (
+                    <SuccessMessage message={success}/>
+                  )}
+                </div>
+              </form>
+            </>
+          </Modal>
           
+
+          {/* Delete user modal */}
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={styles.modal}
+            open={openDeleteUserModal}
+            onClose={handleDeleteUserModalChange}
+          >
+            <>
+              <input type="hidden" value="something"/>
+              <form className={styles.form} onSubmit={(e) => {handleEditUser(e)}} autoComplete="off">
+                <div className={styles.form__container}>
+                  {/* header */}
+                  <div className={styles.form__head}>
+                    <h4>Delete User</h4>
+                    <PersonRoundedIcon/>
+                  </div>
+
+                  <div>
+                    <div className={styles.delete__btn__container}>
+                      <button className={styles.cancel__btn}>Cancel</button>
+                      <button className={styles.delete__btn}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </>
+          </Modal>
       </main>
     </div>
   )

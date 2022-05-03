@@ -18,6 +18,7 @@ import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 import Head from 'next/head'
 import SideBar from '../../components/admin/SideBar'
 import FileBtn from '../../components/admin/FileBtn'
+import ErrorMessage from '../../components/admin/ErrorMessage'
 
 /* CSS */
 import styles from '../../styles/admin/Dashboard.module.css'
@@ -218,6 +219,11 @@ const Dashboard: NextPage = (props) => {
                   {/* file name */}
                   {state.fileName !== "" && (
                     <p>{state.fileName}</p>
+                  )}
+
+                  {/* Error message */}
+                  {state.error !== "" && (
+                    <ErrorMessage message={state.error}/>
                   )}
 
                   {state.fileName !== "" && (

@@ -159,6 +159,38 @@
 }
 
 
+/* Modal - user delete */
+.delete__btn__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.cancel__btn, .delete__btn {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 25px;
+    border: none;
+    background: rgb(14, 51, 127);
+    color: white;
+    padding: 10px 40px;
+    cursor: pointer;
+    transition: transform 450ms;
+}
+
+.cancel__btn:hover, .delete__btn:hover {
+    transform: scale(1.08);
+}
+
+.cancel__btn {
+    background: rgb(14, 51, 127);
+    margin-right: 10px;
+}
+.delete__btn {
+    background:  rgb(193, 29, 29);
+}
 
 /* select */
 .select {
