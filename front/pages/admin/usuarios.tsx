@@ -278,7 +278,10 @@ const Usuarios: NextPage = (props) => {
 
   /* Modal functions */
   const handleCreateUserModalChange = () => {
-    if(openCreateUserModal) setError(''); //clear error message on close
+    if(openCreateUserModal)  {
+      setError(''); //clear error message on close
+      setSuccess(''); //clear success message on close
+    }
     
     setOpenCreateUserModal(!openCreateUserModal);
   };
@@ -339,6 +342,7 @@ const Usuarios: NextPage = (props) => {
   const handleEditUserModalChange = (user: User) => {
     if(openCreateUserModal) {
       setError('')
+      setSuccess('')
       setEditUser(null);
       setEditUsername('');
       setEditRole('');
@@ -394,6 +398,38 @@ const Usuarios: NextPage = (props) => {
     }
   };
 
+  const handleCancelDelete = () => { 
+    setOpenDeleteUserModal(false); //close modal
+    setDeleteUser(null); //clear delete user state
+  };
+
+  const handleDeleteUser = () => {
+    //delete user from database
+    //set state of users
+    if(deleteUser !== null) {
+      let tempUsers = [...allUsers];
+      tempUsers = tempUsers.filter((user) => user.username !== deleteUser?.username);
+      setAllUsers(tempUsers); //set new state of all users
+      setUsers(tempUsers); //set new state of users
+      setOpenDeleteUserModal(false); //close modal
+      setDeleteUser(null); //clear delete user state
+    }
+    
+  };
+
+
+  /* Handle search function */
+  const handleSearchTextChange = (value: string) => {
+    setSearchText(value);
+
+    //filter users by search text
+    let tempUsers = [...allUsers];
+    tempUsers = tempUsers.filter((user) =>
+      user.username.toLowerCase().includes(value.toLowerCase()),
+    );
+    setUsers(tempUsers);
+  };
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
@@ -446,7 +482,7 @@ const Usuarios: NextPage = (props) => {
             {/* header */}
             <div className={styles.list__header}>
               {/* search input */}
-              <input type="text" id="searchText" placeholder="Tyoe username here" className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+              <input type="text" id="searchText" placeholder="Type username here" className={styles.input} value={searchText} onChange={(e) => handleSearchTextChange(e.target.value)} />
               
               {/* filter button */}
               <IconButton onClick={handleClick}>
@@ -672,14 +708,14 @@ const Usuarios: NextPage = (props) => {
                 <div className={styles.form__container}>
                   {/* header */}
                   <div className={styles.form__head}>
-                    <h4>Delete User</h4>
+                    <h4>Delete User: {deleteUser?.username}</h4>
                     <PersonRoundedIcon/>
                   </div>
 
                   <div>
                     <div className={styles.delete__btn__container}>
-                      <button className={styles.cancel__btn}>Cancel</button>
-                      <button className={styles.delete__btn}>Delete</button>
+                      <button className={styles.cancel__btn} onClick={handleCancelDelete}>Cancel</button>
+                      <button className={styles.delete__btn} onClick={handleDeleteUser}>Delete</button>
                     </div>
                   </div>
                 </div>
