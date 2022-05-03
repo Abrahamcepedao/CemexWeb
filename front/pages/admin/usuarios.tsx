@@ -109,7 +109,7 @@ const Usuarios: NextPage = (props) => {
   /* modal */
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
 
-  /* menu filter */
+  /* useState - menu filter */
   const [sortBy, setSortBy] = useState('username');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
