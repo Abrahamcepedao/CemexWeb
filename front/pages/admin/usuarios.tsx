@@ -119,7 +119,7 @@ const Usuarios: NextPage = (props) => {
   const [allUsers, setAllUsers] = useState<Array<User>>([
       {
         username: 'LOL1234@gmail.com',
-        role: 'God'
+        role: 'user'
       },
       {
         username: 'abrahamgolf@gmail.com',
@@ -127,7 +127,7 @@ const Usuarios: NextPage = (props) => {
       },
       {
         username: 'LOL1234@gmail.com',
-        role: 'God'
+        role: 'user'
       },
       {
         username: 'abrahamgolf@gmail.com',
@@ -135,7 +135,7 @@ const Usuarios: NextPage = (props) => {
       },
       {
         username: 'LOL1234@gmail.com',
-        role: 'God'
+        role: 'user'
       },
       {
         username: 'abrahamgolf@gmail.com',
@@ -143,7 +143,7 @@ const Usuarios: NextPage = (props) => {
       },
       {
         username: 'LOL1234@gmail.com',
-        role: 'God'
+        role: 'user'
       },
       {
         username: 'abrahamgolf@gmail.com',
@@ -151,7 +151,7 @@ const Usuarios: NextPage = (props) => {
       },
       {
         username: 'LOL1234@gmail.com',
-        role: 'God'
+        role: 'user'
       },
       {
         username: 'abrahamgolf@gmail.com',
@@ -161,7 +161,7 @@ const Usuarios: NextPage = (props) => {
   const [users, setUsers] = useState<Array<User>>([
     {
       username: 'LOL1234@gmail.com',
-      role: 'God'
+      role: 'user'
     },
     {
       username: 'abrahamgolf@gmail.com',
@@ -169,7 +169,7 @@ const Usuarios: NextPage = (props) => {
     },
     {
       username: 'LOL1234@gmail.com',
-      role: 'God'
+      role: 'user'
     },
     {
       username: 'abrahamgolf@gmail.com',
@@ -177,7 +177,7 @@ const Usuarios: NextPage = (props) => {
     },
     {
       username: 'LOL1234@gmail.com',
-      role: 'God'
+      role: 'user'
     },
     {
       username: 'abrahamgolf@gmail.com',
@@ -185,7 +185,7 @@ const Usuarios: NextPage = (props) => {
     },
     {
       username: 'LOL1234@gmail.com',
-      role: 'God'
+      role: 'user'
     },
     {
       username: 'abrahamgolf@gmail.com',
@@ -193,7 +193,7 @@ const Usuarios: NextPage = (props) => {
     },
     {
       username: 'LOL1234@gmail.com',
-      role: 'God'
+      role: 'user'
     },
     {
       username: 'abrahamgolf@gmail.com',
