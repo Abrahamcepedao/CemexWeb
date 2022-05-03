@@ -45,7 +45,7 @@ import AddCircleRoundedIcon from '@mui/icons-material/AddCircleRounded';
 import CreateRoundedIcon from '@mui/icons-material/CreateRounded';
 import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
-import EmailRoundedIcon from '@mui/icons-material/EmailRounded';
+import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
 
 /* Interfaces */
@@ -116,6 +116,48 @@ const Usuarios: NextPage = (props) => {
   
 
   /* useState - list of users */
+  const [allUsers, setAllUsers] = useState<Array<User>>([
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'user'
+      },
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      },
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      },
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      },
+      {
+        username: 'LOL1234@gmail.com',
+        role: 'God'
+      },
+      {
+        username: 'abrahamgolf@gmail.com',
+        role: 'admin'
+      }
+  ]);
   const [users, setUsers] = useState<Array<User>>([
     {
       username: 'LOL1234@gmail.com',
@@ -123,7 +165,7 @@ const Usuarios: NextPage = (props) => {
     },
     {
       username: 'abrahamgolf@gmail.com',
-      role: 'admin'
+      role: 'user'
     },
     {
       username: 'LOL1234@gmail.com',
@@ -159,7 +201,6 @@ const Usuarios: NextPage = (props) => {
     },
 ]);
   const [searchText, setSearchText] = useState('');
-  const [searchBy, setSearchBy] = useState('username');
 
   /* useState - table pagination */
   const [page, setPage] = React.useState(0);
@@ -167,6 +208,16 @@ const Usuarios: NextPage = (props) => {
 
   /* useState - current user */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  /* useState - edit user */
+  const [openEditUserModal, setOpenEditUserModal] = useState(false);
+  const [editUser, setEditUser] = useState<null | User>(null);
+  const [editUsername, setEditUsername] = useState('');
+  const [editRole, setEditRole] = useState('user');
+
+  /* useState - delete user */
+  const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
+  const [deleteUser, setDeleteUser] = useState<null | User>(null);
 
   /* Redux */
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
@@ -177,7 +228,7 @@ const Usuarios: NextPage = (props) => {
     dispatch(setCurrentTab('users'));
 
     /* Redirect user if needed */
-    /* console.log(user);
+    console.log(user);
     if (!user) {
       Router.push('/');
     } else {
@@ -185,7 +236,7 @@ const Usuarios: NextPage = (props) => {
       if(user.role !== 'admin') {
         Router.push('/admin/dashboard');
       }
-    } */
+    }
   }, [isLoggedIn]);
 
   /* <----Functions----> */
@@ -196,21 +247,31 @@ const Usuarios: NextPage = (props) => {
   };
   const handleClose = (value: string) => {
     /* Filter users by value */
-    let tempUsers = [...users];
+    
     if (value === 'username') {
       //filter by username
+      let tempUsers = [...users];
       tempUsers = tempUsers.sort((a, b) =>
         a.username.localeCompare(b.username),
       );
+      /* Set new state */
+      setUsers(tempUsers);
     } else if (value === 'role') {
       //filter by role
+      let tempUsers = [...users];
       tempUsers = tempUsers.sort((a, b) =>
         a.role.localeCompare(b.role),
       );
+      /* Set new state */
+      setUsers(tempUsers);
+    } else if (value === 'clear') {
+      //clear filter
+      let tempUsers = [...allUsers];
+      /* Set new state */
+      setUsers(tempUsers);
     }
 
     /* Set new state */
-    setUsers(tempUsers);
     setSortBy(value);
     setAnchorEl(null);
   };
@@ -274,6 +335,65 @@ const Usuarios: NextPage = (props) => {
     setPage(0);
   };
 
+  /* Edit user functions */
+  const handleEditUserModalChange = (user: User) => {
+    if(openCreateUserModal) {
+      setError('')
+      setEditUser(null);
+      setEditUsername('');
+      setEditRole('');
+    };
+    setOpenEditUserModal(!openEditUserModal);
+    if(user) {
+      //set edit state
+      console.log(user);
+      setEditUser(user);
+      setEditUsername(user.username);
+      setEditRole(user.role);
+    }
+  };
+
+  const validateEditUser = () => {
+    if (editUsername.length === 0) {
+      setError('Enter a username');
+      return false;
+    }
+    if (editRole.length === 0) {
+      setError('Enter a role');
+      return false;
+    }
+    return true;
+  };
+
+  const handleEditUser = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    console.log('editing user');
+    if (validateEditUser()) {
+      //edit user in database
+    }
+    //set state of users
+    let tempUsers = [...users];
+    tempUsers.push({
+      username: editUsername,
+      role: editRole,
+    });
+    setUsers(tempUsers);
+  }
+
+  /* Delete user functions */
+  const handleDeleteUserModalChange = (user: User) => {
+    if(openCreateUserModal) {
+      setError('')
+      setDeleteUser(null);
+    };
+    setOpenDeleteUserModal(!openDeleteUserModal);
+    if(user) {
+      //set delete state
+      console.log(user);
+      setDeleteUser(user);
+    }
+  };
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
 
@@ -290,9 +410,9 @@ const Usuarios: NextPage = (props) => {
           <StyledTableCell align="left">{row.role ? row.role : "--"}</StyledTableCell>
           <StyledTableCell align="right">
             <IconButton
-              aria-label="expand row"
               size="small"
               style={{ color: 'white' }}
+              onClick={() => handleEditUserModalChange(row)}
             >
               <CreateRoundedIcon/>
             </IconButton>
@@ -300,6 +420,7 @@ const Usuarios: NextPage = (props) => {
               aria-label="expand row"
               size="small"
               style={{ color: 'white' }}
+              onClick={() => handleDeleteUserModalChange(row)}
             >
               <DeleteRoundedIcon/>
             </IconButton>
@@ -322,24 +443,11 @@ const Usuarios: NextPage = (props) => {
           <SideBar/>
           <div className={styles.usuarios__container}>
 
-            {/* lista de usuarios */}
             {/* header */}
             <div className={styles.list__header}>
               {/* search input */}
-              <input type="text" id="searchText" placeholder={`Type ${searchBy === 'username' ? 'username' : 'email'} here`} className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
+              <input type="text" id="searchText" placeholder="Tyoe username here" className={styles.input} value={searchText} onChange={(e) => setSearchText(e.target.value)} />
               
-              {/* search by */}
-              <Select
-                labelId="demo-customized-select-label"
-                id="demo-customized-select"
-                value={searchBy}
-                onChange={(e) => setSearchBy(e.target.value)}
-                input={<TransparentInput />}
-              >
-                <MenuItem value={"username"}>Username</MenuItem>
-                <MenuItem value={"email"}>Email</MenuItem>
-              </Select>
-
               {/* filter button */}
               <IconButton onClick={handleClick}>
                 <FilterAltRoundedIcon className={styles.icon}/>
@@ -355,6 +463,10 @@ const Usuarios: NextPage = (props) => {
                 open={open}
                 onClose={handleClose}
               >
+                <MenuItem onClick={() => {handleClose('clear')}} disableRipple>
+                  <HighlightOffRoundedIcon />
+                  Clear filters
+                </MenuItem>
                 <MenuItem onClick={() => {handleClose('username')}} disableRipple>
                   <PersonRoundedIcon />
                   Username
@@ -371,7 +483,7 @@ const Usuarios: NextPage = (props) => {
               </IconButton>
             </div>
 
-            {/* lista */}
+            {/* lista de usuarios */}
             {users.length !== 0 ? (
               <>
                 <div className={styles.user__container}>
@@ -385,8 +497,8 @@ const Usuarios: NextPage = (props) => {
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                            <Row key={row.username} row={row} />
+                          {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
+                            <Row key={`${row.username}__${i}`} row={row} />
                           ))}
                           {emptyRows > 0 && (
                             <TableRow
@@ -488,7 +600,92 @@ const Usuarios: NextPage = (props) => {
               </form>
             </>
           </Modal>
+
+
+          {/* Edit user modal */}
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={styles.modal}
+            open={openEditUserModal}
+            onClose={handleEditUserModalChange}
+          >
+            <>
+              <input type="hidden" value="something"/>
+              <form className={styles.form} onSubmit={(e) => {handleEditUser(e)}} autoComplete="off">
+                <div className={styles.form__container}>
+                  {/* header */}
+                  <div className={styles.form__head}>
+                    <h4>Edit User</h4>
+                    <PersonRoundedIcon/>
+                  </div>
+
+                  {/* username */}
+                  <div className={styles.form__container__input}>
+                    <input type="text" id="username" autoComplete='off' placeholder='username' className={styles.form__input} value={editUsername} onChange={(e) => setEditUsername(e.target.value)} />
+                  </div>
+
+                  {/* role */}
+                  <Select
+                    labelId="demo-customized-select-label"
+                    id="demo-customized-select"
+                    value={editRole}
+                    onChange={(e) => setEditRole(e.target.value)}
+                    input={<WhiteInput />}
+                    style={{ width: '100%', marginBottom: '20px' }}
+                  >
+                    <MenuItem value={"admin"} defaultChecked>Admin</MenuItem>
+                    <MenuItem value={"user"}>User</MenuItem>
+                  </Select>
+                  
+                  {/* submit */}
+                  <div>
+                    <button type="submit" className={styles.form__btn}>Guardar cambios</button>
+                  </div>
+
+                  {/* Error message */}
+                  {error !== "" && (
+                    <ErrorMessage message={error}/>
+                  )}
+
+                  {/* Success message */}
+                  {success !== "" && (
+                    <SuccessMessage message={success}/>
+                  )}
+                </div>
+              </form>
+            </>
+          </Modal>
           
+
+          {/* Delete user modal */}
+          <Modal
+            aria-labelledby="transition-modal-title"
+            aria-describedby="transition-modal-description"
+            className={styles.modal}
+            open={openDeleteUserModal}
+            onClose={handleDeleteUserModalChange}
+          >
+            <>
+              <input type="hidden" value="something"/>
+              <form className={styles.form} onSubmit={(e) => {handleEditUser(e)}} autoComplete="off">
+                <div className={styles.form__container}>
+                  {/* header */}
+                  <div className={styles.form__head}>
+                    <h4>Delete User</h4>
+                    <PersonRoundedIcon/>
+                  </div>
+
+                  <div>
+                    <div className={styles.delete__btn__container}>
+                      <button className={styles.cancel__btn}>Cancel</button>
+                      <button className={styles.delete__btn}>Delete</button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </>
+          </Modal>
       </main>
     </div>
   )
