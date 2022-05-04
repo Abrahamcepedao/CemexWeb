@@ -26,6 +26,13 @@ export const setDate2 = (date2: string) => {
     };
 }
 
+export const setParametersType = (parametersType: string) => {
+    return {
+        type: t.SET_PARAMETERS_TYPE,
+        payload: parametersType
+    };
+}
+
 export const setReportType = (reportType: string) => {
     return {
         type: t.SET_REPORT_TYPE,
