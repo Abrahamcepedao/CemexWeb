@@ -37,6 +37,8 @@ import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Select from '@mui/material/Select';
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 
 /* Material UI - icons */
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
@@ -111,6 +113,14 @@ const StyledMenu = styled((props: MenuProps) => (
 }));
 
 
+/* Material UI - Alert */
+const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
+  props,
+  ref,
+) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 const Defects: NextPage = (props) => {
   /* useState - currrent user */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -122,7 +132,7 @@ const Defects: NextPage = (props) => {
     date1: '',
     date2: '',
     loading: false,
-    buttonDisabled: true
+    buttonsDisabled: true
   });
 
   /* useState - table pagination */
@@ -133,6 +143,10 @@ const Defects: NextPage = (props) => {
   const [sortBy, setSortBy] = useState('clear');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
+
+  /* useState - error snackbar */
+  const [error, setError] = useState("");
+  const [snackOpen, setSnackOpen] = useState(false);
 
   /* useState - defects */
   const [allDefects, setAllDefects] = useState<Array<Defect>>([
@@ -703,6 +717,16 @@ const Defects: NextPage = (props) => {
     }
   }, [isLoggedIn]);
 
+  /* Snackbar alert functions */
+
+  const handleSnackClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setSnackOpen(false);
+  };
+
   /* Functions - table */
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
@@ -719,16 +743,16 @@ const Defects: NextPage = (props) => {
 
     //Disable or enable search button
     if(value === "all") {
-      setSearchState({...searchState, searchBy: value, buttonDisabled: false}); //enable search button
+      setSearchState({...searchState, searchBy: value, buttonsDisabled: false}); //enable search button
       
     } else if(value === "user") {
-      setSearchState({...searchState, searchBy: value, buttonDisabled: searchState.username.length === 0}); //disable search button if username is empty
+      setSearchState({...searchState, searchBy: value, buttonsDisabled: searchState.username.length === 0}); //disable search button if username is empty
       
     } else if(value === "date") {
-      setSearchState({...searchState, searchBy: value, buttonDisabled: searchState.date1.length === 0 || searchState.date2.length === 0}); //disable search button if date1 or date2 is empty
+      setSearchState({...searchState, searchBy: value, buttonsDisabled: searchState.date1.length === 0 || searchState.date2.length === 0}); //disable search button if date1 or date2 is empty
       
     } else if(value === "date_user") {
-       setSearchState({...searchState, searchBy: value, buttonDisabled: searchState.date1.length === 0 || searchState.date2.length === 0 || searchState.username.length === 0}); //disable search button if date1 or date2 or username is empty
+       setSearchState({...searchState, searchBy: value, buttonsDisabled: searchState.date1.length === 0 || searchState.date2.length === 0 || searchState.username.length === 0}); //disable search button if date1 or date2 or username is empty
       
     }
   }
@@ -737,14 +761,14 @@ const Defects: NextPage = (props) => {
   const handleUsernameChange = (value:string) => {
     
     if(searchState.searchBy === "user") {
-      setSearchState({...searchState, username: value, buttonDisabled: value.length === 0}); //disable search button if username is empty
+      setSearchState({...searchState, username: value, buttonsDisabled: value.length === 0}); //disable search button if username is empty
       
     } else if (searchState.searchBy === "date_user") {
       if(searchState.date1 && searchState.date2) {
-        setSearchState({...searchState, username: value, buttonDisabled: false}); //enable button if both dates are set
+        setSearchState({...searchState, username: value, buttonsDisabled: false}); //enable button if both dates are set
         
       } else {
-        setSearchState({...searchState, username: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        setSearchState({...searchState, username: value, buttonsDisabled: true}); //disable button if one of the dates is not set
         
       }
     }
@@ -754,18 +778,26 @@ const Defects: NextPage = (props) => {
     
     if(searchState.searchBy === "date_user") {
       if(searchState.username && searchState.date2) {
-        setSearchState({...searchState, date1: value, buttonDisabled: false}); //enable button if both dates are set
+        setSearchState({...searchState, date1: value, buttonsDisabled: false}); //enable button if both dates are set
         
       } else {
-        setSearchState({...searchState, date1: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        setSearchState({...searchState, date1: value, buttonsDisabled: true}); //disable button if one of the dates is not set
         
       }
     } else if (searchState.searchBy === "date") {
       if(searchState.date2) {
-        setSearchState({...searchState, date1: value, buttonDisabled: false}); //enable button if both dates are set
+        if(value > searchState.date2) {
+          //open alert and set error message
+          setSnackOpen(true);
+          setError("Initial date must be earlier than the final date");
+          
+          setSearchState({...searchState, date1: "", buttonsDisabled: true}); //disable button if date1 is greater than date2
+        } else {
+          setSearchState({...searchState, date1: value, buttonsDisabled: false}); //enable button if both dates are set
+        }
         
       } else {
-        setSearchState({...searchState, date1: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        setSearchState({...searchState, date1: value, buttonsDisabled: true}); //disable button if one of the dates is not set
         
       }
     }
@@ -776,33 +808,56 @@ const Defects: NextPage = (props) => {
     
     if(searchState.searchBy === "date_user") {
       if(searchState.username && searchState.date1) {
-        setSearchState({...searchState, date2: value, buttonDisabled: false}); //enable button if both dates are set
+        setSearchState({...searchState, date2: "", buttonsDisabled: false}); //enable button if both dates are set
         
       } else {
-        setSearchState({...searchState, date2: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        setSearchState({...searchState, date2: value, buttonsDisabled: true}); //disable button if one of the dates is not set
         
       }
     } else if (searchState.searchBy === "date") {
       if(searchState.date1) {
-        setSearchState({...searchState, date2: value, buttonDisabled: false}); //enable button if both dates are set
+        if(searchState.date1 > value) {
+          //open alert and set error message
+          setSnackOpen(true);
+          setError("Initial date must be earlier than the final date");
+
+          setSearchState({...searchState, date2: "", buttonsDisabled: true}); //disable button if date1 is greater than date2
+        } else {
+          setSearchState({...searchState, date2: value, buttonsDisabled: false}); //enable button if both dates are set
+        }
+        
         
       } else {
-        setSearchState({...searchState, date2: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        setSearchState({...searchState, date2: value, buttonsDisabled: true}); //disable button if one of the dates is not set
         
       }
     }
   }
 
   const handleSearch = () => {
-    if(searchState.searchBy === "all") {
-      //search all defects
-    } else if(searchState.searchBy === "user") {
-      //search defects by user
-    } else if(searchState.searchBy === "date") {
-      //search defects by range date
-    } else if(searchState.searchBy === "date_user") {
-      //search defects by range date and user
+    if(searchState.buttonsDisabled){
+      setSnackOpen(true);
+      setError("Please fill in all the fields or change the search criteria");
+    } else {
+      //set loading to true and error to empty
+      setSearchState({...searchState, loading: true});
+      setError("");
+
+      //search defects
+      if(searchState.searchBy === "all") {
+        //search all defects
+      } else if(searchState.searchBy === "user") {
+        //search defects by user
+      } else if(searchState.searchBy === "date") {
+        //search defects by range date
+      } else if(searchState.searchBy === "date_user") {
+        //search defects by range date and user
+      }
+
+      
     }
+
+    
   }
 
   /* Menu Filter functions */
@@ -865,12 +920,25 @@ const Defects: NextPage = (props) => {
   /* Generate report functions */
 
   const handleGenerateReport = () => {
-    dispatch(setParametersType(searchState.searchBy));
-    dispatch(setUsername(searchState.username));
-    dispatch(setDate1(searchState.date1));
-    dispatch(setDate2(searchState.date2));
-    dispatch(setDefectsData(allDefects));
-    Router.push('/admin/dashboard');
+
+    if(searchState.buttonsDisabled){
+      setSnackOpen(true);
+      setError("Please fill in all the fields or change the search criteria");
+    } else {
+      //set loading to true and error to empty
+      setSearchState({...searchState, loading: true});
+      setError("");
+
+      //dispatch values to generate report to redux store
+      dispatch(setParametersType(searchState.searchBy));
+      dispatch(setUsername(searchState.username));
+      dispatch(setDate1(searchState.date1));
+      dispatch(setDate2(searchState.date2));
+      dispatch(setDefectsData(allDefects));
+
+      //redirect to dashboard to continue with report generation
+      Router.push('/admin/dashboard');
+    }
   }
 
   // Avoid a layout jump when reaching the last page with empty rows.
@@ -963,7 +1031,7 @@ const Defects: NextPage = (props) => {
                 </Select>
 
                 {/* Search button */}
-                <IconButton disabled={searchState.buttonDisabled}>
+                <IconButton onClick={handleSearch}>
                     <ArrowCircleRightRoundedIcon className={styles.icon} />
                 </IconButton>
 
@@ -1006,7 +1074,7 @@ const Defects: NextPage = (props) => {
 
 
                 {/* Generate report button */}
-                <button className={styles.generate__btn} onClick={handleGenerateReport} disabled={searchState.buttonDisabled}>
+                <button className={styles.generate__btn} onClick={handleGenerateReport}>
                     Generate report
                 </button>
             </div>
@@ -1061,6 +1129,13 @@ const Defects: NextPage = (props) => {
                 </>
             )}
           </div>
+
+          {/* Snackbar Alert */}
+          <Snackbar open={snackOpen} autoHideDuration={6000} onClose={handleSnackClose} anchorOrigin={{vertical: 'top', horizontal: 'right'}}>
+            <Alert onClose={handleSnackClose} severity="error" sx={{ width: '100%' }}>
+              {error ? error : "An error occured"}
+            </Alert>
+          </Snackbar>
           
       </main>
     </div>
