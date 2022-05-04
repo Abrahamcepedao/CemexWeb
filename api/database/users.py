@@ -41,13 +41,20 @@ def login_user(user,password):
     #get user id
     user_id = mycol.find_one({"user":user,"password":hash_password(password)})['_id']
 
+    #get user type/role
+    user_role = mycol.find_one({"_id":user_id})['type']
+
     #generate access token
     access_token = encode_auth_token(user_id)
 
-    #insert access token in database
-    mycol.update_one({"_id":user_id},{"$set":{"accessToken":access_token,"UpdatedAt":get_current_date(), "validUntil":get_date_120_minutes_from_now()}})
+    #generate valid until 120 minutes from now
+    valid_until = get_date_120_minutes_from_now()
 
-    return True, access_token
+    #insert access token in database
+    mycol.update_one({"_id":user_id},{"$set":{"accessToken":access_token,"UpdatedAt":get_current_date(), "validUntil": valid_until}})
+
+    #return true, access token, valid until and user type/role
+    return True, access_token, valid_until, user_role
   else:
     print("User does not exist or credentials are incorrect")
     return False, ""

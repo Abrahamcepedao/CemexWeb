@@ -13,6 +13,7 @@ from functions.verifyFile import verifyFile
 import logging
 import json
 import time
+from flask_cors import CORS, cross_origin
 
 #----------------------------------------------------------------------------------------------------------------------
 #CONFIGURATION
@@ -22,6 +23,7 @@ import time
 #create app and start it
 def create_app():
     app = Flask(__name__)
+    CORS(app, resources={r"/api/*": {"origins": ["*", "http://localhost:3000"]}})
     return app
 
 app = create_app()
@@ -58,6 +60,7 @@ filename_log = "./static/logs/"+start_time+"_record.log"
 
 #default route
 @app.route('/', methods=['POST', 'GET'])
+@cross_origin()
 def index():
     #return a json object with a message
     return jsonify({'message': 'Hello World!, this is the API for the DefectsCemex project. Find documentation here: https://github.com/AlejandroGC/CemexGO'})
@@ -86,6 +89,7 @@ def downloadTemplate():
 
 #Retrieve all the issue types
 @app.route('/issue-types', methods=['POST'])
+@cross_origin()
 def issue_types():
     try:
         #get the username and access token from json
@@ -113,6 +117,7 @@ def issue_types():
 
 #Clusterize the data from files with BERT
 @app.route("/clusterize", methods=['POST'])
+@cross_origin()
 def uploadFiles():
     
     try:
@@ -155,6 +160,7 @@ def uploadFiles():
 
 #Clusterize the data from files with LDA with custom number of topics
 @app.route("/clusterize/<number_topics>", methods=['POST'])
+@cross_origin()
 def uploadFilesLDA(number_topics):
 
     try:
@@ -198,6 +204,7 @@ def uploadFilesLDA(number_topics):
 
 #Retrieve all defects
 @app.route("/defects", methods=['POST'])
+@cross_origin()
 def retrieveAllDefects():
 
     try:
@@ -233,6 +240,7 @@ def retrieveAllDefects():
 
 #Get all defects uploaded by a user
 @app.route("/defects/get", methods=['POST'])
+@cross_origin()
 def getUserDefects():
 
     try:
@@ -267,6 +275,7 @@ def getUserDefects():
 
 #Retrieve all defects by date range
 @app.route("/defects/date", methods=['POST'])
+@cross_origin()
 def retrieveDefectsByDate():
 
     try:
@@ -306,6 +315,7 @@ def retrieveDefectsByDate():
 
 #Retrieve all defects by date range by user
 @app.route("/defects/date/get", methods=['POST'])
+@cross_origin()
 def retrieveDefectsByDateUser():
 
     try:
@@ -345,6 +355,7 @@ def retrieveDefectsByDateUser():
 
 #Retrieve all defects by Issue Type
 @app.route("/defects/issue", methods=['POST'])
+@cross_origin()
 def retrieveDefectsByIssue():
 
     try:
@@ -383,6 +394,7 @@ def retrieveDefectsByIssue():
 
 #Retrieve all defects by Issue Type by user
 @app.route("/defects/issue/get", methods=['POST'])
+@cross_origin()
 def retrieveDefectsByIssueUser():
 
     try:
@@ -422,6 +434,7 @@ def retrieveDefectsByIssueUser():
 
 #retrieve defects by Issue Type by date range
 @app.route("/defects/issue/date", methods=['POST'])
+@cross_origin()
 def retrieveDefectsByCategoryIssueDate():
 
     try:
@@ -462,6 +475,7 @@ def retrieveDefectsByCategoryIssueDate():
 
 #Retrieve defects by category by date range by user
 @app.route("/defects/category/date/get", methods=['POST'])
+@cross_origin()
 def retrieveDefectsByCategoryIssueDateUser():
 
     try:
@@ -508,6 +522,7 @@ def retrieveDefectsByCategoryIssueDateUser():
 
 #testing access token route
 @app.route('/test-token', methods=['POST'])
+@cross_origin()
 def test():
     #get the username and access token from json
     username = request.json['user']
@@ -521,6 +536,7 @@ def test():
 
 #Create user
 @app.route("/user/create", methods=['POST'])
+@cross_origin()
 def createUser():
     
     try:
@@ -533,7 +549,7 @@ def createUser():
         if user and pasword:
             #check if user exists
             if create_user(user,pasword, role):
-                return jsonify({'message': 'User created successfully'})
+                return jsonify({'message': 'success'})
             else:
                 return jsonify({'message': 'User already exists'})
 
@@ -545,6 +561,7 @@ def createUser():
 
 #Login user
 @app.route("/user/login", methods=['POST'])
+@cross_origin()
 def loginUser():
 
     try:
@@ -555,20 +572,25 @@ def loginUser():
         #check if user and password are not empty
         if user and pasword:
             #check if user exists
-            accepted,access_token = login_user(user,pasword)
+            accepted,access_token, valid_until, user_role = login_user(user,pasword)
             if accepted:
-                return jsonify({'message': 'User logged in successfully', 'accessToken': access_token})
+                print("accepted")
+                return jsonify({'message': 'success', 'accessToken': access_token, 'validUntil': valid_until, 'role': user_role})
             else:
+                print("1")
                 return jsonify({'message': 'User does not exist or credentials are incorrect'})
 
         else:
+            print("2")
             return jsonify({'message': 'User or password cannot be empty'})
     except: 
+        print("3")
         return jsonify({'message': 'Error logging in user'})
 
 
 #Change password
 @app.route("/user/changePassword", methods=['POST'])
+@cross_origin()
 def changePassword():
 
     try:
@@ -583,7 +605,7 @@ def changePassword():
             if validateUser(user,access_token):
                 #change password
                 if change_password(user,new_pasword):
-                    return jsonify({'message': 'Password changed successfully'})
+                    return jsonify({'message': 'success'})
                 else:
                     return jsonify({'message': 'Password could not be changed'})
             else:
