@@ -20,34 +20,111 @@ import Logo from '../public/logo.png'
 /* CSS */
 import styles from '../styles/Home.module.css'
 
+/* Interface */
+interface Login {
+  accessToken: null | string,
+  message: string,
+  role: null | string,
+  validUntil: null | string,
+}
+
 const Home: NextPage = (props) => {
   /* useState */
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState('');
 
   /* Redux */
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
   useEffect(() => {
-    console.log('user: ', user)
+    /* console.log('user: ', user)
     if (isLoggedIn) {
       console.log('logged in');
     } else {
       console.log('not logged in');
-    }
+    } */
   }, [isLoggedIn]);
 
   /* Functions */
 
   /* Handle submit */
+  function handleLogin<Login>(url: string): Promise<Login> {
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: username,
+        password: password
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText)
+      }
+      return response.json() as Promise<Login>
+    })
+  }
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoggedIn(true);
-    let role = 'admin';
+
+    //handle login in api+
+    try {
+      handleLogin<{ message: string, accessToken: string, role: string, validUntil: string }>('http://localhost:5000/user/login')
+      .then(data => {
+        console.log('data: ', data);
+        if (data.message === 'success') {
+          dispatch(setCurrentUser({username: username, role: data.role, accessToken: data.accessToken, validUntil: data.validUntil}));
+          Router.push('/admin/dashboard');
+        } else {
+          setError(data.message);
+        }
+       /*  dispatch(setCurrentUser(data.accessToken, data.role, data.validUntil));
+        Router.push('/'); */
+      })
+    } catch (error) {
+      console.log(error);
+    }
+    
+
+ /*    fetch("http://localhost:5000/user/login", {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: username,
+        password: password
+      }),
+    })
+    .then( (response) => { 
+      //do something awesome that makes the world a better place
+      console.log('response: ', response)
+      //console.log('response.data: ', response.json())
+      const res = response.json();
+      console.log('res: ', res)
+      console.log('res: ', res['message'])
+      
+     
+    }); */
+
+    /* let role = 'admin';
     dispatch(setCurrentUser({ username, 'email': username, role: role }));
-    Router.push('/admin/dashboard');
+    Router.push('/admin/dashboard'); */
   };
 
 
