@@ -9,9 +9,10 @@ import Router from 'next/router'
 import React, { useEffect, useState, useRef } from 'react'
 
 /* Redux */
-import { setCurrentUser, setDropDepth, setInDropZone, setCurrentTab } from "../../redux/actions"
+import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters } from "../../redux/actions"
 import { selectDropDepth } from "../../redux/states/file/reducer"
 import { selectUser } from "../../redux/states/users/reducer"
+import { selectDefectsData, selectParametersType, selectUsername, selectDate1, selectDate2, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
@@ -49,7 +50,8 @@ const Dashboard: NextPage = (props) => {
     isLoggedIn: false,
     step: 0,
     reportType: "bert", // (BERT or LDA)
-    numClusters: 0
+    numClusters: 0,
+    isHistoric: false,
   });
 
   const [file, setFile] = useState<File>();
@@ -62,10 +64,19 @@ const Dashboard: NextPage = (props) => {
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
   
   /* redux - file */
-  const dropDepth = useAppSelector(selectDropDepth) //function that allows to get the current user from the redux state
+  const dropDepth = useAppSelector(selectDropDepth) //function that allows to get the dropDepth from the redux state
+
+  /* redux - historic report */
+  const historicDefects = useAppSelector(selectDefectsData) //function that allows to get the historic defects from the redux state
+  const historicParametersType = useAppSelector(selectParametersType) //function that allows to get the historic parametersType from the redux state
+  const historicUsername = useAppSelector(selectUsername) //function that allows to get the historic username from the redux state
+  const historicDate1 = useAppSelector(selectDate1) //function that allows to get the historic date1 from the redux state
+  const historicDate2 = useAppSelector(selectDate2) //function that allows to get the historic date2 from the redux state
+  const historicReportType = useAppSelector(selectReportType) //function that allows to get the historic report type from the redux state
+  const historicNumClusters = useAppSelector(selectNumberClusters) //function that allows to get the historic number of clusters from the redux state
 
   /* File btn upload */
-  const fileUpload = useRef(null);
+  //const fileUpload = useRef(null);
 
   
 
@@ -81,6 +92,12 @@ const Dashboard: NextPage = (props) => {
     } else {
       setIsLoggedIn(true);
     }
+
+    /* Check if there is a historic report */
+    if (historicDefects.length > 0) {
+      setState({ ...state, isHistoric: true, step: 1 });
+    }
+
     
   }, [isLoggedIn]);
 
@@ -192,6 +209,7 @@ const Dashboard: NextPage = (props) => {
         step: num,
       });
     } else if(num === 2) {
+      dispatch(setReportType(state.reportType)); //set report type in redux state
       if(state.reportType === "lda") {
         if(state.numClusters <= 1) {
           setState({
@@ -201,10 +219,11 @@ const Dashboard: NextPage = (props) => {
           });
         } else {
           setState({
-          ...state,
-          step: num,
-          loading: true,
-        });
+            ...state,
+            step: num,
+            loading: true,
+          });
+          dispatch(setNumberClusters(state.numClusters)); //set number of clusters in redux state
         }
       } else {
         setState({
@@ -285,6 +304,27 @@ const Dashboard: NextPage = (props) => {
                     <AssessmentRoundedIcon className={styles.report__icon} />
                   </div>
 
+                  {/* data for historic report */}
+                  {state.isHistoric && (
+                    <div className={styles.historical__container}>
+                      <h4>Data for historical report:</h4>
+                      {/* user */}
+                      {(historicParametersType === "user" || historicParametersType === "date_user") && (
+                        <p><b>Username:</b> {historicUsername}</p>
+                      )}
+
+                      {/* date */}
+                      {(historicParametersType === "date" || historicParametersType === "date_user") && (
+                        <p><b>Initial date:</b> {historicDate1}</p>
+                      )}
+
+                      {/* date and user */}
+                      {(historicParametersType === "date" || historicParametersType === "date_user") && (
+                        <p><b>Final date:</b> {historicDate2}</p>
+                      )}
+                    </div>
+                  )}
+
                   {/* Select type of report */}
                   <div className={styles.select__container}>
                     <Select
@@ -309,7 +349,7 @@ const Dashboard: NextPage = (props) => {
                   )}
 
                   {/* next btn */}
-                  <button className={styles.next__btn} onClick={() => {handleNextClick(2)}}>Next</button>
+                  <button className={styles.next__btn} onClick={() => {handleNextClick(2)}}>{`Generate ${state.isHistoric ? "historic" : ""} report`}</button>
 
                   {/* Error message */}
                   {state.error !== "" && (

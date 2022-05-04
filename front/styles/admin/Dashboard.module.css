@@ -114,3 +114,9 @@
     width: 100%;
     margin-bottom: 20px;
 }
+
+.historical__container {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: left;
+}

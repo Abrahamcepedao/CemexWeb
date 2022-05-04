@@ -9,7 +9,7 @@ import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setCurrentUser, setCurrentTab } from "../../redux/actions"
+import { setCurrentTab, setUsername, setDate1, setDate2, setDefectsData, setParametersType } from "../../redux/actions"
 import { selectUser } from "../../redux/states/users/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
@@ -116,12 +116,14 @@ const Defects: NextPage = (props) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   /* useState - searchBy */
-  const [searchBy, setSearchBy] = useState("user");
-  const [username, setUsername] = useState("");
-  const [date1, setDate1] = useState("");
-  const [date2, setDate2] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [buttonDisabled, setButtonDisabled] = useState(true);
+  const [searchState, setSearchState] = useState({
+    searchBy: 'user',
+    username: '',
+    date1: '',
+    date2: '',
+    loading: false,
+    buttonDisabled: true
+  });
 
   /* useState - table pagination */
   const [page, setPage] = React.useState(0);
@@ -714,77 +716,91 @@ const Defects: NextPage = (props) => {
   /* search functions */
   //handle searchBy change
   const handleSearchByChange = (value:string) => {
-    setSearchBy(value);
 
     //Disable or enable search button
     if(value === "all") {
-      setButtonDisabled(false); //enable search button
+      setSearchState({...searchState, searchBy: value, buttonDisabled: false}); //enable search button
+      
     } else if(value === "user") {
-      setButtonDisabled(username.length === 0); //disable search button if username is empty
+      setSearchState({...searchState, searchBy: value, buttonDisabled: searchState.username.length === 0}); //disable search button if username is empty
+      
     } else if(value === "date") {
-      setButtonDisabled(date1.length === 0 || date2.length === 0); //disable search button if date1 or date2 is empty
+      setSearchState({...searchState, searchBy: value, buttonDisabled: searchState.date1.length === 0 || searchState.date2.length === 0}); //disable search button if date1 or date2 is empty
+      
     } else if(value === "date_user") {
-      setButtonDisabled(date1.length === 0 || date2.length === 0 || username.length === 0); //disable search button if date1 or date2 or username is empty
+       setSearchState({...searchState, searchBy: value, buttonDisabled: searchState.date1.length === 0 || searchState.date2.length === 0 || searchState.username.length === 0}); //disable search button if date1 or date2 or username is empty
+      
     }
   }
 
   //handle username change
   const handleUsernameChange = (value:string) => {
-    setUsername(value);
-    if(searchBy === "user") {
-      setButtonDisabled(value.length === 0); //disable button if no value
-    } else if (searchBy === "date_user") {
-      if(date1 && date2) {
-        setButtonDisabled(false); //enable button if both dates are set
+    
+    if(searchState.searchBy === "user") {
+      setSearchState({...searchState, username: value, buttonDisabled: value.length === 0}); //disable search button if username is empty
+      
+    } else if (searchState.searchBy === "date_user") {
+      if(searchState.date1 && searchState.date2) {
+        setSearchState({...searchState, username: value, buttonDisabled: false}); //enable button if both dates are set
+        
       } else {
-        setButtonDisabled(true); //disable button if one date is not set
+        setSearchState({...searchState, username: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        
       }
     }
   }
    //handle date1 change
   const handleDate1Change = (value:string) => {
-    setDate1(value);
-    if(searchBy === "date_user") {
-      if(username && date2) {
-        setButtonDisabled(false); //enable button if both dates are set
+    
+    if(searchState.searchBy === "date_user") {
+      if(searchState.username && searchState.date2) {
+        setSearchState({...searchState, date1: value, buttonDisabled: false}); //enable button if both dates are set
+        
       } else {
-        setButtonDisabled(true); //disable button if one date is not set
+        setSearchState({...searchState, date1: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        
       }
-    } else if (searchBy === "date") {
-      if(date2) {
-        setButtonDisabled(false); //enable button if both dates are set
+    } else if (searchState.searchBy === "date") {
+      if(searchState.date2) {
+        setSearchState({...searchState, date1: value, buttonDisabled: false}); //enable button if both dates are set
+        
       } else {
-        setButtonDisabled(true); //disable button if one date is not set
+        setSearchState({...searchState, date1: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        
       }
     }
   }
 
   //handle date2 change
   const handleDate2Change = (value:string) => {
-    setDate2(value);
-    if(searchBy === "date_user") {
-      if(username && date1) {
-        setButtonDisabled(false); //enable button if both dates are set
+    
+    if(searchState.searchBy === "date_user") {
+      if(searchState.username && searchState.date1) {
+        setSearchState({...searchState, date2: value, buttonDisabled: false}); //enable button if both dates are set
+        
       } else {
-        setButtonDisabled(true); //disable button if one date is not set
+        setSearchState({...searchState, date2: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        
       }
-    } else if (searchBy === "date") {
-      if(date1) {
-        setButtonDisabled(false); //enable button if both dates are set
+    } else if (searchState.searchBy === "date") {
+      if(searchState.date1) {
+        setSearchState({...searchState, date2: value, buttonDisabled: false}); //enable button if both dates are set
+        
       } else {
-        setButtonDisabled(true); //disable button if one date is not set
+        setSearchState({...searchState, date2: value, buttonDisabled: true}); //disable button if one of the dates is not set
+        
       }
     }
   }
 
   const handleSearch = () => {
-    if(searchBy === "all") {
+    if(searchState.searchBy === "all") {
       //search all defects
-    } else if(searchBy === "user") {
+    } else if(searchState.searchBy === "user") {
       //search defects by user
-    } else if(searchBy === "date") {
+    } else if(searchState.searchBy === "date") {
       //search defects by range date
-    } else if(searchBy === "date_user") {
+    } else if(searchState.searchBy === "date_user") {
       //search defects by range date and user
     }
   }
@@ -848,6 +864,15 @@ const Defects: NextPage = (props) => {
 
   /* Generate report functions */
 
+  const handleGenerateReport = () => {
+    dispatch(setParametersType(searchState.searchBy));
+    dispatch(setUsername(searchState.username));
+    dispatch(setDate1(searchState.date1));
+    dispatch(setDate2(searchState.date2));
+    dispatch(setDefectsData(allDefects));
+    Router.push('/admin/dashboard');
+  }
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - defects.length) : 0;
 
@@ -909,24 +934,24 @@ const Defects: NextPage = (props) => {
           <SideBar/>
           <div className={styles.defects__container}>
             <div className={styles.defects__search__bar}>
-                <p className={styles.search__title} style={{flex: searchBy === "all" ? "1" : "0"}}>Search defects</p>
-                {(searchBy === "user" || searchBy === "date_user") && (
-                    <input type="text" className={styles.input} placeholder="Enter username" value={username} onChange={(e) => handleUsernameChange(e.target.value)}/>
+                <p className={styles.search__title} style={{flex: searchState.searchBy === "all" ? "1" : "0"}}>Search defects</p>
+                {(searchState.searchBy === "user" || searchState.searchBy === "date_user") && (
+                    <input type="text" className={styles.input} placeholder="Enter username" value={searchState.username} onChange={(e) => handleUsernameChange(e.target.value)}/>
                 )}
 
-                {(searchBy === "date" || searchBy === "date_user") && (
-                    <input type="date" className={styles.input} value={date1} onChange={(e) => handleDate1Change(e.target.value)}/>
+                {(searchState.searchBy === "date" || searchState.searchBy === "date_user") && (
+                    <input type="date" className={styles.input} value={searchState.date1} onChange={(e) => handleDate1Change(e.target.value)}/>
                 )}
 
-                {(searchBy === "date" || searchBy === "date_user") && (
-                    <input type="date" className={styles.input} value={date2} onChange={(e) => handleDate2Change(e.target.value)}/>
+                {(searchState.searchBy === "date" || searchState.searchBy === "date_user") && (
+                    <input type="date" className={styles.input} value={searchState.date2} onChange={(e) => handleDate2Change(e.target.value)}/>
                 )}
 
                 {/* Search by menu */}
                 <Select
                   labelId="demo-customized-select-label"
                   id="demo-customized-select"
-                  value={searchBy}
+                  value={searchState.searchBy}
                   onChange={(e) => handleSearchByChange(e.target.value)}
                   style={{width: "100% !important"}}
                   input={<TransparentInput />}
@@ -938,7 +963,7 @@ const Defects: NextPage = (props) => {
                 </Select>
 
                 {/* Search button */}
-                <IconButton disabled={buttonDisabled}>
+                <IconButton disabled={searchState.buttonDisabled}>
                     <ArrowCircleRightRoundedIcon className={styles.icon} />
                 </IconButton>
 
@@ -981,12 +1006,12 @@ const Defects: NextPage = (props) => {
 
 
                 {/* Generate report button */}
-                <button className={styles.generate__btn}>
+                <button className={styles.generate__btn} onClick={handleGenerateReport} disabled={searchState.buttonDisabled}>
                     Generate report
                 </button>
             </div>
 
-            {loading ? (
+            {searchState.loading ? (
                 <div className={styles.loader__container}>
                     <InfinitySpin color="white"  width='200'/>
                 </div>
