@@ -209,9 +209,11 @@ def retrieveAllDefects():
 
     try:
         #get the username and access token from json
-        username = request.json['user']
-        access_token = request.json['accessToken']
-        analysis = request.json['analysis']
+        request_json = request.get_json()
+        username = request_json.get('user')
+        access_token = request_json.get('accessToken')
+        analysis = request_json.get('analysis')
+
 
         if validateUser(username, access_token):
             #retrieve all defects
@@ -221,7 +223,6 @@ def retrieveAllDefects():
             if  type(result) != bool:
                 if result.empty == False:
                     if analysis == "none":
-                        print("results", result)
                         return result.to_json(orient='records')
                     elif analysis == "default":
                         return bert_clusters(result)
@@ -625,6 +626,9 @@ def getAllUsers():
         request_json = request.get_json()
         username = request_json.get('user')
         access_token = request_json.get('accessToken')
+        analysis = request_json.get['analysis']
+
+        print(analysis)
 
         if validateUser(username, access_token):
 

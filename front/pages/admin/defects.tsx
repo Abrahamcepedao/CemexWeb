@@ -9,7 +9,19 @@ import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setCurrentTab, setUsername, setDate1, setDate2, setDefectsData, setParametersType, setReduxDefects } from "../../redux/actions"
+import { 
+  setCurrentTab, 
+  setUsername, 
+  setDate1, 
+  setDate2, 
+  setDefectsData, 
+  setParametersType, 
+  setReduxDefects, 
+  setReduxSearchType,
+  setReduxUsername,
+  setReduxDate1,
+  setReduxDate2,
+} from "../../redux/actions"
 import { selectUser } from "../../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
@@ -69,6 +81,13 @@ interface Defect {
   "Custom field (Digital Service)": string,
   "Summary": string,
   "Description": string,
+}
+
+
+interface User {
+  user: string,
+  type: string,
+  createdAt: string,
 }
 
 /* Styled menu for filter button */
@@ -168,7 +187,36 @@ const Defects: NextPage = (props) => {
     } else {
       setIsLoggedIn(true);
     }
-  }, [isLoggedIn]);
+
+    /* set defects if in local Storage */
+    if (localStorage.getItem('defects') && localStorage.getItem("searchType")) {
+      //set local state
+      //@ts-ignore
+      setAllDefects(JSON.parse(localStorage.getItem("defects")));
+      //@ts-ignore
+      setDefects(JSON.parse(localStorage.getItem("defects")));
+      //@ts-ignore
+      setSearchState({
+        ...searchState,
+        searchBy: localStorage.getItem("searchType") || "all",
+        username: localStorage.getItem("defectUsername") || "",
+        date1: localStorage.getItem("defectDate1") || "",
+        date2: localStorage.getItem("defectDate2") || "",
+      })
+
+      //set redux state
+      //@ts-ignore
+      dispatch(setReduxDefects(JSON.parse(localStorage.getItem("defects"))));
+      //@ts-ignore
+      dispatch(setReduxSearchType(localStorage.getItem("searchType") || "all"));
+      //@ts-ignore
+      dispatch(setReduxUsername(localStorage.getItem("defectUsername") || ""));
+      //@ts-ignore
+      dispatch(setReduxDate1(localStorage.getItem("defectDate1") || ""));
+      //@ts-ignore
+      dispatch(setReduxDate2(localStorage.getItem("defectDate2") || ""));
+    }
+  }, []);
 
   /* Snackbar alert functions */
 
@@ -287,6 +335,83 @@ const Defects: NextPage = (props) => {
     }
   }
 
+  /* <------Search defects functions------> */
+  /* Handle search all defects - api */
+  async function getAllDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: user.user,
+        accessToken: user.accessToken,
+        analysis: "none"
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by user - api */
+  async function getUserDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: searchState.username,
+        accessToken: user.accessToken,
+        analysis: "none"
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by date range and user (is the same function) - api */
+  async function getDateDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: searchState.username,
+        accessToken: user.accessToken,
+        analysis: "none",
+        startDate: `${searchState.date1}T00:00:00`,
+        endDate: `${searchState.date2}T23:59:59`
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+
+  //handle search button click
   const handleSearch = () => {
     if(searchState.buttonsDisabled){
       setSnackOpen(true);
@@ -296,21 +421,134 @@ const Defects: NextPage = (props) => {
       setSearchState({...searchState, loading: true});
       setError("");
 
+      //clear defects
+      setDefects([]);
+      setAllDefects([]);
+
       //search defects
       if(searchState.searchBy === "all") {
         //search all defects
+        try {
+           getAllDefects('http://localhost:5000/defects')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              //set local state
+              setAllDefects(data);
+              setDefects(data);
+              setSearchState({...searchState, loading: false});
+
+              //set defects in redux state
+              dispatch(setReduxDefects(data));
+              dispatch(setReduxSearchType("all"));
+            
+              setError(''); //clear error
+            } else {
+              console.log(data);
+              setError("No defects found");
+              setSnackOpen(true);
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          setError("Error retrieving defects");
+          setSnackOpen(true);
+        }
+
+        
+
       } else if(searchState.searchBy === "user") {
         //search defects by user
+        try {
+           getUserDefects('http://localhost:5000/defects/get')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              //set local state
+              setAllDefects(data);
+              setDefects(data);
+              setSearchState({...searchState, loading: false});
+
+              //set defects in redux state
+              dispatch(setReduxDefects(data));
+              dispatch(setReduxSearchType("user"));
+            
+              setError(''); //clear error
+            } else {
+              console.log(data);
+              setError("No defects found");
+              setSnackOpen(true);
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          setError("Error retrieving defects");
+          setSnackOpen(true);
+        }
+
+
+
       } else if(searchState.searchBy === "date") {
         //search defects by range date
+        try {
+          getDateDefects('http://localhost:5000/defects/date')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              //set local state
+              setAllDefects(data);
+              setDefects(data);
+              setSearchState({...searchState, loading: false});
+
+              //set defects in redux state
+              dispatch(setReduxDefects(data));
+              dispatch(setReduxSearchType("date"));
+            
+              setError(''); //clear error
+            } else {
+              console.log(data);
+              setError("No defects found");
+              setSnackOpen(true);
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          setError("Error retrieving defects");
+          setSnackOpen(true);
+        }
+
+
+
       } else if(searchState.searchBy === "date_user") {
         //search defects by range date and user
+        try {
+          getDateDefects('http://localhost:5000/defects/date/get')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              //set local state
+              setAllDefects(data);
+              setDefects(data);
+              setSearchState({...searchState, loading: false});
+
+              //set defects in redux state
+              dispatch(setReduxDefects(data));
+              dispatch(setReduxSearchType("date_user"));
+            
+              setError(''); //clear error
+            } else {
+              console.log(data);
+              setError("No defects found");
+              setSnackOpen(true);
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          setError("Error retrieving defects");
+        }
+          
       }
-
-      
     }
-
-    
   }
 
   /* Menu Filter functions */
@@ -534,10 +772,17 @@ const Defects: NextPage = (props) => {
 
             {defects.length === 0 ? (
                 <div className={styles.message__container}>
-                    <div className={styles.message__inner__container}>
-                        <InfoRoundedIcon className={styles.message__icon} />
-                        <h3>Realize una búsqueda</h3>
-                    </div>
+                    {searchState.loading ? (
+                      <div className={styles.message__inner__container}>
+                        <InfinitySpin color="white"  width='200'/>
+                      </div>
+                    ) : (
+                      <div className={styles.message__inner__container}>
+                          <InfoRoundedIcon className={styles.message__icon} />
+                          <h3>No results yet - Make another search</h3>
+                      </div>
+                    )}
+                    
                 </div>
             ) : (
                 <>

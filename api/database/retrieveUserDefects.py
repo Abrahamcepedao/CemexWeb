@@ -20,6 +20,7 @@ def retrieve_all_defects():
 
     #convert to dataframe
     df = pd.DataFrame(list(mydoc))
+    print("df: ", df)
 
     #if the database is empty, return an empty list
     if df.empty:
