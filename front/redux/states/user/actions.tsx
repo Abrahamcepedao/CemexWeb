@@ -7,7 +7,7 @@ import { User } from './state'
 import * as t from "./types";
 
 export const setCurrentUser = (user: User) => {
-  console.log('setCurrentUser: ', user)
+  //localStorage.setItem('user', JSON.stringify(user));
   return { 
     type: t.SET_CURRENT_USER, 
     payload: user

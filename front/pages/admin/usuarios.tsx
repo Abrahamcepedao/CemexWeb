@@ -47,6 +47,7 @@ import DeleteRoundedIcon from '@mui/icons-material/DeleteRounded';
 import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
 import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import RefreshRoundedIcon from '@mui/icons-material/RefreshRounded';
 
 /* Interfaces */
 interface User {
@@ -190,15 +191,15 @@ const Usuarios: NextPage = (props) => {
         getAllUsers('http://localhost:5000/users/get')
         .then(data => {
           if (data.length !== 0) {
-            console.log(data);
+            
+            //set local state
             setAllUsers(data);
             setUsersList(data);
 
             //set users in redux state
             //@ts-ignore
             dispatch(setUsers(data));
-            
-
+          
             setError(''); //clear error
           } else {
             //setError(data.message); //set error
@@ -217,7 +218,7 @@ const Usuarios: NextPage = (props) => {
       //@ts-ignore
       dispatch(setUsers(JSON.parse(localStorage.getItem('users'))));
     }
-  }, [isLoggedIn]);
+  }, []);
 
   /* <----Functions----> */
 
@@ -415,6 +416,31 @@ const Usuarios: NextPage = (props) => {
     setUsersList(tempUsers);
   };
 
+  /* Handle Refresh function */
+  const handleRefresh = () => {
+    try {
+      getAllUsers('http://localhost:5000/users/get')
+      .then(data => {
+        if (data.length !== 0) {
+          console.log(data);
+          //set local state
+          setAllUsers(data);
+          setUsersList(data);
+
+          //set users in redux state
+          //@ts-ignore
+          dispatch(setUsers(data));
+        
+          setError(''); //clear error
+        } else {
+          //setError(data.message); //set error
+        }
+      })
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
 
@@ -501,6 +527,11 @@ const Usuarios: NextPage = (props) => {
               {/* Add button */}
               <IconButton onClick={handleCreateUserModalChange}>
                 <AddCircleRoundedIcon className={styles.icon}/>
+              </IconButton>
+
+              {/* Refresh icon */}
+              <IconButton onClick={handleRefresh}>
+                <RefreshRoundedIcon className={styles.icon}/>
               </IconButton>
             </div>
 
