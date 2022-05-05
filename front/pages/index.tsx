@@ -9,13 +9,14 @@ import React, { useEffect, useState } from 'react'
 
 /* Redux */
 import { setCurrentUser } from "../redux/actions"
-import { selectUser } from "../redux/states/users/reducer"
+import { selectUser } from "../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 
 /* Components */
 import Head from 'next/head'
 import Image from 'next/image'
 import Logo from '../public/logo.png'
+import ErrorMessage from '../components/admin/ErrorMessage'
 
 /* CSS */
 import styles from '../styles/Home.module.css'
@@ -32,7 +33,6 @@ const Home: NextPage = (props) => {
   /* useState */
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [error, setError] = useState('');
 
   /* Redux */
@@ -40,13 +40,8 @@ const Home: NextPage = (props) => {
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
   useEffect(() => {
-    /* console.log('user: ', user)
-    if (isLoggedIn) {
-      console.log('logged in');
-    } else {
-      console.log('not logged in');
-    } */
-  }, [isLoggedIn]);
+    
+  }, []);
 
   /* Functions */
 
@@ -76,55 +71,22 @@ const Home: NextPage = (props) => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setIsLoggedIn(true);
 
-    //handle login in api+
+    //handle login in api
     try {
       handleLogin<{ message: string, accessToken: string, role: string, validUntil: string }>('http://localhost:5000/user/login')
       .then(data => {
-        console.log('data: ', data);
         if (data.message === 'success') {
-          dispatch(setCurrentUser({username: username, role: data.role, accessToken: data.accessToken, validUntil: data.validUntil}));
-          Router.push('/admin/dashboard');
+          setError(''); //clear error
+          dispatch(setCurrentUser({username: username, role: data.role, accessToken: data.accessToken, validUntil: data.validUntil})); //set user in redux
+          Router.push('/admin/dashboard'); //redirect to dashboard
         } else {
-          setError(data.message);
+          setError(data.message); //set error
         }
-       /*  dispatch(setCurrentUser(data.accessToken, data.role, data.validUntil));
-        Router.push('/'); */
       })
     } catch (error) {
       console.log(error);
     }
-    
-
- /*    fetch("http://localhost:5000/user/login", {
-      method: "POST",
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin':'*'
-      },
-
-      //make sure to serialize your JSON body
-      body: JSON.stringify({
-        user: username,
-        password: password
-      }),
-    })
-    .then( (response) => { 
-      //do something awesome that makes the world a better place
-      console.log('response: ', response)
-      //console.log('response.data: ', response.json())
-      const res = response.json();
-      console.log('res: ', res)
-      console.log('res: ', res['message'])
-      
-     
-    }); */
-
-    /* let role = 'admin';
-    dispatch(setCurrentUser({ username, 'email': username, role: role }));
-    Router.push('/admin/dashboard'); */
   };
 
 
@@ -154,6 +116,9 @@ const Home: NextPage = (props) => {
                 <a href='#forgot_password' className={styles.forgot__label}>Forgot password?</a>
                 {/* submit */}
                 <button className={styles.submit__btn} type='submit'>Login</button>
+
+                {/* error message */}
+                {error !== "" && <ErrorMessage message={error} />}
               </div>
             </form>
           </div>

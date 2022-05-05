@@ -3,6 +3,7 @@ from pymongo import MongoClient
 from functions.auxiliary import *
 from security.accessToken import *
 from bson import ObjectId
+import pandas as pd
 
 def create_user(user,password, role):
 
@@ -106,3 +107,27 @@ def change_password(username, new_password):
   else:
     print("User does not exist")
     return False
+
+#get all users
+def get_all_users():
+  myclient = MongoClient("mongodb+srv://SeaWar741:CemexGo2022@cluster0.4glnz.mongodb.net")
+
+  mydb = myclient["defectsCemex"]
+
+  mycol = mydb["users"]
+
+  #get all defects
+  mydoc = mycol.find()
+
+  #convert to dataframe
+  df = pd.DataFrame(list(mydoc))
+
+  #if the database is empty, return an empty list
+  if df.empty:
+      return False
+  else:
+      #drop the _id column and User column
+      df = df.drop(columns=['_id', 'UpdatedAt', 'accessToken', 'validUntil', 'password'])
+
+      #convert the dataframe to json
+      return df

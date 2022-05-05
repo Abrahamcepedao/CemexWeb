@@ -7,11 +7,11 @@ import Link from 'next/link'
 import Router from 'next/router'
 
 /* React */
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 
 /* Redux */
 import { logoutUser } from "../../redux/actions"
-import { selectUser } from "../../redux/states/users/reducer"
+import { selectUser } from "../../redux/states/user/reducer"
 import { selectTab } from "../../redux/states/header/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
@@ -30,27 +30,13 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
 
 const SideBar: NextPage = () => {
-  /* useState */
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   /* Redux */
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
   const tab = useAppSelector(selectTab) //function that allows to get the current user from the redux state
 
-  useEffect(() => {
-    console.log('user: ', user)
-    if (isLoggedIn) {
-      console.log('logged in');
-    } else {
-      console.log('not logged in');
-    }
-    
-  }, [isLoggedIn]);
-
   /* Functions */
   const handleLogout = () => {
-    setIsLoggedIn(false);
     dispatch(logoutUser());
     Router.push('/');
   }
