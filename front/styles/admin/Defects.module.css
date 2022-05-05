@@ -97,3 +97,36 @@
 .MuiTablePagination-selectLabel {
     color: white !important;
 }
+
+/* message container - no items */
+.message__container {
+    background: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    height: 100%;
+    flex: 1;
+}
+
+.message__inner__container {
+    color: white;
+    max-width: 400px;
+    //background: rgba(255, 255, 255, 0.19);
+    padding: 50px;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px dashed rgba(255, 255, 255, 0.21);
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.message__icon {
+    font-size: 35px;
+    color: white;
+    margin-right: 20px;
+}
