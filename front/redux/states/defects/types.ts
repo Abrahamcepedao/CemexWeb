@@ -1,0 +1,1 @@
+export const SET_DEFECTS = "SET_DEFECTS";

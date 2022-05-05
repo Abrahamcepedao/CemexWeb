@@ -7,16 +7,16 @@ import * as t from "./types";
 import type { AppState } from '../../store';
 
 const initialState = {
-  users: []
+  defects: []
 }
 
 const reducer = (state = initialState, action:any) => {
 
   switch(action.type){
-    case t.SET_USERS:
+    case t.SET_DEFECTS:
       return { 
         ...state,
-        userS: action.payload
+        defects: action.payload
       };
       
     default:
@@ -24,6 +24,6 @@ const reducer = (state = initialState, action:any) => {
     }
 }
 
-export const selectUsers = (state: AppState) => state.usersState.users
+export const selectDefects = (state: AppState) => state.defectsState.defects;
 
 export default reducer;
