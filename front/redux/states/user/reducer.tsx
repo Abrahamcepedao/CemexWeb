@@ -4,7 +4,7 @@
 
 import * as t from "./types";
 
-import type { AppState } from '../../../redux/store';
+import type { AppState } from '../../store';
 
 const initialState = {
   user: null

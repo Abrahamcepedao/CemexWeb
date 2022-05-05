@@ -221,6 +221,7 @@ def retrieveAllDefects():
             if  type(result) != bool:
                 if result.empty == False:
                     if analysis == "none":
+                        print("results", result)
                         return result.to_json(orient='records')
                     elif analysis == "default":
                         return bert_clusters(result)
@@ -614,6 +615,38 @@ def changePassword():
             return jsonify({'message': 'User or access token or new password cannot be empty'})
     except:
         return jsonify({'message': 'Error changing password'})
+
+#Get all users
+@app.route("/users/get", methods=['POST'])
+@cross_origin()
+def getAllUsers():
+
+    try:
+        request_json = request.get_json()
+        username = request_json.get('user')
+        access_token = request_json.get('accessToken')
+
+        if validateUser(username, access_token):
+
+            #retrieve all defects
+            result = get_all_users()
+            #print("result", result)
+            #check if the result is not a bool value or empty
+            if  type(result) != bool:
+                if  result.empty == False:
+                    #print("result", result)
+
+                    return result.to_json(orient='records')
+                else:
+                    return jsonify({'message': 'No defects in the specified date range'})
+            else:
+                return jsonify({'message': 'No defects in the specified date range'})
+        else:
+            return jsonify({'message': 'Access token is invalid'})
+    except: 
+        print("3")
+        return jsonify({'message': 'Error retrieving users'})
+
 
 #----------------------------------------------------------------------------------------------------------------------
 #MAIN

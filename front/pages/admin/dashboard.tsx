@@ -11,7 +11,7 @@ import React, { useEffect, useState, useRef } from 'react'
 /* Redux */
 import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters } from "../../redux/actions"
 import { selectDropDepth } from "../../redux/states/file/reducer"
-import { selectUser } from "../../redux/states/users/reducer"
+import { selectUser } from "../../redux/states/user/reducer"
 import { selectDefectsData, selectParametersType, selectUsername, selectDate1, selectDate2, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
@@ -86,7 +86,7 @@ const Dashboard: NextPage = (props) => {
 
 
     /* Redirect user if needed */
-    console.log(user);
+    //console.log(user);
     if (!user) {
       Router.push('/');
     } else {

@@ -9,8 +9,8 @@ import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setCurrentUser, setCurrentTab } from "../../redux/actions"
-import { selectUser } from "../../redux/states/users/reducer"
+import { setCurrentTab, setUsers } from "../../redux/actions"
+import { selectUser } from "../../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
@@ -50,8 +50,9 @@ import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSetting
 
 /* Interfaces */
 interface User {
-  username: string,
-  role: string,
+  user: string,
+  type: string,
+  createdAt: string,
 }
 
 /* Styled menu for filter button */
@@ -99,10 +100,13 @@ const StyledMenu = styled((props: MenuProps) => (
 
 const Usuarios: NextPage = (props) => {
   /* useState - new user */
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('user');
+  const [newUser, setNewUser] = useState({
+    user: '',
+    type: 'user',
+    password: '',
+    confirmPassword: '',
+  })
+
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -110,96 +114,14 @@ const Usuarios: NextPage = (props) => {
   const [openCreateUserModal, setOpenCreateUserModal] = useState(false);
 
   /* useState - menu filter */
-  const [sortBy, setSortBy] = useState('username');
+  const [sortBy, setSortBy] = useState('user');
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
   
 
   /* useState - list of users */
-  const [allUsers, setAllUsers] = useState<Array<User>>([
-      {
-        username: 'LOL1234@gmail.com',
-        role: 'user'
-      },
-      {
-        username: 'abrahamgolf@gmail.com',
-        role: 'user'
-      },
-      {
-        username: 'LOL1234@gmail.com',
-        role: 'user'
-      },
-      {
-        username: 'abrahamgolf@gmail.com',
-        role: 'admin'
-      },
-      {
-        username: 'LOL1234@gmail.com',
-        role: 'user'
-      },
-      {
-        username: 'abrahamgolf@gmail.com',
-        role: 'admin'
-      },
-      {
-        username: 'LOL1234@gmail.com',
-        role: 'user'
-      },
-      {
-        username: 'abrahamgolf@gmail.com',
-        role: 'admin'
-      },
-      {
-        username: 'LOL1234@gmail.com',
-        role: 'user'
-      },
-      {
-        username: 'abrahamgolf@gmail.com',
-        role: 'admin'
-      }
-  ]);
-  const [users, setUsers] = useState<Array<User>>([
-    {
-      username: 'LOL1234@gmail.com',
-      role: 'user'
-    },
-    {
-      username: 'abrahamgolf@gmail.com',
-      role: 'user'
-    },
-    {
-      username: 'LOL1234@gmail.com',
-      role: 'user'
-    },
-    {
-      username: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'LOL1234@gmail.com',
-      role: 'user'
-    },
-    {
-      username: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'LOL1234@gmail.com',
-      role: 'user'
-    },
-    {
-      username: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-    {
-      username: 'LOL1234@gmail.com',
-      role: 'user'
-    },
-    {
-      username: 'abrahamgolf@gmail.com',
-      role: 'admin'
-    },
-]);
+  const [allUsers, setAllUsers] = useState<Array<User>>([]);
+  const [usersList, setUsersList] = useState<Array<User>>([]);
   const [searchText, setSearchText] = useState('');
 
   /* useState - table pagination */
@@ -223,6 +145,30 @@ const Usuarios: NextPage = (props) => {
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
+  /* Function get all users */
+  function getAllUsers(url: string): Promise<Array<User>> {
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: user.user,
+        accessToken: user.accessToken
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText)
+      }
+      return response.json() as Promise<Array<User>>
+    })
+  }
+
   useEffect(() => {
     /* Set current tab */
     dispatch(setCurrentTab('users'));
@@ -237,6 +183,40 @@ const Usuarios: NextPage = (props) => {
         Router.push('/admin/dashboard');
       }
     }
+
+    /* Get all users */
+    if(!localStorage.getItem('users')) {
+      try {
+        getAllUsers('http://localhost:5000/users/get')
+        .then(data => {
+          if (data.length !== 0) {
+            console.log(data);
+            setAllUsers(data);
+            setUsersList(data);
+
+            //set users in redux state
+            //@ts-ignore
+            dispatch(setUsers(data));
+            
+
+            setError(''); //clear error
+          } else {
+            //setError(data.message); //set error
+          }
+        })
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      //@ts-ignore
+      setAllUsers(JSON.parse(localStorage.getItem('users')));
+      //@ts-ignore
+      setUsersList(JSON.parse(localStorage.getItem('users')));
+
+      //set users in redux state
+      //@ts-ignore
+      dispatch(setUsers(JSON.parse(localStorage.getItem('users'))));
+    }
   }, [isLoggedIn]);
 
   /* <----Functions----> */
@@ -248,27 +228,27 @@ const Usuarios: NextPage = (props) => {
   const handleClose = (value: string) => {
     /* Filter users by value */
     
-    if (value === 'username') {
-      //filter by username
-      let tempUsers = [...users];
+    if (value === 'user') {
+      //filter by user
+      let tempUsers = [...usersList];
       tempUsers = tempUsers.sort((a, b) =>
-        a.username.localeCompare(b.username),
+        a.user.localeCompare(b.user),
       );
       /* Set new state */
-      setUsers(tempUsers);
+      setUsersList(tempUsers);
     } else if (value === 'role') {
       //filter by role
-      let tempUsers = [...users];
+      let tempUsers = [...usersList];
       tempUsers = tempUsers.sort((a, b) =>
-        a.role.localeCompare(b.role),
+        a.type.localeCompare(b.type),
       );
       /* Set new state */
-      setUsers(tempUsers);
+      setUsersList(tempUsers);
     } else if (value === 'clear') {
       //clear filter
       let tempUsers = [...allUsers];
       /* Set new state */
-      setUsers(tempUsers);
+      setUsersList(tempUsers);
     }
 
     /* Set new state */
@@ -288,15 +268,15 @@ const Usuarios: NextPage = (props) => {
 
   /* Create user functions */
   const validateCreateUser = () => {
-    if (username.length === 0) {
-      setError('Enter a username');
+    if (newUser.user.length === 0) {
+      setError('Enter a user');
       return false;
     }
-    if (password.length === 0) {
+    if (newUser.password.length === 0) {
       setError('Enter a password');
       return false;
     }
-    if (password !== confirmPassword) {
+    if (newUser.password !== newUser.confirmPassword) {
       setError('Passwords do not match');
       return false;
     }
@@ -310,18 +290,22 @@ const Usuarios: NextPage = (props) => {
       //add user to database
 
       //set state of users
-      let tempUsers = [...users];
+      let tempUsers = [...usersList];
       tempUsers.push({
-        username: username,
-        role: role,
+        user: newUser.user,
+        type: newUser.type,
+        createdAt: new Date().toLocaleString()
       });
-      setUsers(tempUsers); 
+      setUsersList(tempUsers); 
 
       //reset new user state
       setError('');
-      setUsername('');
-      setPassword('');
-      setConfirmPassword('');
+      setNewUser({
+        ...newUser,
+        user: '',
+        password: '',
+        confirmPassword: ''
+      });
 
       //set success message
       setSuccess('User created successfully');
@@ -348,18 +332,18 @@ const Usuarios: NextPage = (props) => {
       setEditRole('');
     };
     setOpenEditUserModal(!openEditUserModal);
-    if(user) {
+    if(editUser) {
       //set edit state
-      console.log(user);
-      setEditUser(user);
-      setEditUsername(user.username);
-      setEditRole(user.role);
+      console.log(editUser);
+      setEditUser(editUser);
+      setEditUsername(editUser.user);
+      setEditRole(editUser.type);
     }
   };
 
   const validateEditUser = () => {
     if (editUsername.length === 0) {
-      setError('Enter a username');
+      setError('Enter a user');
       return false;
     }
     if (editRole.length === 0) {
@@ -376,12 +360,13 @@ const Usuarios: NextPage = (props) => {
       //edit user in database
     }
     //set state of users
-    let tempUsers = [...users];
+    let tempUsers = [...usersList];
     tempUsers.push({
-      username: editUsername,
-      role: editRole,
+      user: editUsername,
+      type: editRole,
+      createdAt: new Date().toLocaleString()
     });
-    setUsers(tempUsers);
+    setUsersList(tempUsers);
   }
 
   /* Delete user functions */
@@ -408,9 +393,9 @@ const Usuarios: NextPage = (props) => {
     //set state of users
     if(deleteUser !== null) {
       let tempUsers = [...allUsers];
-      tempUsers = tempUsers.filter((user) => user.username !== deleteUser?.username);
+      tempUsers = tempUsers.filter((user) => user.user !== deleteUser?.user);
       setAllUsers(tempUsers); //set new state of all users
-      setUsers(tempUsers); //set new state of users
+      setUsersList(tempUsers); //set new state of users
       setOpenDeleteUserModal(false); //close modal
       setDeleteUser(null); //clear delete user state
     }
@@ -425,13 +410,13 @@ const Usuarios: NextPage = (props) => {
     //filter users by search text
     let tempUsers = [...allUsers];
     tempUsers = tempUsers.filter((user) =>
-      user.username.toLowerCase().includes(value.toLowerCase()),
+      user.user.toLowerCase().includes(value.toLowerCase()),
     );
-    setUsers(tempUsers);
+    setUsersList(tempUsers);
   };
 
   // Avoid a layout jump when reaching the last page with empty rows.
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - usersList.length) : 0;
 
   /* Row of defects table */
   function Row(props: { row: User }) {
@@ -441,9 +426,9 @@ const Usuarios: NextPage = (props) => {
       <React.Fragment>
         <StyledTableRow sx={{ '& > *': { borderBottom: 'unset' } }}>
           <StyledTableCell component="th" scope="row">
-            {row.username}
+            {row.user}
           </StyledTableCell>
-          <StyledTableCell align="left">{row.role ? row.role : "--"}</StyledTableCell>
+          <StyledTableCell align="left">{row.type ? row.type : "--"}</StyledTableCell>
           <StyledTableCell align="right">
             <IconButton
               size="small"
@@ -482,7 +467,7 @@ const Usuarios: NextPage = (props) => {
             {/* header */}
             <div className={styles.list__header}>
               {/* search input */}
-              <input type="text" id="searchText" placeholder="Type username here" className={styles.input} value={searchText} onChange={(e) => handleSearchTextChange(e.target.value)} />
+              <input type="text" id="searchText" placeholder="Type user here" className={styles.input} value={searchText} onChange={(e) => handleSearchTextChange(e.target.value)} />
               
               {/* filter button */}
               <IconButton onClick={handleClick}>
@@ -503,9 +488,9 @@ const Usuarios: NextPage = (props) => {
                   <HighlightOffRoundedIcon />
                   Clear filters
                 </MenuItem>
-                <MenuItem onClick={() => {handleClose('username')}} disableRipple>
+                <MenuItem onClick={() => {handleClose('user')}} disableRipple>
                   <PersonRoundedIcon />
-                  Username
+                  user
                 </MenuItem>
                 <MenuItem onClick={() => {handleClose('role')}} disableRipple>
                   <AdminPanelSettingsRoundedIcon />
@@ -520,21 +505,21 @@ const Usuarios: NextPage = (props) => {
             </div>
 
             {/* lista de usuarios */}
-            {users.length !== 0 ? (
+            {usersList.length !== 0 ? (
               <>
                 <div className={styles.user__container}>
                     <TableContainer sx={{ maxHeight: 'calc(100vh - 350px)', minHeight: 'cacl(100vh - 350px)' }}>
                       <Table aria-label="collapsible table" >
                         <TableHead>
                           <TableRow>
-                            <StyledTableCell>Username</StyledTableCell>
+                            <StyledTableCell>user</StyledTableCell>
                             <StyledTableCell align="left">Role</StyledTableCell>
                             <StyledTableCell align="right"/>
                           </TableRow>
                         </TableHead>
                         <TableBody>
-                          {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
-                            <Row key={`${row.username}__${i}`} row={row} />
+                          {usersList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
+                            <Row key={`${row.user}__${i}`} row={row} />
                           ))}
                           {emptyRows > 0 && (
                             <TableRow
@@ -552,7 +537,7 @@ const Usuarios: NextPage = (props) => {
                       rowsPerPageOptions={[15, 25, 50]}
                       component="div"
                       style={{color: 'white !important'}}
-                      count={users.length}
+                      count={usersList.length}
                       rowsPerPage={rowsPerPage}
                       page={page}
                       onPageChange={handleChangePage}
@@ -590,27 +575,27 @@ const Usuarios: NextPage = (props) => {
                     <PersonRoundedIcon/>
                   </div>
 
-                  {/* username */}
+                  {/* user */}
                   <div className={styles.form__container__input}>
-                    <input type="text" id="username" autoComplete='off' placeholder='username' className={styles.form__input} value={username} onChange={(e) => setUsername(e.target.value)} />
+                    <input type="text" id="user" autoComplete='off' placeholder='user' className={styles.form__input} value={newUser.user} onChange={(e) => {setNewUser({...newUser, user: e.target.value})}} />
                   </div>
 
                   {/* password */}
                   <div className={styles.form__container__input}>
-                    <input type="password" id="password" autoComplete='new-password' placeholder='password' className={styles.form__input} value={password} onChange={(e) => setPassword(e.target.value)} />
+                    <input type="password" id="password" autoComplete='new-password' placeholder='password' className={styles.form__input} value={newUser.password} onChange={(e) => {setNewUser({...newUser, password: e.target.value})}} />
                   </div>
 
                   {/* confirm password */}
                   <div className={styles.form__container__input}>
-                    <input type="password" id="password" autoComplete='new-password' placeholder='confirm password' className={styles.form__input} value={confirmPassword} onChange={(e) => setConfirmPassword(e.target.value)} />
+                    <input type="password" id="password" autoComplete='new-password' placeholder='confirm password' className={styles.form__input} value={newUser.confirmPassword} onChange={(e) => {setNewUser({...newUser, confirmPassword: e.target.value})}} />
                   </div>
 
                   {/* role */}
                   <Select
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
+                    value={newUser.type}
+                    onChange={(e) => {setNewUser({...newUser, type: e.target.value})}}
                     input={<WhiteInput />}
                     style={{ width: '100%', marginBottom: '20px' }}
                   >
@@ -656,9 +641,9 @@ const Usuarios: NextPage = (props) => {
                     <PersonRoundedIcon/>
                   </div>
 
-                  {/* username */}
+                  {/* user */}
                   <div className={styles.form__container__input}>
-                    <input type="text" id="username" autoComplete='off' placeholder='username' className={styles.form__input} value={editUsername} onChange={(e) => setEditUsername(e.target.value)} />
+                    <input type="text" id="user" autoComplete='off' placeholder='user' className={styles.form__input} value={editUsername} onChange={(e) => setEditUsername(e.target.value)} />
                   </div>
 
                   {/* role */}
@@ -708,7 +693,7 @@ const Usuarios: NextPage = (props) => {
                 <div className={styles.form__container}>
                   {/* header */}
                   <div className={styles.form__head}>
-                    <h4>Delete User: {deleteUser?.username}</h4>
+                    <h4>Delete User: {deleteUser?.user}</h4>
                     <PersonRoundedIcon/>
                   </div>
 
@@ -726,6 +711,5 @@ const Usuarios: NextPage = (props) => {
     </div>
   )
 }
-                
 
 export default Usuarios

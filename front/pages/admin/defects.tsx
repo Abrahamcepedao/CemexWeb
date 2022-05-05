@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react'
 
 /* Redux */
 import { setCurrentTab, setUsername, setDate1, setDate2, setDefectsData, setParametersType } from "../../redux/actions"
-import { selectUser } from "../../redux/states/users/reducer"
+import { selectUser } from "../../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
