@@ -35,6 +35,6 @@ const reducer = (state = initialState, action:any) => {
     }
 }
 
-export const selectUser = (state: AppState) => state.userState.user
+export const selectUser = (state: AppState) => state.userState.user;
 
 export default reducer;
