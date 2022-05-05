@@ -56,6 +56,10 @@ interface User {
   createdAt: string,
 }
 
+interface Message {
+  message: string,
+}
+
 /* Styled menu for filter button */
 const StyledMenu = styled((props: MenuProps) => (
   <Menu
@@ -146,7 +150,7 @@ const Usuarios: NextPage = (props) => {
   const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
-  /* Function get all users */
+  /* Function get all users - api */
   function getAllUsers(url: string): Promise<Array<User>> {
     return fetch(url, {
       method: "POST",
@@ -284,32 +288,69 @@ const Usuarios: NextPage = (props) => {
     return true;
   };
 
+  /* Function create new user - api */
+  function handleCreateUser(url: string): Promise<Message> {
+    return fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: newUser.user,
+        password: newUser.password,
+        type: newUser.type,
+      }),
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(response.statusText)
+      }
+      return response.json() as Promise<Message>
+    })
+  }
+  
+  /* Create user function */
   const createUser = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     console.log('creating user');
     if (validateCreateUser()) {
-      //add user to database
+        //add user to database
+        try {
+        handleCreateUser('http://localhost:5000/user/create')
+        .then(data => {
+          if (data.message === 'success') {
+            //set state of users
+            let tempUsers = [...usersList];
+            tempUsers.push({
+              user: newUser.user,
+              type: newUser.type,
+              createdAt: new Date().toLocaleString()
+            });
+            setUsersList(tempUsers); 
 
-      //set state of users
-      let tempUsers = [...usersList];
-      tempUsers.push({
-        user: newUser.user,
-        type: newUser.type,
-        createdAt: new Date().toLocaleString()
-      });
-      setUsersList(tempUsers); 
+            //reset new user state
+            setError('');
+            setNewUser({
+              ...newUser,
+              user: '',
+              password: '',
+              confirmPassword: ''
+            });
 
-      //reset new user state
-      setError('');
-      setNewUser({
-        ...newUser,
-        user: '',
-        password: '',
-        confirmPassword: ''
-      });
-
-      //set success message
-      setSuccess('User created successfully');
+            //set success message
+            setSuccess('User created successfully');
+          } else {
+            //set error message
+            setError(data.message);
+          }
+        })
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 

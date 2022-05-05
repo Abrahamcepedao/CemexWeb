@@ -544,7 +544,7 @@ def createUser():
         request_json = request.get_json()
         user = request_json.get('user')
         pasword = request_json.get('password')
-        role = request_json.get('role')
+        role = request_json.get('type')
 
         #check if user and password are not empty
         if user and pasword:
