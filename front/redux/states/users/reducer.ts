@@ -7,7 +7,6 @@ import * as t from "./types";
 import type { AppState } from '../../store';
 
 const initialState = {
-   //@ts-ignore
   users: []
 }
 
