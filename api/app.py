@@ -88,13 +88,14 @@ def downloadTemplate():
 #----------------------------------------------------------------------------------------------------------------------
 
 #Retrieve all the issue types
-@app.route('/issue-types', methods=['POST'])
+@app.route('/issues', methods=['POST'])
 @cross_origin()
 def issue_types():
     try:
         #get the username and access token from json
-        username = request.json['user']
-        access_token = request.json['accessToken']
+        request_json = request.get_json()
+        username = request_json.get('user')
+        access_token = request_json.get('accessToken')
 
         if validateUser(username, access_token):
             #get the issue types from the database
@@ -437,7 +438,7 @@ def retrieveDefectsByIssueUser():
 #retrieve defects by Issue Type by date range
 @app.route("/defects/issue/date", methods=['POST'])
 @cross_origin()
-def retrieveDefectsByCategoryIssueDate():
+def retrieveDefectsByIssueDate():
 
     try:
         #get the username and access token from json
@@ -475,10 +476,10 @@ def retrieveDefectsByCategoryIssueDate():
     except:
         return jsonify({'message': 'Error retrieving defects'})
 
-#Retrieve defects by category by date range by user
-@app.route("/defects/category/date/get", methods=['POST'])
+#Retrieve defects by issue type by date range by user
+@app.route("/defects/issue/date/get", methods=['POST'])
 @cross_origin()
-def retrieveDefectsByCategoryIssueDateUser():
+def retrieveDefectsByIssueDateUser():
 
     try:
         #get the username and access token from json
@@ -626,7 +627,7 @@ def getAllUsers():
         request_json = request.get_json()
         username = request_json.get('user')
         access_token = request_json.get('accessToken')
-        analysis = request_json.get['analysis']
+        analysis = request_json.get('analysis')
 
         print(analysis)
 

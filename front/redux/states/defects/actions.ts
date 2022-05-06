@@ -45,3 +45,11 @@ export const setReduxDate2 = (date2: string) => {
     payload: date2
   }
 }
+
+export const setReduxIssue = (issue: string) => {
+  localStorage.setItem("defectIssue", issue);
+  return {
+    type: t.SET_ISSUE,
+    payload: issue
+  }
+}
