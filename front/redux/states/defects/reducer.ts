@@ -12,6 +12,7 @@ const initialState = {
   username: "",
   date1: "",
   date2: "",
+  issue: ""
 }
 
 const reducer = (state = initialState, action:any) => {
@@ -45,6 +46,12 @@ const reducer = (state = initialState, action:any) => {
       return {
         ...state,
         date2: action.payload
+      }
+
+    case t.SET_ISSUE:
+      return {
+        ...state,
+        issue: action.payload
       }
       
     default:

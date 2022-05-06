@@ -9,6 +9,7 @@ import fileReducer from './states/file/reducer'
 import headerReducer from './states/header/reducer'
 import historicReportReducer from './states/historicReport/reducer'
 import defectsReducer from './states/defects/reducer'
+import issuesReducer from './states/issues/reducer'
 
 export function makeStore() {
   return configureStore({
@@ -18,7 +19,8 @@ export function makeStore() {
       fileState: fileReducer,
       headerState: headerReducer,
       historicReportState: historicReportReducer,
-      defectsState: defectsReducer
+      defectsState: defectsReducer,
+      issuesState: issuesReducer
     },
   })
 }

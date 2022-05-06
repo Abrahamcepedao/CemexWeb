@@ -151,7 +151,7 @@ const Usuarios: NextPage = (props) => {
   const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
   /* Function get all users - api */
-  function getAllUsers(url: string): Promise<Array<User>> {
+  async function getAllUsers(url: string): Promise<Array<User>> {
     return fetch(url, {
       method: "POST",
       headers: {
@@ -194,7 +194,7 @@ const Usuarios: NextPage = (props) => {
       try {
         getAllUsers('http://localhost:5000/users/get')
         .then(data => {
-          if (data.length !== 0) {
+          if (data.length > 1) {
             
             //set local state
             setAllUsers(data);
@@ -462,7 +462,7 @@ const Usuarios: NextPage = (props) => {
     try {
       getAllUsers('http://localhost:5000/users/get')
       .then(data => {
-        if (data.length !== 0) {
+        if (data.length > 1) {
           console.log(data);
           //set local state
           setAllUsers(data);
@@ -474,6 +474,7 @@ const Usuarios: NextPage = (props) => {
         
           setError(''); //clear error
         } else {
+          setError('Error retrieving users');
           //setError(data.message); //set error
         }
       })
