@@ -37,8 +37,6 @@ import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
 import { InfinitySpin } from 'react-loader-spinner'
 
 const Dashboard: NextPage = (props) => {
-  /* useState - currrent user */
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   /* useState - upload */
   const [state, setState] = useState({
@@ -89,8 +87,6 @@ const Dashboard: NextPage = (props) => {
     //console.log(user);
     if (!user) {
       Router.push('/');
-    } else {
-      setIsLoggedIn(true);
     }
 
     /* Check if there is a historic report */
@@ -99,7 +95,7 @@ const Dashboard: NextPage = (props) => {
     }
 
     
-  }, [isLoggedIn]);
+  }, []);
 
   /* Functions - handle drag and drop */
   const handleDragEnter = (e: React.DragEvent<HTMLDivElement>) => {
@@ -368,7 +364,7 @@ const Dashboard: NextPage = (props) => {
                   </div>
                 ) : (
                   <>
-
+                    
                   </>
                 )}
               </>
