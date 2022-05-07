@@ -13,7 +13,7 @@
 
 /* container */
 .results__container {
-    padding: 50px;
+    padding: 20px;
     margin: auto;
     min-height: calc(100vh - 100px);
     background: rgba(255, 255, 255, 0.19);
@@ -28,11 +28,10 @@
 
 /* <---------------left----------------> */
 .results__left {
-    flex: 0.5;
+    flex: 1;
     height: 100%;
-    background: red;
-    min-height: calc(100vh - 200px);
-    margin-right: 50px;
+    min-height: calc(100vh - 140px);
+    margin-right: 20px;
 }
 
 /* facts */
@@ -41,6 +40,9 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+}
+.facts__container {
+    margin-bottom: 20px;
 }
 
 .fact__item {
@@ -64,7 +66,7 @@
     font-size: 35px;
 }
 
-.fact__item, .fact__text__container, .graph__container {
+.fact__item, .graph__container {
     background: rgba(255, 255, 255, 0.19);
 }
 
@@ -85,9 +87,45 @@
     margin: 0px;
 }
 
+/* Graph */
+.graph__container {
+    background: rgba(255, 255, 255, 0.19);
+    border-radius: 15px;
+    padding: 20px;
+    flex: 1;
+}
+
+/* graph header */
+.graph__header__icons, .graph__header {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.graph__header__icon {
+    color: white;
+}
+
 /* <---------------right----------------> */
 .results__right {
     flex: 0.5;
-    background: blue;
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 140px);
+    width: 100%;
+    background: rgba(255, 255, 255, 0.19);
+    padding: 20px;
+    max-width: 600px;
+    border-radius: 15px;
+}
+
+
+/* labels */
+.labels__list {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    overflow-x: scroll;
+
 }

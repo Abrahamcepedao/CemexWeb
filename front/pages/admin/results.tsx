@@ -26,7 +26,8 @@ import { TransparentInput } from '../../components/admin/Selects'
 import styles from '../../styles/admin/Results.module.css'
 
 /* Material - UI */
-
+import { IconButton } from '@mui/material'
+import Chip from '@mui/material/Chip';
 
 /* Material UI - icons */
 import UploadFileRoundedIcon from '@mui/icons-material/UploadFileRounded';
@@ -37,6 +38,7 @@ import DonutSmallRoundedIcon from '@mui/icons-material/DonutSmallRounded';
 import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
 import ArrowDropUpRoundedIcon from '@mui/icons-material/ArrowDropUpRounded';
 import ArrowDropDownRoundedIcon from '@mui/icons-material/ArrowDropDownRounded';
+import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
 
 const Dashboard: NextPage = (props) => {
 
@@ -142,8 +144,24 @@ const Dashboard: NextPage = (props) => {
 
                 {/* left lower - graph */}
                 <div className={styles.graph__container}>
-                    <h2>Graph goes here</h2>
+                    <div className={styles.graph__header}>
+                        <h2>Distribution of defects</h2>
+                        <div className={styles.graph__header__icons}>
+                            <IconButton>
+                                <DonutSmallRoundedIcon className={styles.graph__header__icon}/>
+                            </IconButton>
+                            <IconButton>
+                                <BarChartRoundedIcon className={styles.graph__header__icon}/>
+                            </IconButton>
+                        </div>
+                    </div>
+
+                    <div className={styles.graph__body}>
+                        <h2>graph goes here</h2>
+                    </div>
                 </div>
+
+
             </div>
 
             {/* right */}
@@ -155,7 +173,73 @@ const Dashboard: NextPage = (props) => {
 
                 {/* labels */}
                 <div className={styles.labels__container}>
-                    <h2>Labels go here</h2>
+                    <h2>Select a label</h2>
+                    <div className={styles.labels__list}>
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                        <Chip
+                            label="With icon"
+                            onClick={() => {}}
+                            icon={<CircleRoundedIcon style={{color: "#0bbfa4"}}/>}
+                            variant="filled"
+                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px'}}
+                        />
+                       
+                    </div>
                 </div>
 
                 {/* defects data */}
