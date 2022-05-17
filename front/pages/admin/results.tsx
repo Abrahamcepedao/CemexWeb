@@ -372,9 +372,9 @@ const Dashboard: NextPage = (props) => {
             <StyledTableCell component="th" scope="row">
                 <div className={styles.circle} style={{background: getLabelColor(row["Cluster"])}}></div>
             </StyledTableCell>
-            <StyledTableCell component="th" scope="row">
+            {/* <StyledTableCell component="th" scope="row">
                 {row["Issue key"]}
-            </StyledTableCell>
+            </StyledTableCell> */}
             <StyledTableCell align="right">{row["Created"] ? row["Created"] : "--"}</StyledTableCell>
             <StyledTableCell align="right">{row["Assignee"] ? row["Assignee"] : "--"}</StyledTableCell>
             <StyledTableCell align="right">{row["Priority"] ? row["Priority"] : "--"}</StyledTableCell>
@@ -394,6 +394,8 @@ const Dashboard: NextPage = (props) => {
                 <Collapse in={open} timeout="auto" unmountOnExit>
                 <Box sx={{ margin: 0, paddingRight: 0 }}>
                     <div>
+                        <p className={styles.info__item}><b>Cluster: </b>{row["Cluster"]}</p>
+                        <p className={styles.info__item}><b>Issue key: </b>{row["Issue key"]}</p>
                         <p className={styles.info__item}><b>Status: </b>{row["Status"]}</p>
                         <p className={styles.info__item}><b>Severity: </b>{row["Custom field (Severity)"]}</p>
                         <p className={styles.info__item}><b>Issue Type: </b>{row["Issue Type"]}</p>
@@ -529,7 +531,6 @@ const Dashboard: NextPage = (props) => {
                                         <TableHead>
                                         <TableRow>
                                             <StyledTableCell />
-                                            <StyledTableCell>Issue key</StyledTableCell>
                                             <StyledTableCell align="right">Date</StyledTableCell>
                                             <StyledTableCell align="right">Assignee</StyledTableCell>
                                             <StyledTableCell align="right">Priority</StyledTableCell>

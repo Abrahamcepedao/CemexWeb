@@ -11,11 +11,11 @@ import { animated } from '@react-spring/web'
 const MyPie = ({ data /* see data tab */ }) => (
     <Pie
         data={data}
-        margin={{ top: 40, right: 120, bottom: 40, left: 80 }}
+        margin={{ top: 40, right: 100, bottom: 40, left: 40 }}
         innerRadius={0.5}
         padAngle={0.7}
-        width={600}
-        height={600}
+        width={500}
+        height={500}
         cornerRadius={3}
         activeOuterRadiusOffset={8}
         borderWidth={1}

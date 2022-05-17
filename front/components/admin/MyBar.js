@@ -15,10 +15,10 @@ const MyBar = ({ data, commonProps }) => (
             'value'
         ]}
         indexBy="cluster"
-        margin={{ top: 20, right: 60, bottom: 50, left: 60 }}
+        margin={{ top: 20, right: 60, bottom: 50, left: 30 }}
         padding={0.3}
-        width={700}
-        height={600}
+        width={900}
+        height={500}
         valueScale={{ type: 'linear' }}
         indexScale={{ type: 'band', round: true }}
         colors={({ data }) => String(data[`color`])}
