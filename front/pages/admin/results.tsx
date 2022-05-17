@@ -445,7 +445,7 @@ const Dashboard: NextPage = (props) => {
                             </div>
                             <div className={styles.fact__text__container}>
                                 <p className={styles.fact__number}>
-                                    {labels.length}
+                                    {labels.length - 1}
                                 </p>
                                 <p className={styles.fact__text}>
                                     Clusters
