@@ -29,7 +29,7 @@ const MyPie = ({ data /* see data tab */ }) => (
                 ]
             ]
         }}
-        tooltip={({ datum: { id, value, color } }) => (
+        tooltip={({ datum: { id, value, percentage, color } }) => (
             <div
                 style={{
                     padding: 12,
@@ -39,7 +39,7 @@ const MyPie = ({ data /* see data tab */ }) => (
                 }}
             >
                 <strong>
-                    {id}: {value}
+                    {id}: {value}, {percentage}%
                 </strong>
             </div>
         )}

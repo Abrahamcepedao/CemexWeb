@@ -74,36 +74,10 @@ interface Label {
     label: string,
     color: string,
     status: boolean,
-    value: number
+    value: number,
+    percentage: number
 }
 
-/* Temp data */
-
-const data =[
-    { cluster: 'Cluster1', value: 68, "color": "#F44336", },
-    { cluster: 'Cluster2', value: 65, "color": "#E91E63", },
-    { cluster: 'Cluster3', value: 57, "color": "#9C27B0", },
-    { cluster: 'Cluster4', value: 51, "color": "#673AB7", },
-    { cluster: 'Cluster5', value: 48, "color": "#3F51B5", },
-    { cluster: 'Cluster6', value: 45, "color": "#2196F3", },
-    { cluster: 'Cluster7', value: 42, "color": "#03A9F4", },
-    { cluster: 'Cluster8', value: 40, "color": "#00BCD4", },
-    { cluster: 'Cluster9', value: 38, "color": "#009688", },
-    { cluster: 'Cluster10', value: 35, "color": "#4CAF50", },
-]
-
-const data2 = [
-    { "id": "Cluster1", "label": "Cluster1", "value": 68, "color": "#F44336", },
-    { "id": "Cluster2", "label": "Cluster2", "value": 65, "color": "#E91E63", },
-    { "id": "Cluster3", "label": "Cluster3", "value": 57, "color": "#9C27B0", },
-    { "id": "Cluster4", "label": "Cluster4", "value": 51, "color": "#673AB7", },
-    { "id": "Cluster5", "label": "Cluster5", "value": 48, "color": "#3F51B5", },
-    { "id": "Cluster6", "label": "Cluster6", "value": 45, "color": "#2196F3", },
-    { "id": "Cluster7", "label": "Cluster7", "value": 42, "color": "#03A9F4", },
-    { "id": "Cluster8", "label": "Cluster8", "value": 39, "color": "#00BCD4", },
-    { "id": "Cluster9", "label": "Cluster9", "value": 36, "color": "#009688", },
-    { "id": "Cluster10", "label": "Cluster10", "value": 33, "color": "#4CAF50", },
-]
 
 //consant of a 100 colors array
 const colors = [
@@ -178,10 +152,6 @@ const commonProps = {
 };
 
 
-const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-
-
-
 
 const Dashboard: NextPage = (props) => {
 
@@ -205,9 +175,6 @@ const Dashboard: NextPage = (props) => {
     /* redux - user */
     const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
     
-    /* redux - file */
-    const dropDepth = useAppSelector(selectDropDepth) //function that allows to get the dropDepth from the redux state
-
     /* redux - historic report */
     const historicDefects = useAppSelector(selectDefectsData) //function that allows to get the historic defects from the redux state
     const historicParametersType = useAppSelector(selectParametersType) //function that allows to get the historic parametersType from the redux state
@@ -224,12 +191,7 @@ const Dashboard: NextPage = (props) => {
         /* Set current tab */
         dispatch(setCurrentTab('dashboard'));
 
-        /* Set daa */
-        /* setBarData(data)
-        setPieData(data2) */
-
         /* Redirect user if needed */
-        //console.log(user);
         if (!user) {
         //Router.push('/');
         } else {
@@ -242,26 +204,13 @@ const Dashboard: NextPage = (props) => {
 
         setAllDefects(defectsAllTemp);
         setDefects(defectsAllTemp);
-        /* setLabels([
-            { number: 0, label: 'All', color: '#FFEB3B', status: false },
-            { number: 1, label: 'Cluster 1', color: '#F44336', status: false },
-            { number: 2, label: 'Cluster 2', color: '#E91E63', status: false },
-            { number: 3, label: 'Cluster 3', color: '#9C27B0', status: false },
-            { number: 4, label: 'Cluster 4', color: '#673AB7', status: false },
-            { number: 5, label: 'Cluster 5', color: '#3F51B5', status: false },
-            { number: 6, label: 'Cluster 6', color: '#2196F3', status: false },
-            { number: 7, label: 'Cluster 7', color: '#03A9F4', status: false },
-            { number: 8, label: 'Cluster 8', color: '#00BCD4', status: false },
-            { number: 9, label: 'Cluster 9', color: '#009688', status: false },
-            { number: 10, label: 'Cluster 10', color: '#4CAF50', status: false },
-        ]); */
 
     
         /* set labels */
         //@ts-ignore
         var labelsTemp = [];
-        labelsTemp.push({ number: -2, label: 'All', color: '#FFEB3B', status: false, value: Results.length });
-        Results.forEach(element => {
+        labelsTemp.push({ number: -2, label: 'All', color: '#FFEB3B', status: false, value: Results.length, percentage: 100 });
+        defectsAllTemp.forEach(element => {
             //check if label already exists
             var found = false;
             //@ts-ignore
@@ -275,7 +224,7 @@ const Dashboard: NextPage = (props) => {
             }
             );
             if (!found && element.Cluster !== -1) {
-                labelsTemp.push({ number: element.Cluster, label: `Cluster ${element.Cluster}`, color: colors[element.Cluster + 1], status: false, value: 1 });
+                labelsTemp.push({ number: element.Cluster, label: `Cluster ${element.Cluster}`, color: colors[element.Cluster + 1], status: false, value: 1, percentage: 0 });
             }
         });
         console.log(labelsTemp);
@@ -284,6 +233,16 @@ const Dashboard: NextPage = (props) => {
         labelsTemp.sort(function (a, b) {
             return b.value - a.value;
         });
+
+        //set percentages of labels
+        labelsTemp.forEach((element, i) => {
+            //@ts-ignore
+            let per = (element.value / defectsAllTemp.length) * 100;
+            //@ts-ignore
+            labelsTemp[i].percentage =  per.toFixed(2);
+        });
+
+        console.log(labelsTemp);
 
         //set pie data and bar chart data
         //@ts-ignore
@@ -296,11 +255,13 @@ const Dashboard: NextPage = (props) => {
                     "id": element.label,
                     "label": element.label,
                     "value": element.value,
+                    "percentage": element.percentage,
                     "color": element.color
                 });
                 barDataTemp.push({
                     "cluster": element.label,
                     "value": element.value,
+                    "percentage": element.percentage,
                     "color": element.color
                 });
             } 
@@ -510,7 +471,7 @@ const Dashboard: NextPage = (props) => {
                             {labels.map((label, index) => (
                                 <Chip
                                     key={index}
-                                    label={label.label}
+                                    label={label.label === "All" ? "All" : `${label.label} (${label.percentage}%)`}
                                     onClick={() => {handleChipClick(label)}}
                                     icon={<CircleRoundedIcon style={{color: label.color}}/>}
                                     variant="filled"
