@@ -14,14 +14,14 @@ import {
   setUsername, 
   setDate1, 
   setDate2, 
-  setDefectsData, 
   setParametersType, 
   setReduxDefects, 
   setReduxSearchType,
   setReduxUsername,
   setReduxDate1,
   setReduxDate2,
-  setReduxIssue
+  setReduxIssue,
+  setIssueType
 } from "../../redux/actions"
 import { selectUser } from "../../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
@@ -873,7 +873,7 @@ const Defects: NextPage = (props) => {
       dispatch(setUsername(searchState.username));
       dispatch(setDate1(searchState.date1));
       dispatch(setDate2(searchState.date2));
-      dispatch(setDefectsData(allDefects));
+      dispatch(setIssueType(searchState.issue));
 
       //redirect to dashboard to continue with report generation
       Router.push('/admin/dashboard');

@@ -26,6 +26,13 @@ export const setDate2 = (date2: string) => {
     };
 }
 
+export const setIssueType = (issueType: string) => {
+    return {
+        type: t.SET_ISSUE_TYPE,
+        payload: issueType
+    };
+}
+
 export const setParametersType = (parametersType: string) => {
     return {
         type: t.SET_PARAMETERS_TYPE,
@@ -47,10 +54,5 @@ export const setNumberClusters = (numClusters: number) => {
     };
 }
 
-export const setDefectsData = (defectData: Array<Defect>) => {
-    return {
-        type: t.SET_DEFETCS_DATA,
-        payload: defectData
-    };
-}
+
 

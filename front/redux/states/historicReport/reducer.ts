@@ -10,10 +10,10 @@ const initialState = {
     username: "",
     date1: "",
     date2: "",
+    issueType: "",
     parametersType: "", // ("all", "user", "date", "date_user")
     reportType: "",
     numberClusters: 0,
-    defectsData: [],
 }
 
 const reducer = (state = initialState, action:any) => {
@@ -49,10 +49,10 @@ const reducer = (state = initialState, action:any) => {
             ...state,
             numberClusters: action.payload
         };
-    case t.SET_DEFETCS_DATA:
+    case t.SET_ISSUE_TYPE:
         return {
             ...state,
-            defectsData: action.payload
+            issueType: action.payload
         };
       
     default:
@@ -63,9 +63,9 @@ const reducer = (state = initialState, action:any) => {
 export const selectUsername = (state: AppState) => state.historicReportState.username;
 export const selectDate1 = (state: AppState) => state.historicReportState.date1;
 export const selectDate2 = (state: AppState) => state.historicReportState.date2;
+export const selectIssueType = (state: AppState) => state.historicReportState.issueType;
 export const selectParametersType = (state: AppState) => state.historicReportState.parametersType;
 export const selectReportType = (state: AppState) => state.historicReportState.reportType;
 export const selectNumberClusters = (state: AppState) => state.historicReportState.numberClusters;
-export const selectDefectsData = (state: AppState) => state.historicReportState.defectsData;
 
 export default reducer;

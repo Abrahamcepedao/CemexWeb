@@ -39,7 +39,7 @@ const MyPie = ({ data /* see data tab */ }) => (
                 }}
             >
                 <strong>
-                    {id}: {value}, {percentage}%
+                    {id}: {value}
                 </strong>
             </div>
         )}
