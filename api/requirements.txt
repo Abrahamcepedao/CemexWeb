@@ -15,7 +15,10 @@ deep-translator
 Deprecated
 dnspython
 filelock
+flask
 Flask
+flask-cors
+flask_cors
 Flask-Limiter
 flask-talisman
 fonttools

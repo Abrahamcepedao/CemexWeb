@@ -12,7 +12,7 @@ import React, { useEffect, useState, useRef } from 'react'
 import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters } from "../../redux/actions"
 import { selectDropDepth } from "../../redux/states/file/reducer"
 import { selectUser } from "../../redux/states/user/reducer"
-import { selectDefectsData, selectParametersType, selectUsername, selectDate1, selectDate2, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
+import { selectParametersType, selectUsername, selectDate1, selectDate2, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
@@ -65,7 +65,6 @@ const Dashboard: NextPage = (props) => {
   const dropDepth = useAppSelector(selectDropDepth) //function that allows to get the dropDepth from the redux state
 
   /* redux - historic report */
-  const historicDefects = useAppSelector(selectDefectsData) //function that allows to get the historic defects from the redux state
   const historicParametersType = useAppSelector(selectParametersType) //function that allows to get the historic parametersType from the redux state
   const historicUsername = useAppSelector(selectUsername) //function that allows to get the historic username from the redux state
   const historicDate1 = useAppSelector(selectDate1) //function that allows to get the historic date1 from the redux state
@@ -90,7 +89,7 @@ const Dashboard: NextPage = (props) => {
     }
 
     /* Check if there is a historic report */
-    if (historicDefects.length > 0) {
+    if (historicReportType !== "") {
       setState({ ...state, isHistoric: true, step: 1 });
     }
 
@@ -227,6 +226,8 @@ const Dashboard: NextPage = (props) => {
           step: num,
           loading: true,
         });
+
+        //fecth report from api
       }
     } 
   }
@@ -305,19 +306,24 @@ const Dashboard: NextPage = (props) => {
                     <div className={styles.historical__container}>
                       <h4>Data for historical report:</h4>
                       {/* user */}
-                      {(historicParametersType === "user" || historicParametersType === "date_user") && (
+                      {(historicParametersType === "user" || historicParametersType === "date_user" || historicParametersType === "issue_user" || historicParametersType === "issue_date_user") && (
                         <p><b>Username:</b> {historicUsername}</p>
                       )}
 
                       {/* date */}
-                      {(historicParametersType === "date" || historicParametersType === "date_user") && (
-                        <p><b>Initial date:</b> {historicDate1}</p>
+                      {(historicParametersType === "date" || historicParametersType === "date_user" || historicParametersType === "issue_date" || historicParametersType === "issue_date_user") && (
+                        <>
+                          <p><b>Initial date:</b> {historicDate1}</p>
+                          <p><b>Final date:</b> {historicDate2}</p>
+                        </>
                       )}
 
-                      {/* date and user */}
-                      {(historicParametersType === "date" || historicParametersType === "date_user") && (
-                        <p><b>Final date:</b> {historicDate2}</p>
+                      {/* issue */}
+                      {(historicParametersType === "isse" || historicParametersType === "issue_user" || historicParametersType === "issue_date" || historicParametersType === "issue_date_user") && (
+                        <p><b>Issue type:</b> {historicDate2}</p>
                       )}
+
+
                     </div>
                   )}
 
