@@ -32,6 +32,10 @@
     height: 100%;
     min-height: calc(100vh - 140px);
     margin-right: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
 /* facts */
@@ -40,6 +44,7 @@
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
+    width: 100%;
 }
 .facts__container {
     margin-bottom: 20px;
@@ -52,7 +57,7 @@
     flex: 1;
 }
 
-.fact__icon__container {
+.fact__icon__container__bug, .fact__icon__container__defect {
     width: 80px;
     height: 80px;
     background: rgba(255, 255, 255, 0.09);
@@ -62,8 +67,16 @@
     border-radius: 15px;
     margin-right: 20px;
 }
+.fact__icon__container__bug {
+    background: #E91E63;
+}
+.fact__icon__container__defect {
+    background: #03A9F4;
+}
+
 .fact__icon {
     font-size: 35px;
+    opacity: 0.5;
 }
 
 .fact__item, .graph__container {
@@ -93,7 +106,9 @@
     border-radius: 15px;
     padding: 20px;
     flex: 1;
+    width: 100%;
 }
+
 
 /* graph header */
 .graph__header__icons, .graph__header {
@@ -105,6 +120,42 @@
 
 .graph__header__icon {
     color: white;
+}
+
+/* graph body */
+.graph__body {
+    //background: rgba(255, 255, 255, 0.19);
+    height: 550px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+.graph {
+    width: 100%;
+    height: 100%;
+    //background: rgba(255, 255, 255, 0.39);
+    border-radius: 15px;
+    padding: 20px;
+}
+
+/* graph legend */
+.graph__legend {
+    min-width: 120px;
+    max-height: 355px;
+    overflow-y: scroll;
+    overflow-x: scroll;
+}
+.legend__container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.legend__container p {
+    margin: 0px;
 }
 
 /* <---------------right----------------> */
@@ -128,4 +179,11 @@
     margin-bottom: 20px;
     overflow-x: scroll;
 
+}
+
+/* table */
+.circle {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
 }
