@@ -211,7 +211,7 @@ def retrieveAllDefects():
     try:
         #get the username and access token from json
         request_json = request.get_json()
-        username = request_json.get('user')
+        username = request_json.get('username')
         access_token = request_json.get('accessToken')
         analysis = request_json.get('analysis')
 
@@ -248,13 +248,14 @@ def getUserDefects():
 
     try:
         #get the username and access token from json
-        username = request.json['user']
+        username = request.json['username']
         access_token = request.json['accessToken']
+        user = request.json['user']
         analysis = request.json['analysis']
 
 
         if validateUser(username, access_token):
-            result = retrieve_user_defects(username)
+            result = retrieve_user_defects(user)
             #check if the result is not a bool value or empty
             if  type(result) != bool:
                 if result.empty == False:
@@ -283,7 +284,7 @@ def retrieveDefectsByDate():
 
     try:
         #get the username and access token from json
-        username = request.json['user']
+        username = request.json['username']
         access_token = request.json['accessToken']
         analysis = request.json['analysis']
 
@@ -323,17 +324,18 @@ def retrieveDefectsByDateUser():
 
     try:
         #get the username and access token from json
-        username = request.json['user']
+        username = request.json['username']
         access_token = request.json['accessToken']
         analysis = request.json['analysis']
 
         if validateUser(username, access_token):
             #get the date range
+            user = request.json['user']
             start_date = request.json['startDate']
             end_date = request.json['endDate']
 
             #retrieve all defects
-            result = retrieve_user_defects_date_range(username, start_date, end_date)
+            result = retrieve_user_defects_date_range(user, start_date, end_date)
 
             #check if the result is not a bool value or empty
             if  type(result) != bool:
@@ -363,7 +365,7 @@ def retrieveDefectsByIssue():
 
     try:
         #get the username and access token from json
-        username = request.json['user']
+        username = request.json['username']
         access_token = request.json['accessToken']
         analysis = request.json['analysis']
 
@@ -442,7 +444,7 @@ def retrieveDefectsByIssueDate():
 
     try:
         #get the username and access token from json
-        username = request.json['user']
+        username = request.json['username']
         access_token = request.json['accessToken']
         analysis = request.json['analysis']
 
@@ -489,12 +491,13 @@ def retrieveDefectsByIssueDateUser():
 
         if validateUser(username, access_token):
             #get the category and issue type
+            user = request.json['user']
             issue_type = request.json['issueType']
             start_date = request.json['startDate']
             end_date = request.json['endDate']
 
             #retrieve all defects
-            result = retrieve_defects_by_issue_type_user_date_range(issue_type, username, start_date, end_date)
+            result = retrieve_defects_by_issue_type_user_date_range(issue_type, user, start_date, end_date)
 
             #check if the result is not a bool value or empty
             if  type(result) != bool:

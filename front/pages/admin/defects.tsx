@@ -416,7 +416,7 @@ const Defects: NextPage = (props) => {
 
       //make sure to serialize your JSON body
       body: JSON.stringify({
-        user: user.user,
+        usersername: user.username,
         accessToken: user.accessToken,
         analysis: "none"
       }),
@@ -440,8 +440,9 @@ const Defects: NextPage = (props) => {
 
       //make sure to serialize your JSON body
       body: JSON.stringify({
-        user: searchState.username,
+        username: user.username,
         accessToken: user.accessToken,
+        user: searchState.username,
         analysis: "none"
       }),
     })
@@ -452,7 +453,7 @@ const Defects: NextPage = (props) => {
     return await (response.json() as Promise<Array<Defect>>)
   }
 
-  /* Handle search defects by date range and user (is the same function) - api */
+  /* Handle search defects by date range - api */
   async function getDateDefects(url: string): Promise<Array<Defect>> {
     const response = await fetch(url, {
       method: "POST",
@@ -464,7 +465,7 @@ const Defects: NextPage = (props) => {
 
       //make sure to serialize your JSON body
       body: JSON.stringify({
-        user: searchState.username,
+        username: searchState.username,
         accessToken: user.accessToken,
         analysis: "none",
         startDate: `${searchState.date1}T00:00:00`,
@@ -478,7 +479,34 @@ const Defects: NextPage = (props) => {
     return await (response.json() as Promise<Array<Defect>>)
   }
 
-  /* Handle search defects by isssue and user (is the same function) - api */
+  /* Handle search defects by date range and user - api */
+  async function getDateUserDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: user.username,
+        accessToken: user.accessToken,
+        analysis: "none",
+        user: searchState.username,
+        startDate: `${searchState.date1}T00:00:00`,
+        endDate: `${searchState.date2}T23:59:59`
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by isssue - api */
   async function getIssueDefects(url: string): Promise<Array<Defect>> {
     const response = await fetch(url, {
       method: "POST",
@@ -490,7 +518,7 @@ const Defects: NextPage = (props) => {
 
       //make sure to serialize your JSON body
       body: JSON.stringify({
-        user: searchState.username,
+        username: searchState.username,
         accessToken: user.accessToken,
         analysis: "none",
         issueType: searchState.issue
@@ -503,7 +531,33 @@ const Defects: NextPage = (props) => {
     return await (response.json() as Promise<Array<Defect>>)
   }
 
-  /* Handle search defects by issue, date and user (is the same function) - api */
+  /* Handle search defects by isssue and user - api */
+  async function getIssueUserDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: user.username,
+        accessToken: user.accessToken,
+        analysis: "none",
+        user: searchState.username,
+        issueType: searchState.issue
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by issue, date - api */
   async function getIssueDateDefects(url: string): Promise<Array<Defect>> {
     const response = await fetch(url, {
       method: "POST",
@@ -515,9 +569,37 @@ const Defects: NextPage = (props) => {
 
       //make sure to serialize your JSON body
       body: JSON.stringify({
-        user: searchState.username,
+        username: user.username,
         accessToken: user.accessToken,
         analysis: "none",
+        issueType: searchState.issue,
+        startDate: `${searchState.date1}T00:00:00`,
+        endDate: `${searchState.date2}T23:59:59`
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by issue, date and user - api */
+  async function getIssueDateUserDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: user.username,
+        accessToken: user.accessToken,
+        analysis: "none",
+        user: searchState.username,
         issueType: searchState.issue,
         startDate: `${searchState.date1}T00:00:00`,
         endDate: `${searchState.date2}T23:59:59`
@@ -645,7 +727,7 @@ const Defects: NextPage = (props) => {
       } else if(searchState.searchBy === "date_user") {
         //search defects by range date and user
         try {
-          getDateDefects('http://localhost:5000/defects/date/get')
+          getDateUserDefects('http://localhost:5000/defects/date/get')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -705,7 +787,7 @@ const Defects: NextPage = (props) => {
       } else if(searchState.searchBy === "issue_user") {
         //search defects by issue type and user
         try {
-          getIssueDefects('http://localhost:5000/defects/issue/get')
+          getIssueUserDefects('http://localhost:5000/defects/issue/get')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -766,7 +848,7 @@ const Defects: NextPage = (props) => {
       } else if(searchState.searchBy === "issue_date_user") {
         //search defects by issue type, date and user
         try {
-          getIssueDateDefects('http://localhost:5000/defects/issue/date/get')
+          getIssueDateUserDefects('http://localhost:5000/defects/issue/date/get')
           .then(data => {
             if (data.length > 1) {
               console.log(data);

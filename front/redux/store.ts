@@ -10,6 +10,7 @@ import headerReducer from './states/header/reducer'
 import historicReportReducer from './states/historicReport/reducer'
 import defectsReducer from './states/defects/reducer'
 import issuesReducer from './states/issues/reducer'
+import resultsReducer from './states/results/reducer'
 
 export function makeStore() {
   return configureStore({
@@ -20,7 +21,8 @@ export function makeStore() {
       headerState: headerReducer,
       historicReportState: historicReportReducer,
       defectsState: defectsReducer,
-      issuesState: issuesReducer
+      issuesState: issuesReducer,
+      resultsState: resultsReducer
     },
   })
 }
