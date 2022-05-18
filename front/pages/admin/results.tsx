@@ -13,6 +13,7 @@ import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClu
 import { selectDropDepth } from "../../redux/states/file/reducer"
 import { selectUser } from "../../redux/states/user/reducer"
 import { selectParametersType, selectUsername, selectDate1, selectDate2, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
+import { selectResultsReportType } from '../../redux/states/results/reducer'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
@@ -35,6 +36,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import Tooltip from '@mui/material/Tooltip';
 
 /* Material UI - icons */
 import BugReportRoundedIcon from '@mui/icons-material/BugReportRounded';
@@ -44,6 +46,10 @@ import BarChartRoundedIcon from '@mui/icons-material/BarChartRounded';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import CircleRoundedIcon from '@mui/icons-material/CircleRounded';
+import AnalyticsRoundedIcon from '@mui/icons-material/AnalyticsRounded';
+import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
+import ReplayRoundedIcon from '@mui/icons-material/ReplayRounded';
+import PestControlRoundedIcon from '@mui/icons-material/PestControlRounded';
 
 /* Nivo */
 import MyBar from '../../components/admin/MyBar'
@@ -183,7 +189,8 @@ const Dashboard: NextPage = (props) => {
     const historicReportType = useAppSelector(selectReportType) //function that allows to get the historic report type from the redux state
     const historicNumClusters = useAppSelector(selectNumberClusters) //function that allows to get the historic number of clusters from the redux state
 
-
+    /* redux - results report */
+    const resultsReportType = useAppSelector(selectResultsReportType) //function that allows to get the results report type from the redux state
     
 
     useEffect(() => {
@@ -384,152 +391,196 @@ const Dashboard: NextPage = (props) => {
         <main className={styles.main}>
             <SideBar/>
             <div className={styles.results__container}>
-                <div className={styles.results__left}>
-                    {/* left upper - facts */}
-                    <div className={styles.facts__container}>
-                        <div className={styles.fact__item} style={{marginRight: '25px'}}>
-                            <div className={styles.fact__icon__container__bug}>
-                                <BugReportRoundedIcon className={styles.fact__icon}/>
-                            </div>
-                            <div className={styles.fact__text__container}>
-                                <p className={styles.fact__number}>
-                                    {defectsAll.length}
-                                </p>
-                                <p className={styles.fact__text}>
-                                    Defects
-                                </p>
-                            </div>
+                {/* top - header */}
+                <div className={styles.facts__container}>
+                    <div className={styles.fact__item}>
+                        <div className={styles.fact__icon__container__bug}>
+                            <BugReportRoundedIcon className={styles.fact__icon}/>
                         </div>
+                        <div className={styles.fact__text__container}>
+                            <p className={styles.fact__number}>
+                                {defectsAll.length}
+                            </p>
+                            <p className={styles.fact__text}>
+                                Defects
+                            </p>
+                        </div>
+                    </div>
 
-                        <div className={styles.fact__item}>
-                            <div className={styles.fact__icon__container__defect}>
-                                <BookmarksRoundedIcon className={styles.fact__icon}/>
+                    <div className={styles.fact__item}>
+                        <div className={styles.fact__icon__container__bug2}>
+                            <PestControlRoundedIcon className={styles.fact__icon}/>
+                        </div>
+                        <div className={styles.fact__text__container}>
+                            <p className={styles.fact__number}>
+                                {Results.length - defectsAll.length}
+                            </p>
+                            <p className={styles.fact__text}>
+                                Unclassified
+                            </p>
+                        </div>
+                    </div>
+
+                    <div className={styles.fact__item}>
+                        <div className={styles.fact__icon__container__defect}>
+                            <BookmarksRoundedIcon className={styles.fact__icon}/>
+                        </div>
+                        <div className={styles.fact__text__container}>
+                            <p className={styles.fact__number}>
+                                {labels.length - 1}
+                            </p>
+                            <p className={styles.fact__text}>
+                                Clusters
+                            </p>
+                        </div>
+                    </div>
+                
+                    <div className={styles.fact__item}>
+                        <div className={styles.fact__icon__container__report}>
+                            <AnalyticsRoundedIcon className={styles.fact__icon}/>
+                        </div>
+                        <div className={styles.fact__text__container}>
+                            <p className={styles.fact__number}>
+                                {resultsReportType ? resultsReportType.toUpperCase() : "--"}
+                            </p>
+                            <p className={styles.fact__text}>
+                                Method
+                            </p>
+                        </div>
+                    </div>
+                
+
+
+                    <div className={styles.action__item}>
+                        <Tooltip title="Download CSV" placement='top'>
+                            <IconButton>
+                                <FileDownloadRoundedIcon className={styles.icon}/>
+                            </IconButton>
+                        </Tooltip>
+                        <Tooltip title="New report">
+                            <IconButton>
+                                <ReplayRoundedIcon className={styles.icon}/>
+                            </IconButton>
+                        </Tooltip>
+                    </div>
+                </div>
+
+                <div className={styles.lower__container}>
+                    <div className={styles.results__left}>
+                        {/* left - graph */}
+                        <div className={styles.graph__container}>
+                            <div className={styles.graph__header}>
+                                <h2>Distribution of defects</h2>
+                                <div className={styles.graph__header__icons}>
+                                    <IconButton onClick={() => {setGraphType('pie')}}>
+                                        <DonutSmallRoundedIcon className={styles.icon} style={{opacity: graphType === "pie" ? 1 : 0.5}}/>
+                                    </IconButton>
+                                    <IconButton onClick={() => {setGraphType('bar')}}>
+                                        <BarChartRoundedIcon className={styles.icon} style={{opacity: graphType === "bar" ? 1 : 0.5}}/>
+                                    </IconButton>
+                                </div>
                             </div>
-                            <div className={styles.fact__text__container}>
-                                <p className={styles.fact__number}>
-                                    {labels.length - 1}
-                                </p>
-                                <p className={styles.fact__text}>
-                                    Clusters
-                                </p>
+
+                            <div className={styles.graph__body}>
+                                <div className={styles.graph}>
+                                    {(graphType === "pie" && barData.length !== 0) ? (
+                                        <MyPie data={pieData}/>
+                                    ) : (
+                                        <MyBar data={barData} commonProps={commonProps}/> 
+                                    )}
+                                </div>
+                                <div className={styles.graph__legend}>
+                                    {labels.map((label, index) => (
+                                        <div key={index}>
+                                            {index !== 0 && (
+                                                <div className={styles.legend__container}>
+                                                    <div className={styles.circle} style={{backgroundColor: label.color, marginRight: 10}}></div>
+                                                    <p>{label.label}</p>
+                                                </div>
+                                            )}
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    {/* left lower - graph */}
-                    <div className={styles.graph__container}>
-                        <div className={styles.graph__header}>
-                            <h2>Distribution of defects</h2>
-                            <div className={styles.graph__header__icons}>
-                                <IconButton onClick={() => {setGraphType('pie')}}>
-                                    <DonutSmallRoundedIcon className={styles.graph__header__icon} style={{opacity: graphType === "pie" ? 1 : 0.5}}/>
-                                </IconButton>
-                                <IconButton onClick={() => {setGraphType('bar')}}>
-                                    <BarChartRoundedIcon className={styles.graph__header__icon} style={{opacity: graphType === "bar" ? 1 : 0.5}}/>
-                                </IconButton>
-                            </div>
-                        </div>
+                    {/* right */}
+                    <div className={styles.results__right}>
 
-                        <div className={styles.graph__body}>
-                            <div className={styles.graph}>
-                                {(graphType === "pie" && barData.length !== 0) ? (
-                                    <MyPie data={pieData}/>
-                                ) : (
-                                    <MyBar data={barData} commonProps={commonProps}/> 
+                        {/* Right lower - defects */}
+                        <div className={styles.right__lower}>
+                            {/* labels */}
+                            <div className={styles.labels__container}>
+                                <h2>Select a label</h2>
+                                <div className={styles.labels__list}>
+                                    {labels.map((label, index) => (
+                                        <Chip
+                                            key={index}
+                                            label={label.label === "All" ? "All" : `${label.label} (${label.percentage}%)`}
+                                            onClick={() => {handleChipClick(label)}}
+                                            icon={<CircleRoundedIcon style={{color: label.color}}/>}
+                                            variant="filled"
+                                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px', textDecoration: label.status ? 'underline': 'none', opacity: label.status ? 1 : 0.8}}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+
+                            {/* defects data */}
+                            <div className={styles.defects__container}>
+                                {defects.length !== 0 && (
+                                    <>
+                                        {/* list of defects */}
+                                        <div className={styles.defects__list__container}>
+                                            <TableContainer sx={{ maxHeight: 'calc(100vh - 470px)', minHeight: 'cacl(100vh - 470px)'}}>
+                                            <Table aria-label="collapsible table" >
+                                                <TableHead>
+                                                <TableRow>
+                                                    <StyledTableCell />
+                                                    <StyledTableCell align="right">Date</StyledTableCell>
+                                                    <StyledTableCell align="right">Assignee</StyledTableCell>
+                                                    <StyledTableCell align="right">Priority</StyledTableCell>
+                                                    <StyledTableCell />
+                                                </TableRow>
+                                                </TableHead>
+                                                <TableBody>
+                                                {defects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
+                                                    <>  
+                                                        <Row key={row['Issue key']} row={row} />
+                                                    </>
+                                                ))}
+                                                {emptyRows > 0 && (
+                                                    <TableRow
+                                                    style={{
+                                                        height: (53) * emptyRows,
+                                                    }}
+                                                    >
+                                                    <StyledTableCell colSpan={6} />
+                                                    </TableRow>
+                                                )}
+                                                </TableBody>
+                                            </Table>
+                                            </TableContainer>
+                                            <TablePagination
+                                            rowsPerPageOptions={[15, 25, 50]}
+                                            component="div"
+                                            style={{color: 'white !important'}}
+                                            count={defects.length}
+                                            rowsPerPage={rowsPerPage}
+                                            page={page}
+                                            onPageChange={handleChangePage}
+                                            onRowsPerPageChange={handleChangeRowsPerPage}
+                                            />
+                                        </div>
+                                    </>
                                 )}
                             </div>
-                            <div className={styles.graph__legend}>
-                                {labels.map((label, index) => (
-                                    <div key={index}>
-                                        {index !== 0 && (
-                                            <div className={styles.legend__container}>
-                                                <div className={styles.circle} style={{backgroundColor: label.color, marginRight: 10}}></div>
-                                                <p>{label.label}</p>
-                                            </div>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
                         </div>
                     </div>
-
-
                 </div>
 
-                {/* right */}
-                <div className={styles.results__right}>
-                    {/* actions */}
-                    <div className={styles.actions__container}>
-                        
-                    </div>
-
-                    {/* labels */}
-                    <div className={styles.labels__container}>
-                        <h2>Select a label</h2>
-                        <div className={styles.labels__list}>
-                            {labels.map((label, index) => (
-                                <Chip
-                                    key={index}
-                                    label={label.label === "All" ? "All" : `${label.label} (${label.percentage}%)`}
-                                    onClick={() => {handleChipClick(label)}}
-                                    icon={<CircleRoundedIcon style={{color: label.color}}/>}
-                                    variant="filled"
-                                    style={{fontWeight: 'bold', color: 'white', marginRight: '10px', textDecoration: label.status ? 'underline': 'none', opacity: label.status ? 1 : 0.8}}
-                                />
-                            ))}
-                        </div>
-                    </div>
-
-                    {/* defects data */}
-                    <div className={styles.defects__container}>
-                        {defects.length !== 0 && (
-                            <>
-                                {/* list of defects */}
-                                <div className={styles.defects__list__container}>
-                                    <TableContainer sx={{ maxHeight: 'calc(100vh - 420px)', minHeight: 'cacl(100vh - 350px)'}}>
-                                    <Table aria-label="collapsible table" >
-                                        <TableHead>
-                                        <TableRow>
-                                            <StyledTableCell />
-                                            <StyledTableCell align="right">Date</StyledTableCell>
-                                            <StyledTableCell align="right">Assignee</StyledTableCell>
-                                            <StyledTableCell align="right">Priority</StyledTableCell>
-                                            <StyledTableCell />
-                                        </TableRow>
-                                        </TableHead>
-                                        <TableBody>
-                                        {defects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
-                                            <>  
-                                                <Row key={row['Issue key']} row={row} />
-                                            </>
-                                        ))}
-                                        {emptyRows > 0 && (
-                                            <TableRow
-                                            style={{
-                                                height: (53) * emptyRows,
-                                            }}
-                                            >
-                                            <StyledTableCell colSpan={6} />
-                                            </TableRow>
-                                        )}
-                                        </TableBody>
-                                    </Table>
-                                    </TableContainer>
-                                    <TablePagination
-                                    rowsPerPageOptions={[15, 25, 50]}
-                                    component="div"
-                                    style={{color: 'white !important'}}
-                                    count={defects.length}
-                                    rowsPerPage={rowsPerPage}
-                                    page={page}
-                                    onPageChange={handleChangePage}
-                                    onRowsPerPageChange={handleChangeRowsPerPage}
-                                    />
-                                </div>
-                            </>
-                        )}
-                    </div>
-                </div>
+                
             </div>
             
         </main>

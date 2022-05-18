@@ -9,10 +9,11 @@ import Router from 'next/router'
 import React, { useEffect, useState, useRef } from 'react'
 
 /* Redux */
-import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters } from "../../redux/actions"
+import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters, setResultsDefects } from "../../redux/actions"
 import { selectDropDepth } from "../../redux/states/file/reducer"
 import { selectUser } from "../../redux/states/user/reducer"
-import { selectParametersType, selectUsername, selectDate1, selectDate2, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
+import { selectResultsDefects } from '../../redux/states/results/reducer'
+import { selectParametersType, selectUsername, selectDate1, selectDate2, selectIssueType, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
@@ -20,6 +21,7 @@ import Head from 'next/head'
 import SideBar from '../../components/admin/SideBar'
 import FileBtn from '../../components/admin/FileBtn'
 import ErrorMessage from '../../components/admin/ErrorMessage'
+import WarningMessage from '../../components/admin/WarningMessage'
 import { TransparentInput } from '../../components/admin/Selects'
 
 /* CSS */
@@ -36,6 +38,22 @@ import AssessmentRoundedIcon from '@mui/icons-material/AssessmentRounded';
 /* Loader Spinner */
 import { InfinitySpin } from 'react-loader-spinner'
 
+/* Interfaces */
+interface Defect {
+    "Issue key": string,
+    "Status": string,
+    "Priority": string,
+    "Custom field (Severity)": string,
+    "Project key": string,
+    "Issue Type": string,
+    "Created": string,
+    "Assignee": string | null,
+    "Custom field (Digital Service)": string,
+    "Summary": string,
+    "Description": string,
+    "Cluster": number
+}
+
 const Dashboard: NextPage = (props) => {
 
   /* useState - upload */
@@ -47,7 +65,7 @@ const Dashboard: NextPage = (props) => {
     success: false,
     isLoggedIn: false,
     step: 0,
-    reportType: "bert", // (BERT or LDA)
+    reportType: "bert", // (bert or lda)
     numClusters: 0,
     isHistoric: false,
   });
@@ -69,6 +87,7 @@ const Dashboard: NextPage = (props) => {
   const historicUsername = useAppSelector(selectUsername) //function that allows to get the historic username from the redux state
   const historicDate1 = useAppSelector(selectDate1) //function that allows to get the historic date1 from the redux state
   const historicDate2 = useAppSelector(selectDate2) //function that allows to get the historic date2 from the redux state
+  const historicIssueType  = useAppSelector(selectIssueType) //function that allows to get the historic issueType from the redux state
   const historicReportType = useAppSelector(selectReportType) //function that allows to get the historic report type from the redux state
   const historicNumClusters = useAppSelector(selectNumberClusters) //function that allows to get the historic number of clusters from the redux state
 
@@ -85,7 +104,7 @@ const Dashboard: NextPage = (props) => {
     /* Redirect user if needed */
     //console.log(user);
     if (!user) {
-      Router.push('/');
+      //Router.push('/');
     }
 
     /* Check if there is a historic report */
@@ -219,27 +238,515 @@ const Dashboard: NextPage = (props) => {
             loading: true,
           });
           dispatch(setNumberClusters(state.numClusters)); //set number of clusters in redux state
+          setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+
+          //trigger action to get the report
+          generateReport();
         }
       } else {
-        setState({
-          ...state,
-          step: num,
-          loading: true,
-        });
-
-        //fecth report from api
+        //trigger action to get the report
+        generateReport();
+        setState({...state, error: "An error occured generating the report", loading: false, step: 1});
       }
     } 
   }
 
+  /* <--------funtions to generate report---------> */
+  /* Handle search all defects - api */
+  async function getAllDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: user.user,
+        accessToken: user.accessToken,
+        analysis: state.reportType === "lda" ? state.numClusters : "default",
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by user - api */
+  async function getUserDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: user.username,
+        accessToken: user.accessToken,
+        user: historicUsername,
+        analysis: state.reportType === "lda" ? state.numClusters : "default",
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by date range - api */
+  async function getDateDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: user.username,
+        accessToken: user.accessToken,
+        analysis: state.reportType === "lda" ? state.numClusters : "default",
+        startDate: `${historicDate1}T00:00:00`,
+        endDate: `${historicDate2}T23:59:59`
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by date range and user - api */
+  async function getDateUserDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: user.username,
+        accessToken: user.accessToken,
+        analysis: state.reportType === "lda" ? state.numClusters : "default",
+        user: historicUsername,
+        startDate: `${historicDate1}T00:00:00`,
+        endDate: `${historicDate2}T23:59:59`
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by isssue - api */
+  async function getIssueDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: user.username,
+        accessToken: user.accessToken,
+        analysis: state.reportType === "lda" ? state.numClusters : "default",
+        issueType: historicIssueType
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by isssue and user - api */
+  async function getIssueUserDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: user.username,
+        accessToken: user.accessToken,
+        analysis: state.reportType === "lda" ? state.numClusters : "default",
+        user: historicUsername,
+        issueType: historicIssueType
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by issue, date - api */
+  async function getIssueDateDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: user.username,
+        accessToken: user.accessToken,
+        analysis: state.reportType === "lda" ? state.numClusters : "default",
+        issueType: historicIssueType,
+        startDate: `${historicDate1}T00:00:00`,
+        endDate: `${historicDate2}T23:59:59`
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Handle search defects by issue, date and user - api */
+  async function getIssueDateUserDefects(url: string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: user.username,
+        accessToken: user.accessToken,
+        analysis: state.reportType === "lda" ? state.numClusters : "default",
+        user: historicUsername,
+        issueType: historicIssueType,
+        startDate: `${historicDate1}T00:00:00`,
+        endDate: `${historicDate2}T23:59:59`
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Clusterize using BERT */
+  async function clusterizeBERT(url:string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: user.username,
+        accessToken: user.accessToken,
+        file: state.file
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
+  /* Clusterize using LDA */
+  async function clusterizeLDA(url:string): Promise<Array<Defect>> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin': '*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        user: user.username,
+        accessToken: user.accessToken,
+        file: state.file
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return await (response.json() as Promise<Array<Defect>>)
+  }
+
   /* function to generate report */
-  const generateReport = async () => {
+  const setData = (data: Array<Defect>) => {
+    //set redux state
+    dispatch(setResultsDefects(data));
+
+    //redirect to admin results
+    Router.push('/admin/results');
+  }
+
+  const generateReport = () => {
     console.log('generate report');
-    setState({
-      ...state,
-      success: true,
-      loading: true,
-    });
+    
+    if(state.isHistoric) {
+      //generate historic report
+
+      if(historicReportType === "all") {
+        //search all defects
+        try {
+           getAllDefects('http://localhost:5000/defects')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              //set local state
+              
+              setData(data);
+              
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+
+        
+
+      } else if(historicReportType === "user") {
+        //search defects by user
+        try {
+           getUserDefects('http://localhost:5000/defects/get')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              
+              setData(data);
+
+            } else {
+                console.log('error: ', data);
+                setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+
+
+
+      } else if(historicReportType === "date") {
+        //search defects by range date
+        try {
+          getDateDefects('http://localhost:5000/defects/date')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              
+              setData(data);
+
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+
+
+
+      } else if(historicReportType === "date_user") {
+        //search defects by range date and user
+        try {
+          getDateUserDefects('http://localhost:5000/defects/date/get')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              
+              setData(data);
+
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+          
+      } else if(historicReportType === "issue") {
+        //search defects by issue type
+        try {
+          getIssueDefects('http://localhost:5000/defects/issue')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              
+              setData(data);
+              
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+          
+      } else if(historicReportType === "issue_user") {
+        //search defects by issue type and user
+        try {
+          getIssueUserDefects('http://localhost:5000/defects/issue/get')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              
+              setData(data);
+              
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+          
+      } else if(historicReportType === "issue_date") {
+        //search defects by issue type and date
+        try {
+          getIssueDateDefects('http://localhost:5000/defects/issue/date')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              
+              setData(data);
+              
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+          
+      } else if(historicReportType === "issue_date_user") {
+        //search defects by issue type, date and user
+        try {
+          getIssueDateUserDefects('http://localhost:5000/defects/issue/date/get')
+          .then(data => {
+            if (data.length > 1) {
+              console.log(data);
+              //set local state
+              setData(data);
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+          
+      }
+    
+
+
+    } else {
+      //generate report by file
+
+      if(state.reportType === "lda") {
+        //generate report with lda
+        try {
+          clusterizeLDA(`http://localhost:5000/clusterize/${state.numClusters}`)
+          .then(data => {
+            if (data.length > 1) {
+              console.log('data: ', data);
+
+              setData(data);
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+          //setError("Error generating report");
+        }
+        
+      } else {
+        //generate report with bert
+        try {
+          clusterizeBERT('http://localhost:5000/clusterize')
+          .then(data => {
+            if (data.length > 1) {
+              console.log('data: ', data);
+
+              setData(data);
+            } else {
+              console.log('error: ', data);
+              setState({...state, error: "An error occured generating the report", loading: false, step: 1});
+            }
+          })
+        } catch (error) {
+          console.log(error);
+          //@ts-ignore
+          setState({...state, error: error, loading: false, step: 1})
+        }
+      }
+    }
+
   };
 
   
@@ -365,8 +872,13 @@ const Dashboard: NextPage = (props) => {
             {state.step === 2 && (
               <>
                 {state.loading ? (
-                  <div className={styles.loader__container}>
-                    <InfinitySpin color="white"  width='200'/>
+                  <div className={styles.loader}>
+                    <div className={styles.loader__container}>
+                      <div className={styles.loader__inner__container}>
+                        <InfinitySpin color="white"  width='200'/>
+                      </div>
+                      <WarningMessage message="Generating report... (please do not close the window)"/>
+                    </div>
                   </div>
                 ) : (
                   <>
