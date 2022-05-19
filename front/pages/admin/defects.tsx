@@ -52,6 +52,7 @@ import TableRow from '@mui/material/TableRow';
 import Select from '@mui/material/Select';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import Tooltip from '@mui/material/Tooltip';
 
 /* Material UI - icons */
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
@@ -64,6 +65,7 @@ import CheckCircleOutlineRoundedIcon from '@mui/icons-material/CheckCircleOutlin
 import PriorityHighRoundedIcon from '@mui/icons-material/PriorityHighRounded';
 import HighlightOffRoundedIcon from '@mui/icons-material/HighlightOffRounded';
 import InfoRoundedIcon from '@mui/icons-material/InfoRounded';
+import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
 /* Loader Spinner */
 import { InfinitySpin } from 'react-loader-spinner'
@@ -213,7 +215,7 @@ const Defects: NextPage = (props) => {
     /* Redirect user if needed */
     console.log(user);
     if (!user) {
-      Router.push('/');
+      //Router.push('/');
     } else {
       setIsLoggedIn(true);
     }
@@ -962,6 +964,69 @@ const Defects: NextPage = (props) => {
     }
   }
 
+
+  //function to download file
+  //@ts-ignore
+  const downloadFile = ({ data, fileName, fileType }) => {
+      const blob = new Blob([data], { type: fileType })
+
+      const a = document.createElement('a')
+      a.download = fileName
+      a.href = window.URL.createObjectURL(blob)
+      const clickEvt = new MouseEvent('click', {
+          view: window,
+          bubbles: true,
+          cancelable: true,
+      })
+      a.dispatchEvent(clickEvt)
+      a.remove()
+  }
+  
+  //function to export defects to csv
+  //@ts-ignore
+  const exportToCsv = e => {
+      e.preventDefault()
+
+      // Headers for each column
+      let headers = ['Issue key,Status,Priority,Custom field (Severity),Project key,Issue Type,Created,Assignee,Custom field (Digital Service),Summary,Description']
+
+      //@ts-ignore
+      let temp = []
+      defects.map((defect) => {
+          //clean Custom field (Digital Service)
+          let digitalService:string = defect['Custom field (Digital Service)'];
+          if(digitalService !== null){
+              digitalService = digitalService.replace(/,/g, " ")
+          }
+
+          //clean summary
+          var summary:string = defect.Summary
+          if(summary !== null){
+              summary = summary.replace(/,/g, " ")
+              summary = summary.replaceAll(/[\n\r\t]/g,' ')
+          }
+
+          //clean description
+          var desc:string = defect.Description;
+          if(desc !== null){
+              desc = desc.replace(/,/g, " ")
+              desc = desc.replaceAll(/[\n\r\t]/g,' ')
+          }
+
+          temp.push([defect['Issue key'], defect['Status'], defect['Priority'], defect['Custom field (Severity)'], defect['Project key'], defect['Issue Type'], defect['Created'], defect['Assignee'], digitalService, summary, desc].join(','))
+          
+      })
+
+      //@ts-ignore
+      downloadFile({
+          //@ts-ignore
+          data: [...headers, ...temp].join('\n'),
+          fileName: 'defects.csv',
+          fileType: 'text/csv',
+      })
+  }
+
+
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - defects.length) : 0;
 
@@ -1074,14 +1139,25 @@ const Defects: NextPage = (props) => {
                 </Select>
 
                 {/* Search button */}
-                <IconButton onClick={handleSearch}>
-                    <ArrowCircleRightRoundedIcon className={styles.icon} />
-                </IconButton>
+                <Tooltip title="search">
+                  <IconButton onClick={handleSearch}>
+                      <ArrowCircleRightRoundedIcon className={styles.icon} />
+                  </IconButton>
+                </Tooltip>
 
                 {/* Filter button */}
-                <IconButton onClick={handleFilterClick} disabled={defects.length === 0}>
-                    <FilterAltRoundedIcon className={styles.icon} />
-                </IconButton>
+                <Tooltip title="Filter">
+                  <IconButton onClick={handleFilterClick} disabled={defects.length === 0}>
+                      <FilterAltRoundedIcon className={styles.icon} />
+                  </IconButton>
+                </Tooltip>
+
+                 {/* Download csv button */}
+                <Tooltip title="Download csv">
+                  <IconButton onClick={exportToCsv} disabled={defects.length === 0}>
+                      <FileDownloadRoundedIcon className={styles.icon} />
+                  </IconButton>
+                </Tooltip>
 
                 {/* Filter menu */}
                 <StyledMenu
