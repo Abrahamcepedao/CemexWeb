@@ -178,17 +178,6 @@ const Usuarios: NextPage = (props) => {
     /* Set current tab */
     dispatch(setCurrentTab('users'));
 
-    /* Redirect user if needed */
-    console.log(user);
-    if (!user) {
-      Router.push('/');
-    } else {
-      setIsLoggedIn(true);
-      if(user.role !== 'admin') {
-        Router.push('/admin/dashboard');
-      }
-    }
-
     /* Get all users */
     if(!localStorage.getItem('users')) {
       try {
@@ -289,7 +278,7 @@ const Usuarios: NextPage = (props) => {
   };
 
   /* Function create new user - api */
-  function handleCreateUser(url: string): Promise<Message> {
+  async function handleCreateUser(url: string): Promise<Message> {
     return fetch(url, {
       method: "POST",
       headers: {

@@ -530,14 +530,18 @@ def retrieveDefectsByIssueDateUser():
 @app.route('/test-token', methods=['POST'])
 @cross_origin()
 def test():
-    #get the username and access token from json
-    username = request.json['user']
-    access_token = request.json['accessToken']
+    try:
+        #get the username and access token from json
+        request_json = request.get_json()
+        username = request_json.get('user')
+        access_token = request_json.get('accessToken')
 
-    if validateUser(username, access_token):
-        return jsonify({'message': 'Access token is valid'})
-    else:
-        return jsonify({'message': 'Access token is invalid'})
+        if validateUser(username, access_token):
+            return jsonify({'message': 'success'})
+        else:
+            return jsonify({'message': 'invalid'})
+    except:
+        return jsonify({'message': 'error'})
 
 
 #Create user
