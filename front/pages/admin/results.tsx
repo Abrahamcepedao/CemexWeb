@@ -380,15 +380,12 @@ const Dashboard: NextPage = (props) => {
         })
 
         //@ts-ignore
-        console.log(temp)
-        //@ts-ignore
         downloadFile({
             //@ts-ignore
             data: [...headers, ...temp].join('\n'),
             fileName: 'results.csv',
             fileType: 'text/csv',
         })
-
     }
 
     //function to do another report
