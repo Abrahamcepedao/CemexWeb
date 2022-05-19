@@ -398,7 +398,7 @@ const Dashboard: NextPage = (props) => {
         dispatch(resetResultsReportType());
 
         //redirect to dashboard
-        Router.push('/admin/front');
+        Router.push('/admin/dashboard');
 
     }
 
