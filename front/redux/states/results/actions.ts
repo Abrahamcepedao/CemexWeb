@@ -21,3 +21,17 @@ export const serResultsReportType = (reportType: string) => {
         payload: reportType
     };
 }
+
+export const resetResultsDefects = () => {
+  localStorage.setItem("resultsDefects", JSON.stringify([]));
+  return { 
+    type: t.RESET_RESULTS_DEFECTS
+  };
+}
+
+export const resetResultsReportType = () => {
+  localStorage.setItem("resultsReportType", "");
+  return { 
+    type: t.RESET_RESULTS_REPORT_TYPE
+  };
+}

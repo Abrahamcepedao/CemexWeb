@@ -25,6 +25,18 @@ const reducer = (state = initialState, action:any) => {
             resultsReportType: action.payload
         };
       
+    case t.RESET_RESULTS_DEFECTS:
+      return {
+        ...state,
+        resultsDefects: []
+      };
+
+    case t.RESET_RESULTS_REPORT_TYPE:
+      return {
+        ...state,
+        resultsReportType: ""
+      };
+
     default:
       return {...state};
     }

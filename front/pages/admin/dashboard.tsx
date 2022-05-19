@@ -238,7 +238,6 @@ const Dashboard: NextPage = (props) => {
             loading: true,
           });
           dispatch(setNumberClusters(state.numClusters)); //set number of clusters in redux state
-          setState({...state, error: "An error occured generating the report", loading: false, step: 1});
 
           //trigger action to get the report
           generateReport();
@@ -246,7 +245,6 @@ const Dashboard: NextPage = (props) => {
       } else {
         //trigger action to get the report
         generateReport();
-        setState({...state, error: "An error occured generating the report", loading: false, step: 1});
       }
     } 
   }

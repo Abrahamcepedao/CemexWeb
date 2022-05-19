@@ -9,7 +9,7 @@ import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters } from "../../redux/actions"
+import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters, resetResultsDefects, resetResultsReportType } from "../../redux/actions"
 import { selectDropDepth } from "../../redux/states/file/reducer"
 import { selectUser } from "../../redux/states/user/reducer"
 import { selectParametersType, selectUsername, selectDate1, selectDate2, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
@@ -391,6 +391,17 @@ const Dashboard: NextPage = (props) => {
 
     }
 
+    //function to do another report
+    const doAnotherReport = () => {
+        //dispatch all elements to redux
+        dispatch(resetResultsDefects());
+        dispatch(resetResultsReportType());
+
+        //redirect to dashboard
+        Router.push('/admin/front');
+
+    }
+
     /* Row of defects table */
     function Row(props: { row: Defect }) {
         const { row } = props;
@@ -521,7 +532,7 @@ const Dashboard: NextPage = (props) => {
                             </IconButton>
                         </Tooltip>
                         <Tooltip title="New report">
-                            <IconButton>
+                            <IconButton onClick={doAnotherReport}>
                                 <ReplayRoundedIcon className={styles.icon}/>
                             </IconButton>
                         </Tooltip>
