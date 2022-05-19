@@ -326,7 +326,70 @@ const Dashboard: NextPage = (props) => {
             return '#000000';
         }
     }
+
+    //function to download file
+    //@ts-ignore
+    const downloadFile = ({ data, fileName, fileType }) => {
+        const blob = new Blob([data], { type: fileType })
+
+        const a = document.createElement('a')
+        a.download = fileName
+        a.href = window.URL.createObjectURL(blob)
+        const clickEvt = new MouseEvent('click', {
+            view: window,
+            bubbles: true,
+            cancelable: true,
+        })
+        a.dispatchEvent(clickEvt)
+        a.remove()
+    }
     
+    //function to export defects to csv
+    //@ts-ignore
+    const exportToCsv = e => {
+        e.preventDefault()
+
+        // Headers for each column
+        let headers = ['Issue key,Status,Priority,Custom field (Severity),Project key,Issue Type,Created,Assignee,Custom field (Digital Service),Summary,Description,Data,User,Cluster']
+
+        //@ts-ignore
+        let temp = []
+        Results.map((defect) => {
+            //clean Custom field (Digital Service)
+            let digitalService:string = defect['Custom field (Digital Service)'];
+            if(digitalService !== null){
+                digitalService = digitalService.replace(/,/g, " ")
+            }
+
+            //clean summary
+            var summary:string = defect.Summary
+            if(summary !== null){
+                summary = summary.replace(/,/g, " ")
+                summary = summary.replaceAll(/[\n\r\t]/g,' ')
+            }
+
+            //clean description
+            var desc:string = defect.Description;
+            if(desc !== null){
+                desc = desc.replace(/,/g, " ")
+                desc = desc.replaceAll(/[\n\r\t]/g,' ')
+            }
+
+            temp.push([defect['Issue key'], defect['Status'], defect['Priority'], defect['Custom field (Severity)'], defect['Project key'], defect['Issue Type'], defect['Created'], defect['Assignee'], digitalService, summary, desc, defect['Data'], defect['User'], defect['Cluster']].join(','))
+            
+        })
+
+        //@ts-ignore
+        console.log(temp)
+        //@ts-ignore
+        downloadFile({
+            //@ts-ignore
+            data: [...headers, ...temp].join('\n'),
+            fileName: 'results.csv',
+            fileType: 'text/csv',
+        })
+
+    }
 
     /* Row of defects table */
     function Row(props: { row: Defect }) {
@@ -453,7 +516,7 @@ const Dashboard: NextPage = (props) => {
 
                     <div className={styles.action__item}>
                         <Tooltip title="Download CSV" placement='top'>
-                            <IconButton>
+                            <IconButton onClick={exportToCsv}>
                                 <FileDownloadRoundedIcon className={styles.icon}/>
                             </IconButton>
                         </Tooltip>
