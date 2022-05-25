@@ -1,0 +1,4034 @@
+Issue key,Status,Priority,Custom field (Severity),Project key,Issue Type,Created,Assignee,Custom field (Digital Service),Summary,Description
+DCM021CX0118-22389,Rejected,Medium,Critical,DCM021CX0118,Bug,10/01/20 3:36,Javier Pedraza,2. Orders & Delivery Schedule,PREPROD_DS5_One Click functionality is not available on customer´s side,"Test user: 
+PH: username [PHCXGOV2@cemexlabs.com|mailto:PHCXGOV2@cemexlabs.com], password: C3m3xgo01\!
+EG: username [CZCXGOEG@cemexlabs.com|mailto:CZCXGOEG@cemexlabs.com], password: C3m3xgo01\!
+
+Test environment: [https://pp.cemexgo.com/login|https://pp.cemexgo.com/login] 
+
+Description: 
+One Click Buy functionality is not available on customer´s side even though the customer has the role for One Click assigned in L0 console.  
+
+Steps to reproduce: 
+1. Login to CMX Go as customer, select local language (English Philippines, English EG)
+2. Check the sidebar menu and look for option One Click Buy
+
+Actual: 
+Icon One Click is missing in sidebar menu
+
+Expected:
+Assuming the customer has the role of One Click assigned, he is supposed to see the One Click icon in his sidebar menu. "
+DCM021CX0118-22390,Rejected,Medium,Major,DCM021CX0118,Bug,10/01/20 3:59,Javier Pedraza,5. Cross Product – User Provisioning,"PREPROD EG DS5 - Old view of  ""Assign Applications And Data"" is shown in L0","[https://pp-users-provisioning-console-eu.cemexgo.com|https://pp-users-provisioning-console-eu.cemexgo.com/]
+
+Username: customer.service.EG@cemexlabs.com
+Password: Cust0m$ervice
+
+Test steps:
+1. Log in to L0 console PreProd
+2. Look for a customer 50024110
+3. Select the first one user in the list (CZCXGOV2 User)
+4. Scroll down to ""Assign Applications And Data""
+
+{color:#d04437}*Actual behavior:*{color} ""Access to apps"" tab is shown, switches for the apps in the old view
+
+!image-20200110-100141.png|width=1515,height=443!
+
+{color:#14892c}*Expected behavior:*{color} ""Permissions"" tab with the list of Role Profiles is shown (Defined permissions for user to perform a group task) - the new functionality for EG came with 2.2.7.0 release 
+
+!image-20200110-100112.png|width=1591,height=675!
+
+"
+DCM021CX0118-22391,Closed,Medium,Critical,DCM021CX0118,Bug,16/01/20 16:17,Javier Echavez,"4. Credits, Invoices & Payments",REG ES DS4 Customer initial load,"When execution intial load customer data, we are getting error 4 in Finance Documents.
+ !image-2020-01-16-16-08-17-846.png|thumbnail! 
+
+REPRODUCTION STEPS
+Execute txc Z0120_CARGA_IIB in SR0 with ""Reprocess error data"" with customer 50128480 and look afterwards the customer control report in txc Z0120_INQ_CUST_IIB.
+
+EXPECTED BEHAVIOR
+Execution should be completed successfully.
+
+ACTUAL BEHAVIOR
+Integration error 4 in Cleared invoices integration and this message has no description either."
+DCM021CX0118-22392,Closed,Medium,Critical,DCM021CX0118,Bug,17/01/20 13:30,Eduardo Izaguirre,"4. Credits, Invoices & Payments",REG ES DS4 Balance per client report,"When execution balance per client report sometimes report brings 0 from azure BD
+
+!image-2020-01-17-13-20-28-312.png|width=200,height=183!
+
+ 
+
+*REPRODUCTION STEPS*
+Execute transaction Z0120_OI_BALANCE in SR0 with the customers:
+50128480
+50019304
+50000579
+Country code: ES
+Company code: 4000
+
+*EXPECTED BEHAVIOR*
+Execution should show the same data from SAP as from Azure BD
+
+*ACTUAL BEHAVIOR*
+Communicatin error with Azure BD as sometimes it shows 0 in Azure BD fields"
+DCM021CX0118-22393,Closed,Medium,Critical,DCM021CX0118,Bug,17/01/20 13:55,Gerardo Herrera Guerrero,5. Cross Product – User Provisioning,REG ES - User provision account with no roles,"The user account customer.service.ES@cemexlabs.com used for the L0 console does not have the roles to access the console
+
+Steps to reproduce:
+1.- Acess to https://qa-users-provisioning-console-eu.cemexgo.com/login
+2. -User: customer.service.ES@cemexlabs.com, pass: Customer$ervic3
+3.- Does not have permission to access 
+
+Talking with [~accountid:557058:40a4ae52-977a-47f4-8df2-227170a13e11] the roles does not exist in the QA EU DB 
+
+ 
+
+
+
+ !"
+DCM021CX0118-22395,Closed,Medium,Critical,DCM021CX0118,Bug,23/01/20 11:17,Javier Echavez,"4. Credits, Invoices & Payments",S4 CZ Commercial Integration Data,"Commercial interface customer initial load ending with error for CZ.
+"
+DCM021CX0118-22398,Closed,Medium,Minor,DCM021CX0118,Bug,24/01/20 13:58,Monica A. Salinas Flores,3. Delivery Tracking,Replication status from Driver to RMS - XRQ,"delivery AE - 1008240815
+
+ !image-2020-01-24-13-57-13-364.png|thumbnail! 
+"
+DCM021CX0118-22396,Closed,Medium,Critical,DCM021CX0118,Bug,27/01/20 15:41,Javier Echavez,"4. Credits, Invoices & Payments",S4 EG Download Documents from Pending Orders,"Open order / deliveries value for last 90 days is not being retrived into OLS S4.
+
+!image-20200127-214311.png|width=1508,height=360!
+
+"
+DCM021CX0118-22397,Closed,Medium,Major,DCM021CX0118,Bug,28/01/20 10:06,Jesus Perez,2. Orders & Delivery Schedule,Back-end system SIMMA (QA) are not replicated to CMX Go QA,"The sales orders created in their back-end system SIMMA (QA) are not replicated to CMX Go QA. 
+Below can be found previous conversation. According to his findings, the RMX orders we created can be found in DB Error log while there´s a weird message saying that the customer doesn´t exist.
+
+More In Deep, here is a screenshot from DB saying that the customer 50045000 doesn´t exist. So it can be assume, that it´s a misleading message because as it can be saw the customer in CMX Go and neither respective jobsites are marked for deletion or blocked. However, it looks like the problem is in DB. 
+
+ !image-2020-01-28-09-55-31-624.png|thumbnail! 
+ 
+Also, attached to the issue is an XML message which SIMMA is sending. 
+
+
+
+"
+DCM021CX0118-22399,Analysis,Medium,Minor,DCM021CX0118,Bug,30/01/20 14:14,Eduardo Pedraza Figueroa,"4. Credits, Invoices & Payments",S4 ES Commercial Integration Data Error,"Commercial interface customer initial load ending with error for CZ.
+"
+DCM021CX0118-22400,Closed,Medium,Minor,DCM021CX0118,Bug,30/01/20 16:10,DanielC,1. Customer Information & Commercial Conditions,Contract Balance Issue,"Having a contract with type ZCA in Egypt. 
+When a order is created for for the client and material related to the contract, there is an issue when the contract is visualized:
+ - Balance is not shown.
+ - There is a message Error ""Invalid Status Code: 500"" (The error is thrown by Balance API)
+
+It should discount the material included in the order from the original total value in the contract.
+
+Information used in functional Testing:
+- Sold-To: 50136277
+- Ship-To: 65445500
+- Contract: 20110925110
+- Material: 10001680
+- Order: 2011092512 
+"
+DCM021CX0118-22402,Rejected,Medium,Minor,DCM021CX0118,Bug,28/02/20 5:25,Joseph Rodiz,3. Delivery Tracking,UAT ES DS3 End of day button does not appear sometimes,"Driver App 1.7.0.4
+
+Case 1:
+
+Driver has completed some trips as it can be seen on the history:
+
+ !image-2020-02-28-12-22-43-842.png|thumbnail! 
+
+but the End of day button does not appear in the active section:
+
+ !image-2020-02-28-12-23-15-687.png|thumbnail! 
+
+Case 2:
+In other cases, it appears:
+
+ !image-2020-02-28-12-23-34-231.png|thumbnail! 
+ !image-2020-02-28-12-23-40-275.png|thumbnail! 
+
+The end of day button has not been clicked in Case 1."
+DCM021CX0118-22403,Rejected,Medium,Minor,DCM021CX0118,Bug,28/02/20 5:50,Jose Santana Santana,3. Delivery Tracking,UAT ES DS3 No pop-up for change of vehicle for same hauler,"Driver App 1.7.0.4
+
+# Add TicketSourceCode 19940078 for truck 7839JCS with Hauler 3031519
+# Follow the delivery process, sign it and close it.
+ 
+!image-2020-02-28-12-49-55-442.png|width=200,height=183!
+# Add TicketSourceCode 19940090 for truck 4433FJH with Hauler 3031519
+ 
+!image-2020-02-28-12-50-03-108.png|width=200,height=183!
+ 
+ 
+!image-2020-02-28-12-50-07-776.png|width=200,height=183!
+
+Expected result:
+A warning should appear saying that you are changing vehicle."
+DCM021CX0118-22404,Rejected,Medium,Major,DCM021CX0118,Bug,28/02/20 5:57,Jose Santana Santana,3. Delivery Tracking,UAT ES DS3 Document 27 not available if HTC fails,"Driver 1.7.0.4
+
+The file is not available in the case of tickets finished before HTC sends the document.
+
+ !image-2020-02-28-12-54-11-102.png|thumbnail! 
+
+ !image-2020-02-28-12-53-56-098.png|thumbnail! 
+
+ !image-2020-02-28-12-54-02-391.png|thumbnail! 
+
+"
+DCM021CX0118-22405,Rejected,Medium,Major,DCM021CX0118,Bug,28/02/20 6:06,Kenny J Franco,3. Delivery Tracking,UAT ES DS3 Errors in Document 27,"Driver 1.7.0.4
+
+TicketCode: 1008241793
+
+After HTC sends the document 27, it appears with some letters missing (substituted by square signs □
+
+ !image-2020-02-28-13-04-13-343.png|thumbnail! 
+Detail:
+ !image-2020-02-28-13-04-35-780.png|thumbnail! "
+DCM021CX0118-22406,Rejected,Medium,Major,DCM021CX0118,Bug,28/02/20 6:38,Jose Santana Santana,3. Delivery Tracking,UAT ES DS3 Cannot add ticket after revoking when status is Unloading End,"Driver 1.7.0.4
+
+When all statuses have been filled in Drivers Lite but the ePOD has not been signed, the driver clicks on Revoke because he realizes it is not his ticket.
+
+The right driver is not able to add that ticket."
+DCM021CX0118-22407,Closed,Medium,Major,DCM021CX0118,Bug,28/02/20 8:16,Jose Santana Santana,3. Delivery Tracking,UAT ES DS3 Incorrect translations in Drivers,"Driver 1.7.0.4.
+
+The following translations have been updated in the Translations Console, please update them to the QA version:
+App: Mobile Drivers
+plate_value
+different_jobsite_msg
+inactivity_content
+message_error204
+revoke_ticket_confirmation_text
+revoke_ticket_title
+switch_haulers_content
+enter_the_hauler_number_text
+location_peromission_not granted
+inactivity_title
+speed_alertmessage
+speed_alertmessageRequest
+ticket_already_completed
+permission_read_storage_rationale
+permission_loaction_rationale
+permission_camera_not_granted
+time_error
+time_config_text
+send_now_msg
+select_country
+revoke_ticket_confirmation_text
+err_msg_401
+check_connectivity"
+DCM021CX0118-22408,Closed,Medium,Major,DCM021CX0118,Bug,28/02/20 8:18,Andrea De Hernando,5. Cross Product – User Provisioning,UAT_FR_DS5_Error message when trying to share a notification,"www.qa-eu.cemexgo.com
+
+User: tison@mailinator.com / Password: Testcxg0
+
+Steps:
+1- log in cemex go
+2- click on the upper right icon (notifications)
+3- select option ‘toutes les notifications’
+4- Click on Share the notification
+5- complete email field
+6- complete the comment field
+7- click on Send button
+
+Actual result: Banner of error is displayed
+
+ !image-2020-02-28-15-13-47-027.png|thumbnail! "
+DCM021CX0118-22409,Closed,Medium,Critical,DCM021CX0118,Bug,28/02/20 8:20,Andrea De Hernando,"4. Credits, Invoices & Payments",UAT_FR_DEP_DS5_No email received after sharing a notification,"www.qa-eu.cemexgo.com
+
+User: tison@mailinator.com / Password: Testcxg0
+
+Steps:
+1- log in cemex go
+2- click on the upper right icon (notifications)
+3- select option ‘toutes les notifications’
+4- Click on Share the notification
+5- complete email field without @cemex.com adress
+6- complete the comment field
+7- click on Send button
+
+Actual result: no error message displayed in cemex go, no email received in selected inboxes
+"
+DCM021CX0118-22410,Open,Medium,Major,DCM021CX0118,Bug,28/02/20 8:22,,"4. Credits, Invoices & Payments",UAT_FR_DEP_DS4_No email received for Delivery ticket reports,"www.qa-eu.cemexgo.com
+
+User: tison@mailinator.com / Password: Tesxg0
+
+Steps:
+1- log in cemex go
+2- open Invoices and Module
+3 – click on report
+4 – create a report
+
+Actual result: a notification is received in cemex go but no message received in the email box despite it is a mandatory email that cannot be modified
+
+!image-20200228-142323.png|width=431,height=472!
+
+
+
+!image-20200228-142331.png|width=1242,height=210!
+
+"
+DCM021CX0118-22411,Open,Medium,Major,DCM021CX0118,Bug,28/02/20 8:25,,"4. Credits, Invoices & Payments",UAT_FR_DEP_DS4_No notification received for dispute creation or update,"www.qa-eu.cemexgo.com
+
+User: tison@mailinator.com / Password: Tescxg0
+
+Steps:
+1- log in cemex go
+2- open Invoices and Module
+3 – click on dispute
+4- select an invoice
+5 – create a dispute
+
+Actual result: no notification alert (red icon) is received in cemex go and no message received in the email box despite it should be sent in both
+
+Actual result: no notification is received in cemex go and no message received in the email box despite it should be sent in both. Test done with Assigned status and Closed status with same result
+
+!image-2020-02-28-15-25-20-891.png|width=200,height=183!
+
+ 
+
+!image-2020-02-28-15-25-29-087.png|width=200,height=183!
+
+ "
+DCM021CX0118-22412,Open,Medium,Minor,DCM021CX0118,Bug,28/02/20 8:31,Monica A. Salinas Flores,5. Cross Product – User Provisioning,UAT_FR_DEP_DS5_Missing translation,"www.qa-eu.cemexgo.com
+
+User: tison@mailinator.com / Password: Tesxg0
+
+Steps:
+1- log in cemex go
+2- click on the upper right icon (notifications)
+3- select option ‘toutes les notifications’
+4- Click on Share the notification
+
+Actual result: the text ‘Check this out\!’ Cannot be translated because no translation key exists.
+
+!image-20200228-143126.png|width=1035,height=375!
+
+"
+DCM021CX0118-22413,Open,Medium,Major,DCM021CX0118,Bug,28/02/20 8:34,Alejandra Betancourt,5. Cross Product – User Provisioning,UAT_CZ_DEP_DS5_ Wrong translations,"|[BASF@mailinator.com|mailto:BASF@mailinator.com]|Tesxg0|
+
+
+
+1) A quote was uploaded:
+Change „nacenena“ to „naceněna“
+
+2) Order modification:
+Change „Úprava“ to „Změna“
+
+!image-2020-02-28-15-33-25-534.png|width=200,height=183!
+
+ 
+
+3) Notification of the order modification:
+„Více informací se dozvíte ve svém zákaznickém účtu CEMEX Go, kde prosím danou změnu potvrďte či učiňte protinávrh.“
+please change to:
+„Více informací se dozvíte po přihlášení do svého zákaznického účtu CEMEX Go v části Moje objednávky.“
+
+!image-2020-02-28-15-33-55-457.png|width=200,height=183!
+
+ "
+DCM021CX0118-22414,Open,Medium,Major,DCM021CX0118,Bug,28/02/20 8:38,Jesus Perez,5. Cross Product – User Provisioning,UAT_DE_DEP_DS5_ Wrong message after order confirmation,"Customer Number	50003076 / QA Test system CEMEX GO
+CEMEX Go Username	Bauer@mailinator.com   QA Test system CEMEX GO
+
+Legal Entity	Notification UAT Test/Wrong Message after placing 
+
+ISSUE REPORTED (Details of the case)
+
+We detected after placing orders in QA Test system that the massage for the customer is not communicating that the Order is confirmed… The actual situation/massage is that something was changed by Cemex please go to your account and check the order request. That’s wrong an wired.
+
+We need here a massage change or an extra Order confirmation massage  that the customer can see that his order is 100% confirmed and nothing has changed by CEMEX employer \! 
+
+He needs to get the order confirmation number and not the #437016 message. "
+DCM021CX0118-22415,Closed,Medium,Minor,DCM021CX0118,Bug,28/02/20 14:33,Rodrigo García Muro,3. Delivery Tracking,UAT US DS3 - Cumulative Quantity,"We created an order of 100yards in command, after dispatching 2 loads of 10yards each, we realized the EPOD of each one are showing the CUMULATIVE QUANTITY as 0, and should display 10, 20...
+
+Steps to reproduce:
+1. create an order in command (this order should have 50 yards at least)
+2.  Dispatch the order
+3. Take 3 loads in driver app (move all the loads in driver app to the last status and sign them)
+4. at the and, retrieve the EPOD of each one and look for the cumulative quantity.
+
+Expected result: The amount displayed should be different to 0."
+DCM021CX0118-22416,Rejected,Medium,Major,DCM021CX0118,Bug,28/02/20 14:35,Monica A. Salinas Flores,3. Delivery Tracking,UAT US DS3 - Drivers notes´ are not displayed in the Drivers Console,"We created an order and dispatched one load. We added some comments in the driver´s notes and those are not displayed in the drivers console
+
+Steps to reproduce:
+1. create an order in command 
+2.  Dispatch the order
+3. Take the load in driver app and add some driver notes
+4. move the ticket do the last status in drivers app and close it
+
+5. go to the report section>Reports & Documents>*Additional Products and Notes*
+
+6. Look for the notes 
+
+Actual state: The notes are not displayed
+
+Expected: see the notes displayed"
+DCM021CX0118-22417,Rejected,Medium,Major,DCM021CX0118,Bug,28/02/20 15:10,Monica A. Salinas Flores,3. Delivery Tracking,UAT US DS3 - Ticket does not exist,"We created an order in command with an analphabetic order and 2 notes. When trying to take one of the tickets in the app, it cames up a “ticket does not exist” message. The load is not even created in CEMEX GO.
+
+Steps to reproduce:
+1. create an order in command - in the order add TEST instead of numbers and, when finishing the order, add text to the note 1 and note 2 as shown in the pictures attached.
+2.  Dispatch the order
+3. Take the load in driver app
+4. The app would show ticket does not exist
+
+Actual state: unavailability to take tickets when the order is different than just numbers and when the dispatch adds 2 notes.
+
+Expected: process the ticket in the driver app"
+DCM021CX0118-22418,Rejected,Medium,Major,DCM021CX0118,Bug,02/03/20 7:01,Monica A. Salinas Flores,3. Delivery Tracking,UAT ES DS3 Errors in Doc 27 and Doc 03 ,"Version: Driver 1.7.0.4
+
+
+
+Client:
+
+Jobsite: 65422282
+
+When we try to upload a ticket after being produced, the pre-ticket that is showed is the Nº 27, but when HTC finishes the production it sent the doc Nº 03 and the issue is that in Driver app Mobile stills shows the Nº 27 instead of the 03. The only way to force the change is to revoke the ticket and upload it again. 
+
+This bug occurs with Jobsites Paperless or not. Consider this scenario if HTC has a delay in sending the doc to Azure.
+
+Step To reproduce:
+
+# Create a ticket in RMS
+# Sent it to HTC
+# Do not end the production in HTC
+# Upload the ticket in DriverAPP mobile.
+# Go to Information, See Delivery Ticket.
+# Ticket displayed Nº 27. When the fabrication is done in HTC the Doc 03 is available, but in DriverAPP still has the Doc 27.
+# The only way is to change the ticket after HTC send the Doc 03 is revoking the ticket and uploading it again.
+
+
+
+ "
+DCM021CX0118-22419,Open,Medium,Minor,DCM021CX0118,Bug,02/03/20 16:46,Paola Reichardt,1. Customer Information & Commercial Conditions,Request for quotation could not be created due to error,"When test Case GCL-T624 (automated) is executed the request for quotation is not bein created due to API 500 error
+
+Test case
+https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/CGL-T624
+"
+DCM021CX0118-22420,Rejected,Medium,Major,DCM021CX0118,Bug,03/03/20 20:03,Monica A. Salinas Flores,3. Delivery Tracking,UAT US DS3 - Project Number is incorrect,"We created an order of 10yards in command, after dispatching the load, we realized the EPOD was showing the wrong project number:
+
+Steps to reproduce:
+1. create an order in command (this order should have 10 yards at least), using the project number 41187316 and customer id 3101088.
+2.  Dispatch the order
+3. Take the load in driver app and process it all the way to the end.
+4. At the end, retrieve the EPOD of each one and look at the project number, this number would be the customer number instead of the project number.
+
+Expected result: The project number field should display the right one."
+DCM021CX0118-22421,Rejected,Medium,Major,DCM021CX0118,Bug,03/03/20 20:21,Monica A. Salinas Flores,3. Delivery Tracking,UAT US DS3 - Delivery Instructions incorrectly mapped from command,"We created an order of 10yards in command, after dispatching the load, we realized the Delivery instructions was showing the wrong project number:
+
+Steps to reproduce:
+1. create an order in command (this order should have 10 yards at least), using the project number 41187316 and customer id 3101088. Add Delivery instructions in the Instructions field, right below the address field.
+2.  Dispatch the order.
+3. Take the load in driver app. Go to the map section and look for the delivery instructions (will be blank even when this was fulfilled. Process it all the way to the end.
+4. At the end, retrieve the EPOD of each one and look at the delivery instructions. this field would be blank as well.
+
+Expected result: The delivery instructions should be the same as the ones introduces in the instructions field in command."
+DCM021CX0118-22422,Closed,Medium,Minor,DCM021CX0118,Bug,04/03/20 10:33,Jose Santana Santana,2. Orders & Delivery Schedule,UAT FR DS2 Copyright 2019 not Copyright 2019-2020,"*Order App:* v1.1.0.30
+*User:* Tison@mailinator.com
+*Password:* Testxg0
+
+*Steps:*
+# Log in to the Order App
+# Click on the button to display the side-bar
+# Click on Copyright
+
+{color:#d04437}*Actual result*:{color}
+
+""Copyright @2019 CEMEX..."" text appears.
+
+FR:
+ !image-2020-03-04-17-30-36-439.png|thumbnail! 
+
+UK:
+ !image-2020-03-04-17-32-45-456.png|thumbnail! 
+
+{color:#14892c}*Expected result:*{color}
+
+""Copyright @2019 – 2020 CEMEX..."" should appear according to https://cemexpmo.atlassian.net/browse/DCM001CX1244-9882."
+DCM021CX0118-22423,Closed,Medium,Minor,DCM021CX0118,Bug,04/03/20 10:34,Jose Elizondo,2. Orders & Delivery Schedule,EG - MOD S2 EG Bag Cement Delivery order request,"when the order is created in cemex go we are not reciving the confirmation email.
+
+Test Case:
+https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/CGL-T844
+"
+DCM021CX0118-22424,Rejected,Medium,Major,DCM021CX0118,Bug,04/03/20 10:45,Javier Pedraza,5. Cross Product – User Provisioning,MOD DS5 L0-TCP13-CU_Create a new user in L0 Console,"When we are creating a user from the L0 console in the first attempt we are getting an error ""Internal Server Error""
+
+https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/CGL-T591
+"
+DCM021CX0118-22426,Open,Medium,Major,DCM021CX0118,Bug,04/03/20 13:07,Monica A. Salinas Flores,3. Delivery Tracking,UAT US DS3 - Project Number is incorrect,"We created an order of 10yards in command, after dispatching the load, we realized the EPOD was showing the wrong project number:
+
+Steps to reproduce:
+1. create an order in command (this order should have 10 yards at least), using the project number 41187316 and customer id 3101088.
+2.  Dispatch the order
+3. Take the load in driver app and process it all the way to the end.
+4. At the end, retrieve the EPOD of each one and look at the project number, this number would be the customer number instead of the project number.
+
+Expected result: The project number field should display the right one."
+DCM021CX0118-22425,Rejected,Medium,Major,DCM021CX0118,Bug,04/03/20 13:07,Monica A. Salinas Flores,3. Delivery Tracking,UAT US DS3 - Project Number is incorrect,"We created an order of 10yards in command, after dispatching the load, we realized the EPOD was showing the wrong project number:
+
+Steps to reproduce:
+1. create an order in command (this order should have 10 yards at least), using the project number 41187316 and customer id 3101088.
+2.  Dispatch the order
+3. Take the load in driver app and process it all the way to the end.
+4. At the end, retrieve the EPOD of each one and look at the project number, this number would be the customer number instead of the project number.
+
+Expected result: The project number field should display the right one."
+DCM021CX0118-22427,Analysis,Medium,Critical,DCM021CX0118,Bug,04/03/20 16:10,,2. Orders & Delivery Schedule,US DS2 iOS Order app repeats the request ,"At the moment of the request creation, iOS order app displays a blue screen when the request button is available. If the user clicks on that button a second order will be created with the same information as the first order.
+
+As an example, we have the requests 1482415 and 1482416. request 1482415 was created with the regular process, request 1482416 was duplicated.
+
+ [^zoom_0.mp4] "
+DCM021CX0118-22428,Closed,Medium,Minor,DCM021CX0118,Bug,04/03/20 16:26,Mario Reyna,2. Orders & Delivery Schedule,US DS2 Order requests coming from iOS App are not able to be modified or canceled by customer ,"During the test, we could identify that order requests coming from iOS app are not able to be modified or canceled by customers.
+
+As examples, we have the requests 1482415 and 1482416 created using the iOS order app despite the delivery dates are programmed for next week the modify order and cancel request functionality are not available.
+
+ !image-2020-03-04-16-25-18-276.png|thumbnail! "
+DCM021CX0118-22429,Closed,Medium,Critical,DCM021CX0118,Bug,06/03/20 5:14,Miguel Agustin Rodrigues,3. Delivery Tracking,UAT ES DS3 ERROR GET TICKET AUTOMATIC,"Driver version: 1.7.0.6
+Customer: 50000498
+
+Get ticket automatic is not running at the second ticket (same truck) and it´s impossible to load the ticket even manually, the only option we have is to restart Driver APP mobile and upload as a first ticket .
+
+The pop up that is showed: ""Error Interno del Servidor"" is when we try to Add the second ticket of the same truck
+
+!image-2020-03-06-12-14-33-211.png|width=200,height=183!
+
+ "
+DCM021CX0118-22430,Rejected,Medium,Major,DCM021CX0118,Bug,06/03/20 5:40,Monica A. Salinas Flores,3. Delivery Tracking,UAT ES DS3 DRIVER APP MOBILE DOC 03 DURING TRIP TO JOBSITE,"Driver Version: 1.7.0.6
+Customer: 50000498
+Jobsite: 65422282
+Ticket: 
+
+# Upload the ticket in driver App Mobile
+# We started the ticket events in driver.
+# When we adjust the time in the status “Unloading”, we revoke the ticket.
+# Then we can upload the ticket again and we can adjust the time in the “Unloading” event 
+
+Problem: We don´t have consistency in the information (Status and Time)  between EPOD and Screens in *Track Web or Track App Mobile.*
+
+
+
+→ Delivery Ticket
+
+!image-20200306-115642.png|width=807,height=866!
+
+ 
+
+→ Track Web:
+
+!image-20200306-115536.png|width=1754,height=872!
+
+"
+DCM021CX0118-22431,Rejected,Medium,Major,DCM021CX0118,Bug,06/03/20 5:41,jesus.gonzalez@neoris.com,3. Delivery Tracking,UAT ES DS3 ERROR WHEN WE REVOKE A TICKET ,"Driver Version: 1.7.0.6
+Customer: 50000498
+Jobsite: 65422282
+
+
+1. Upload the ticket before production is finished.
+2. Ticket displayed is the Nº 27 in Driver App Mobile. The other services (track web, track mobile, good receipt and Delivery ticket report doesn't show any ticket)
+3.  When the production is finished, the doc displayed in DriverApp still is the Nº 27 and in the other services (track web, track App, good receipt and Delivery ticket report) shows the Nº 03. 
+4. There is no option to refresh the ticket uploaded in DriverApp Mobile.
+5. When ticket is finished in DriverApp Mobile, then the document displayed is the Nº 11 of HTC and we have it in all  applications (History of Driver App Mobile, Track web, Track App, good receipt and Delivery ticket report)"
+DCM021CX0118-22432,Closed,Medium,Major,DCM021CX0118,Bug,06/03/20 6:18,Miguel Agustin Rodrigues,3. Delivery Tracking,UAT ES DS3 IF THE CLIENT DOESN'T SIGN THE TICKET WE HAVE THE DOC 03 (WITHOUT TIMES),"Driver Version: 1.7.0.6
+Customer: 50000498
+Ticket 19940117
+
+1. Upload the ticket in Driver App Mobile
+2. All the status are finished in Driver App Mobile
+3. The customer do not sign the ticket with the option ""Don´t sign the ticket""
+4. The DT that is showed is the Nº 03 
+
+Problem: The Driver completed all the status (On jobsite, Unloading, Finish Unloading) and the customer didn´t signed the ticket, the document that will be displayed is the Nº 03.  We need at least the time that the driver insert in each event in the Delivery Ticket.
+
+--> Driver Mobile:
+ !image-2020-03-06-13-14-51-215.png|thumbnail! 
+ !image-2020-03-06-13-15-01-062.png|thumbnail! 
+
+-->Track:
+ !image-2020-03-06-13-16-42-262.png|thumbnail! 
+ !image-2020-03-06-13-16-56-866.png|thumbnail! 
+"
+DCM021CX0118-22434,Validation In Progress,Medium,Major,DCM021CX0118,Bug,10/03/20 7:36,Hector Alvarado,2. Orders & Delivery Schedule,"UAT FR, UK DS2 Order App iOS History of orders is not shown","*Orders App:* v1.4.3.0
+*User:* Tison@mailinator.com
+*Password:* Tescxg0
+
+*Test steps:*
+
+# Login to Order App
+# Change customer to TISON & GAILLET SN SARL #0050150677
+# Request a new order
+
+*Expected result:*
+Order request should be displayed in iOS History of Orders.
+
+*Actual result:*
+History of orders is shown empty and no notifications arrive.
+
+*Example:*
+
+* FR: request: 437327
+
+ !image-2020-03-10-13-27-49-234.png|thumbnail! 
+ !image-2020-03-10-13-32-14-869.png|thumbnail! 
+ !image-2020-03-10-13-33-23-488.png|thumbnail! 
+
+* GB: request 437325
+
+ !image-2020-03-10-13-24-53-095.png|thumbnail! 
+ !image-2020-03-10-13-32-56-076.png|thumbnail! 
+ !image-2020-03-10-13-24-35-313.png|thumbnail! 
+
+No request appear for iOS independently of the origin (Web, Android or iOS).
+The ones requested from iOS appear in Web and Android.
+"
+DCM021CX0118-22435,Open,Medium,Minor,DCM021CX0118,Bug,12/03/20 10:14,Alejandra Betancourt,"4. Credits, Invoices & Payments",UAT_FR_DEP_DS4_ Wrong title for email notification,"www.qa-eu.cemexgo.com
+
+User: jltest@mailinator.com / Password: Ceme20!
+Internal suer: bdetune@mailinator.com / Password: Custorvic3
+
+Steps:
+1- log in cemex go as customer
+2 - check in his profile that e-mail notification for disputes is activated
+3- log out cemex go
+4- log in cemex go as internal user
+5- open Invoices and Module
+6 – open an existing dispute
+7- change the status and click on Save
+8 – open the inbox of customer
+
+Actual result: the title of the received email is ‘Statut modifié pour le problème rappporté #’
+
+Expected result: there is a mistake in the title, it should be : ‘Statut modifié pour votre demande de réclamation CEMEX n°’
+ !image-2020-03-12-16-13-14-794.png|thumbnail! "
+DCM021CX0118-22436,Closed,Medium,Major,DCM021CX0118,Bug,12/03/20 10:18,Andrea De Hernando,5. Cross Product – User Provisioning,UAT_FR_DEP_DS4_ Share the notification ,"www.qa-eu.cemexgo.com
+User: tison@mailinator.com / Password: Tesxg0Steps:
+
+1- log in cemex go
+2- click on the upper right icon (notifications)
+3- select option ‘toutes les notifications’
+4- Click on Share the notification
+5- complete email field and add a comment
+6- send and share the notification
+
+Actual result:
+When entering the email address :
+If we type ""customer@mailinator.com"", the system doesn't send the email and a red error message appears. We must type ""customer@mailinator.com;"" to send the email. So if the user forgets the "";"" or the “,” or SPACE at the end, it doesn't work.
+Even if the user types ""customer@mailinator.com;"" and send, the recipient doesn't receive the email
+
+Expected result:
+- The « ; », « , » or SPACE should not be important when we type only one email address
+- The recipient should receive the email
+"
+DCM021CX0118-22437,Open,Medium,Major,DCM021CX0118,Bug,12/03/20 10:21,,5. Cross Product – User Provisioning,UAT_FR_DEP_DS5_ No button to share the notification,"www.qa-eu.cemexgo.com
+
+User: tison@mailinator.com / Password: Tesxg0
+
+Steps:
+1- log in cemex go
+2- click on the upper right icon (notifications)
+3- select option ‘toutes les notifications’
+4- Click on Share the notification
+5- complete email field
+
+Actual result: I see no button to share the notification. In fact it is mandatory to complete the comment field, but there is no information about that
+
+Expected result: add the button ‘Send’ in grey until all the mandatory fields are completed, and then move it to green
+
+ !image-2020-03-12-16-21-08-336.png|thumbnail! "
+DCM021CX0118-22438,Open,Medium,Major,DCM021CX0118,Bug,12/03/20 10:26,,5. Cross Product – User Provisioning,UAT_FR_DEP_DS5_ Link ‘all notifications’ unavailable if there is no notification,"www.qa-eu.cemexgo.com
+
+User: tison@mailinator.com / Password: Tesxg0
+
+Link ‘all notifications’ unavailable if there is no notification. We need to access to the special page anyways.
+"
+DCM021CX0118-22439,Rejected,Medium,Major,DCM021CX0118,Bug,12/03/20 10:46,Alejandra Betancourt,2. Orders & Delivery Schedule,UAT_FR_DEP_DS2_ Wrong traslation,"Change traslation on email from time negotiation
+
+Instead of the second „Vážený zákazníku, vážená zákaznice,“ there should be „Zvolili jste nový čas dodání pro produkt“:
+
+ !image-2020-03-12-16-45-28-885.png|thumbnail! "
+DCM021CX0118-22441,Closed,Medium,Minor,DCM021CX0118,Bug,17/03/20 11:00,Ricardo Avalos,1. Customer Information & Commercial Conditions,MOD S1 Filter is not displayed in All locations page,Filter to search location is not displayed. !actualResult.PNG|thumbnail!  !expectedResult.PNG|thumbnail! 
+DCM021CX0118-22442,Closed,Medium,Minor,DCM021CX0118,Bug,17/03/20 15:44,sergio.ramones@neoris.com,"4. Credits, Invoices & Payments",DS4 - Billing Issues /Credit Note Request Review,"Comment in issue is not saved.
+
+Expected result: Comment after saved should appear in the list of comments
+
+Actual results: Comment is not saved.
+
+Test Cases steps : 
+
+[https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#\!/testCase/CGL-T645|https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/CGL-T645]"
+DCM021CX0118-22443,Rejected,Medium,Minor,DCM021CX0118,Bug,17/03/20 17:52,sergio.ramones@neoris.com,"4. Credits, Invoices & Payments",DS4 - Credit Invoice and Payment - Advance payment Invoice,"""Remisión Externa"" tab is now working.
+
+Expected result: ""Remisión Externa"" tab should display information.
+
+Actual results: ""Remisión Externa"" tab is showing a load error.
+
+Test Cases steps :
+
+https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/CGL-T257 CGL-T257 "
+DCM021CX0118-22444,Closed,Medium,Major,DCM021CX0118,Bug,18/03/20 10:47,Daniela Garcia,2. Orders & Delivery Schedule,DS02 - Create Oder Button is not appearing ,"Description: Create order and validate that cancel button is there
+
+Actual result: Create Order button is not present in order history but the role is added for the user in L0 console.
+
+Expected result: be able to create an order.
+
+Test Case steps:
+
+https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/CGL-T692"
+DCM021CX0118-22445,Open,Medium,Major,DCM021CX0118,Bug,18/03/20 14:25,Paola Reichardt,1. Customer Information & Commercial Conditions,MOD - DS1 Agreements view for commercial conditions,"Actual Result: when commercial agreements are click is showing the Quote request window.
+
+Expected results: Commercial agreements window are displayed properly."
+DCM021CX0118-22446,Open,Medium,Minor,DCM021CX0118,Bug,18/03/20 16:28,Paola Reichardt,1. Customer Information & Commercial Conditions,"PreProd US DS1 Wrong label description when creating jobiste country, zipcode and state","Wrong label description when creating jobiste country, zipcode and state
+
+US-Customer@mailinator.com
+US@cxgo1
+
+[https://pp.cemexgo.com|https://pp.cemexgo.com/]"
+DCM021CX0118-22447,Analysis,Medium,Major,DCM021CX0118,Bug,18/03/20 16:30,Erik Roberto Calzada,1. Customer Information & Commercial Conditions,PreProd US DS1 Console not receiving jobsite requests,"Console not receiving jobsite requests
+
+USCXGOV2SREP@cemexlabs.com
+C3m3xgo01
+https://pp-cust-info-console.cemexgo.com
+
+Expected
+Jobsites Console must receive the jobsites creation request.
+"
+DCM021CX0118-22448,Rejected,Medium,Major,DCM021CX0118,Bug,18/03/20 16:34,Jesus Perez,2. Orders & Delivery Schedule,PreProd US DS2 Order requests created does not arrive to order taking console,"Order requests created does not arrive to order taking console
+
+USCXGOV2CCC@cemexlabs.com
+C3m3xgo01
+
+https://pp-order-taking-console.cemexgo.com/
+
+Expected
+Request must be in pending status in the order taking console
+"
+DCM021CX0118-22449,Rejected,Medium,Major,DCM021CX0118,Bug,18/03/20 16:36,Jesus Perez,2. Orders & Delivery Schedule,PreProd US DS2 Cancel request and repeat order are not available,"Cancel request and repeat order are not available
+
+US-Customer@mailinator.com
+US@cxgo1
+
+https://pp.cemexgo.com/login
+
+Expected
+All DS2 functionalities must be available
+
+"
+DCM021CX0118-22450,Open,Medium,Major,DCM021CX0118,Bug,18/03/20 16:44,Paola Reichardt,1. Customer Information & Commercial Conditions,PreProd MX DS1 Commercial conditions - New contract is not displayed,"Muestra el siguiente mensaje pero no muestra los contratos disponibles.
+Se creo uno nuevo el cual no se visualiza.
+
+Cliente Dominio GLobal
+"
+DCM021CX0118-22451,Open,Medium,Major,DCM021CX0118,Bug,18/03/20 16:54,Gerardo Herrera Guerrero,2. Orders & Delivery Schedule,PreProd MX DS2 No contracts available,No contracts available when creating the order
+DCM021CX0118-22452,Rejected,Medium,Major,DCM021CX0118,Bug,18/03/20 16:57,Jesus Perez,2. Orders & Delivery Schedule,PreProd MX DS2 Orders Console - Requests not displayed,"Usuario: MXCXGOV2CCC@cemexlabs.com
+No es posible ver las solicitudes de los clientes :
+
+CONSTRUCTORA JAN, S.A. DE C.V. # 50005888
+ACEROS Y CORRUGADOS LA UNION SA DE #0050002473
+ACEROS Y CEMENTOS SALINAS SA DE CV #0050009908
+ACEROS Y MATERIALES ALBA #0050002328, 
+ACEROS Y MATERIALES EL OASIS, S.A. #0050048847
+ANAHUAC ORGANIZACION CONSTRUCTORA #0050003048
+AXIS CONSTRUCCIONES DE MONTERREY #0050395824
+BLOKASA MATERIALES, S.A. DE C.V. #0050003172 
+DAVISA EDIFICACIONES  # 0050149982
+DOMINIO GLOBAL SA DE CV #0050485602
+INMOBILIARIA SERVER DE COAHUILA 50006483
+PRELOSA PREFABRICADOS DISEÑO Y #0050155126""
+"
+DCM021CX0118-22453,Rejected,Medium,Major,DCM021CX0118,Bug,18/03/20 17:43,Jesus Perez,2. Orders & Delivery Schedule,PreProd MX DS2 Delivery Schedule not showing information,Delivery Schedule not showing information
+DCM021CX0118-22454,Open,Medium,Major,DCM021CX0118,Bug,18/03/20 17:49,Paola Reichardt,"4. Credits, Invoices & Payments",PreProd MX DS4 Information is not matching nor updated,"Information is not matching nor updated
+Comments are not displayed
+Invoices can't be applied
+Status stays as : Compensación
+
+Please refer to the attachments"
+DCM021CX0118-22455,Analysis,Medium,Major,DCM021CX0118,Bug,18/03/20 17:54,Rafael Antonio Acuña Solorzano,1. Customer Information & Commercial Conditions,PreProd SCAC DS1 Jobsites not displayed,"Users in attachment
+Evidence in attachment"
+DCM021CX0118-22456,Analysis,Medium,Major,DCM021CX0118,Bug,18/03/20 17:56,Rafael Antonio Acuña Solorzano,1. Customer Information & Commercial Conditions,PreProd SCAC DS1 Mix Design button not available,En solicitudes de diseño de mezclas no aparece el botón para solicitar uno (abajo a la derecha) y en la opción que sí sale reenvía hacia la página inicial como si hubiera dado click en el logo de CEMEX
+DCM021CX0118-22457,Rejected,Medium,Major,DCM021CX0118,Bug,18/03/20 18:00,Rafael Antonio Acuña Solorzano,2. Orders & Delivery Schedule,PreProd SCAC DS2 Time Negotiation and Repeat and Cancel order buttons,"a)	No aparece el botón de tiempo de negociación
+a)	No aparecen botones para repetir orden o cancelar"
+DCM021CX0118-22458,In Development,Medium,Major,DCM021CX0118,Bug,20/03/20 9:14,Rafael Antonio Acuña Solorzano,5. Cross Product – User Provisioning,PreProd SCAC DS5 User Provisioning - L0 Console,"Adjunto las jerarquías de cada país para poder crear y aprovisionar en Preproductivo los usuarios de SCA&C para la consola L0.
+El Perfil es CCC/Service Center. Cualquier duda me avisas por favor. 
+"
+DCM021CX0118-22459,Rejected,Medium,Minor,DCM021CX0118,Bug,20/03/20 11:14,Jesus Perez,2. Orders & Delivery Schedule,PreProd MX DS2  Order and Product Catalog - Repeat order option not available,"Repeat order option not available
+
+CUSTOMER: 50485602
+Liga: [https://pp.cemexgo.com/login|https://pp.cemexgo.com/login]
+Usuario : MXCXGOV2@cemexlabs.com / PSW: C3m3xgo01
+
+Business lines: Aggregates and Ready Mix
+
+!image-2020-03-20-10-12-25-705.png|width=200,height=183!
+
+ "
+DCM021CX0118-22460,Rejected,Medium,Major,DCM021CX0118,Bug,20/03/20 11:30,Jesus Perez,2. Orders & Delivery Schedule,PreProd MX DS2  Order and Product Catalog - Offer Calendar,"Offer Calendar : Muestra la opcion de Calendario de Ofertas para un pedido de Multiproducto , cuando esta opcion solo esta habiltada para pedidos de Cemento.
+
+CUSTOMER: 50485602
+Liga: [https://pp.cemexgo.com/login|https://pp.cemexgo.com/login]
+Usuario : MXCXGOV2@cemexlabs.com / PSW: C3m3xgo01
+
+# Seleccionar la opcion Pedidos
+# Solicitud de Pedidos
+# Linea de Negocio : Cemento / Multiproducto
+# Selecciona modo de entrega: ENTREGADO
+# *Ubicación* / Punto de entrega: 66547763 COLONIA VIDRIERA (JELG)
+# Selecciona Siguiente
+# Selecciona Catalogo de Productos : 
+# Tipo de Productos : Derivados de Alambron : {color:#ffffff}4{color}{color:#6554c0}40000091 - ALAMBRE RECOCIDO - (KG){color}
+# Agregar 20 TN 
+# Seleccionar Agrupar Viajes
+# Seleccionar Siguiente 
+# Abrir el calendario
+
+Se observa que en el calendario están habilitadas (esta opción solo esta habilitada para cemento)
+
+!image-20200320-163157.png|width=785,height=444!
+
+"
+DCM021CX0118-22461,Open,Medium,Major,DCM021CX0118,Bug,20/03/20 12:09,Paola Reichardt,1. Customer Information & Commercial Conditions,PreProduction MX DS1 CUstomer Information – Jobsite Creation,"Jobsite creation: En Cemex Go preproductivo, cuando la obra esta creada, la muestra en otro registro en la consola
+
+CUSTOMER: 50485602
+Liga: https://pp.cemexgo.com/login
+Usuario : MXCXGOV2@cemexlabs.com / PSW: C3m3xgo01
+
+1.- Seleccionar la opcion “New location”
+2.- Se crea con los siguientes datos el request MX00107198
+ !image-2020-03-20-11-05-06-723.png|thumbnail! 
+
+3.- Se valida creación en consola
+4.- Se crea obra en base al request en XD01 en SAP
+ !image-2020-03-20-11-05-43-010.png|thumbnail! 
+
+5.- En consola se visualiza en estatus pending todavía sin embargo muestra la obra creada
+ !image-2020-03-20-11-05-52-012.png|thumbnail! 
+ 
+6.- En Cemex go muestra el request MX00107198 todavia pendiente pero la obra aparece creado en otro request de obra.
+ !image-2020-03-20-11-06-00-949.png|thumbnail! 
+ 
+
+"
+DCM021CX0118-22462,Closed,Medium,Major,DCM021CX0118,Bug,20/03/20 13:42,Javier Pedraza,5. Cross Product – User Provisioning,PreProduction MX DS5 User Management � Adding users,"Add user: En Cemex Go preproductivo, cuando agregamos usuario nuevo, marca un error al final del registro y no permite crearlo
+
+CUSTOMER: 50485602
+
+Liga: [https://pp.cemexgo.com/login|https://pp.cemexgo.com/login]
+
+Usuario : [MXCXGOV2@cemexlabs.com|mailto:MXCXGOV2@cemexlabs.com] / PSW: C3m3xgo01
+
+1.- Agregar usuario
+
+!image-20200320-184306.png|width=693,height=333!
+
+2.- Asignar info
+
+!image-20200320-184326.png|width=693,height=333!
+
+3.- Asignar roles
+
+!image-20200320-184340.png|width=693,height=323!
+
+4.- Se le asignan permisos y cliente a administrar
+
+!image-20200320-184401.png|width=693,height=317!
+
+5.- Al dar click en crear marca el siguiente error
+
+!image-20200320-184415.png|width=693,height=343!
+
+"
+DCM021CX0118-22463,Open,Medium,Major,DCM021CX0118,Bug,20/03/20 15:44,Paola Reichardt,"4. Credits, Invoices & Payments",PreProd MX DS4 Invoices & Payments - Invoice Details ,"No se están mostrando los detalle de la aplicación, remisión :
+
+!image-2020-03-20-14-43-01-889.png|width=200,height=183!
+
+ 
+
+!image-2020-03-20-14-43-24-197.png|width=200,height=183!
+
+Remision
+
+!image-20200320-204733.png|width=1707,height=960!
+
+
+
+ 
+
+!image-20200320-204743.png|width=1707,height=960!
+
+"
+DCM021CX0118-22464,Closed,Medium,Critical,DCM021CX0118,Bug,23/03/20 9:40,Kenny J Franco,3. Delivery Tracking,UAT ES DS3 PRE-PROD //  VISUALIZATION OF THE TICKET BEFORE AND AFTER OF THE DELIVERY ,"When we try to visualize the ticket before the delivery in Driver APP the button was in grey color and We could not see the ticket. The same happened after the delivery is done, we can´t preview the ticket in DriverAPP.
+
+--> Pre-Ticket preview:
+
+!image-2020-03-23-15-38-56-949.png|width=200,height=183!
+
+ 
+
+-->Preview of the completed ticket:
+
+!image-2020-03-23-15-39-57-209.png|width=200,height=183!
+
+ 
+
+Regards"
+DCM021CX0118-22465,Open,Medium,Major,DCM021CX0118,Bug,23/03/20 9:56,Paola Reichardt,1. Customer Information & Commercial Conditions,MOD - DS1 Commercial Conditions - Request and Accept a Quote,"Actual Result: Commercial Conditions menu when we are clicking create ""New Quote"" is not loading
+
+Expected Result: New Quote Page is properly load to fill the data . 
+
+User:  NORTHSTAR.POLAND@mailinator.com
+Pasword: TestNIcxg0
+Customer: 0050246586
+
+Test Steps:
+
+https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/CGL-T624"
+DCM021CX0118-22466,Open,Medium,Minor,DCM021CX0118,Bug,23/03/20 10:11,Paola Reichardt,"4. Credits, Invoices & Payments",DS4 - DC Report - invoice report,"Actual Result: When you try to dowload the report from Document center the puppop is no loading
+
+Explected results: the pupop should load properly you should be able to download the report.
+
+USER_CEMEXGO: customerAU01cmxgo@mailinator.com	
+PASSWORD_CEMEXGO: TestCycleV2CemexGo
+CUSTOMER: 0050004798
+
+
+
+Test Stepes:
+
+[https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#\!/testCase/CGL-T265|https://cemexpmo.atlassian.net/projects/CGL?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/CGL-T265]
+
+"
+DCM021CX0118-22467,Closed,Medium,Major,DCM021CX0118,Bug,23/03/20 10:23,Miguel Agustin Rodrigues,3. Delivery Tracking,UAT ES DS3 PRE-PROD //  Automatic Get ticket Error,"After uploading two tickets in driver APP, the third ticket uploaded is from a different Jobsite (the APP sent a warning that you´re changing the jobsite).  Then, when the third ticket is revoked and uploaded it again you try to get the fourth ticket ( this case is automatically), it appears the warning that you´re changing the jobsite, that in this case, you´re not changing it. 
+
+ "
+DCM021CX0118-22469,Closed,Medium,Minor,DCM021CX0118,Bug,23/03/20 12:53,Ariel Pons Alonso,2. Orders & Delivery Schedule,MOD S2 - Cancel Order button is not displayed,"Data used:
+
+CEMEXGO_URL_AME = https://qa.cemexgo.com
+ORDER_CONSOLE = https://qa-order-taking-console.cemexgo.com/login
+LANGUAGE = Español España
+ENVIRONMENT = QA
+USER_ORDER_CONSOLE = customercare.ES01@mailinator.com
+PASS_ORDER_CONSOLE = TestEScxg0  !OrderCancel1.PNG|thumbnail!  !OrderCancel2.PNG|thumbnail! "
+DCM021CX0118-22470,Rejected,Medium,Major,DCM021CX0118,Bug,24/03/20 9:49,Miguel Agustin Rodrigues,3. Delivery Tracking,UAT ES DS3  - Error en el tiempo de fabricacion HTC - DOC 03 y 11,"Cuando hacemos la produccion desde RMS a HTC, tenemos una hora de produccion (generada desde HTC) y cuando cargamos el ticket en driver app mobile  el DOC 03 aparece con 10 min mas a la hora marcada por HTC, al igual que el doc 11 de HTC. Pero, si se carga el DOC 27 de middleware la hora que aparece es la correcta, al igual que el 11 de middleware.
+
+Pruebas:
+
+HTC --> marcado en cuadro rojo la hora de fabricación
+
+!image-2020-03-24-15-37-16-734.png|width=200,height=183!
+
+ 
+
+PDF DOC 11 HTC - hora de fabricacion 10 min despues y lo mismo sucede con el doc 03
+
+!image-2020-03-24-15-43-42-672.png|width=200,height=183!
+
+ "
+DCM021CX0118-22471,Rejected,Medium,Major,DCM021CX0118,Bug,24/03/20 10:31,Miguel Agustin Rodrigues,3. Delivery Tracking,UAT ES DS3  - It Does not appear client name and CIF number ,"There is a field before the signature of the customer, where it can be fill name and id number of the client. If we fill this field it does not be reflected in the Signature.
+
+-->Field where the customer completed his name and Legal ID.
+ !image-2020-03-24-16-06-09-290.png|thumbnail! 
+
+-->Doc 11 HTC where it should appear the name and legal ID:
+  !image-2020-03-24-16-08-22-888.png|thumbnail! 
+
+-->In the detail of the ticket in DriverApp appears the name and Legal id number of the customer:
+ !image-2020-03-24-16-09-12-597.png|thumbnail! 
+
+"
+DCM021CX0118-22472,Rejected,Medium,Minor,DCM021CX0118,Bug,24/03/20 10:49,Kenny J Franco,"4. Credits, Invoices & Payments",UAT ES DS3 Delay in the DOC 11 Middleware - Good Receipt,"When the document 11 of middleware is created through Driver App mobile at least it has a delay of 10 mins until it is shown in good receipt tab (Document Center).
+
+Client: 50011865
+Jobsite: 65459726
+Ticket: 19940155
+ 
+==> This image belong to the delay of the DT in good receipt.
+
+ !image-2020-03-24-16-35-32-132.png|thumbnail! "
+DCM021CX0118-22473,Rejected,Medium,Major,DCM021CX0118,Bug,24/03/20 11:08,Miguel Agustin Rodrigues,3. Delivery Tracking,UAT ES DS3  - Delay Of estatus Track App and Web,"There is a time delay with the status of Track Web and Track Mobile, because it appears as ""In progress"" on the front page and when you go to the detail it appear the status as ""Finished"".
+
+==>Track Web  
+ !image-2020-03-24-17-02-51-153.png|thumbnail! 
+==> Track web detailed info:
+ !image-2020-03-24-17-03-07-584.png|thumbnail! 
+
+==> Track App Mobile
+ !image-2020-03-24-17-07-23-206.png|thumbnail! 
+
+==> Track App Mobile/ Detailed
+ !image-2020-03-24-17-07-36-174.png|thumbnail! "
+DCM021CX0118-22474,Closed,Medium,Major,DCM021CX0118,Bug,24/03/20 12:00,Javier Pedraza,5. Cross Product – User Provisioning,PreProd MX DS2 User provisioning - Permissions,"Se requiere permisos para los siguientes usuarios en el ambiente de Preproductivo
+
+{color:#ff0000}*Usuario OLS : MXCXGOV2@cemexlabs.com / C3m3xgo01*{color}
+
+Tanto los clientes comos sus obras . actualmente  tiene asigandos los clientes pero no sus obras:
+
+
+|ACEROS Y CEMENTOS SALINAS SA DE CV|50009908|
+|ACEROS Y CORRUGADOS LA UNION SA DE|50002473|
+|ACEROS Y MATERIALES ALBA|50002328|
+|ACEROS Y MATERIALES EL OASIS, S.A.|50048847|
+|ANAHUAC ORGANIZACION CONSTRUCTORA|50003048|
+|AXIS CONSTRUCCIONES DE MONTERREY|50395824|
+|BLOKASA MATERIALES, S.A. DE C.V.|50003172|
+|CONSTRUCTORA JAN, S.A. DE C.V.|50005888|
+|DAVISA EDIFICACIONES|50149982|
+|DOMINIO GLOBAL SA DE CV|50485602|
+|INMOBILIARIA SERVER DE COAHUILA|50006483|
+|PRELOSA PREFABRICADOS DISEÑO Y|50155126|
+
+
+
+Se requiere acceso a las siguientes jerarquias (se anexa archivo) para los siguientes usuarios:
+MXCXGOV2CCC@cemexlabs.com
+
+MXCXGOV2@cemexlabs.com
+
+[^Acceso Jerarquias.XLS]
+
+Se requiere acceso a las plantas EA20 , EA24 , EA22, EA23, EA63 , EA64, EA65 ,EA66 ,EA67
+DF22 , DF18 , DF12 , DF13, DF23, DF07 , DF46
+
+[MXCXGOV2DISP@cemexlabs.com|mailto:MXCXGOV2DISP@cemexlabs.com]{color:#6554c0} / C3m3xgo01 OK{color}
+Usuarios Consola Drivers
+[https://uscldcnxwadapp01.azurewebsites.net/drivers/login|https://uscldcnxwadapp01.azurewebsites.net/drivers/login] (PROFILE : DISPACHER)
+Usuario: [marcoantonio.corzoq@cemex.com|mailto:marcoantonio.corzoq@cemex.com]
+
+BL: Todas"
+DCM021CX0118-22475,Rejected,Medium,Major,DCM021CX0118,Bug,25/03/20 16:49,Gerardo Herrera Guerrero,2. Orders & Delivery Schedule,DS2 - Create Aggregates order is not possible (require field in specification page is mandatory but empty),"User CemexGo: Bauer@mailinator.com
+Pass CemexGo: TestDEcxg0
+Customer: 0050003076
+Product Line: Mineralische Rohstoffe (Aggregates)
+Delivery Method: delivery
+Jobsite: 69913245
+Product: 10126371
+
+Actual Result: In specification Page ""Gewünschte Lieferzeit"" field is mandatory but the dropdown is in blank you can not select any value so you can't continue with the next page. 
+
+*For Spain is not possible to select the product the button for catalog is not appearing.
+
+Expected Result: you will be able to select all the mandatory fields in the page and continue with the next page."
+DCM021CX0118-22476,Closed,Medium,Major,DCM021CX0118,Bug,13/04/20 16:31,Warren Jason Román Hernández,3. Delivery Tracking,UAT MX DS3 EPODs are not available in SAP,"EPODs created or updated during our tests are not available in SAP.
+We tried to find the documents using Z1023_scan and vl03n transactions.
+
+Tickets: 
+0155067602
+0155068711
+
+Paperless jobsite:
+0066646790
+0209_E2E_MX_CEM_2nd_20:03
+
+We used the Drivers App v1.7.0.8
+
+ !image-2020-04-13-16-30-34-355.png|thumbnail! 
+
+ !image-2020-04-13-16-30-42-008.png|thumbnail! 
+"
+DCM021CX0118-22477,Closed,Medium,Major,DCM021CX0118,Bug,13/04/20 21:41,Monica A. Salinas Flores,3. Delivery Tracking,UAT US DS3 - EPOD taking longer than expected when shared,"Actual Result:
+Created an order in command, dispatched 2 tickets and, when finished, tried to share each the EPOD to my personal email. Both of them took more than 10 minutes to arrive to my email. 
+
+*The tickets which are arrived late are:*
+28776665
+28776664
+*Customer* ID 3101088
+
+Expected Result: They should arrive right away as the EPOD is shared. If the EPOD is shared by a Driver, he can´t wait in the jobsite until the EPOD arrive to the customer and this delay gives a bad experience."
+DCM021CX0118-22478,Rejected,Medium,Critical,DCM021CX0118,Bug,13/04/20 22:12,Monica A. Salinas Flores,3. Delivery Tracking,UAT US DS3 - Cement trucks are not displayed in the Driver´s Console,"Actual:
+Created 1 ticket in SAP and that one is not appearing in the Tracking section ,in the Delivery Console.
+This ticket is dispatched from the Houston Terminal.
+Ticket 8082648837
+Customer ID 3144803
+
+Expected Result: The truck must be displayed and tracked in the Tracking section. "
+DCM021CX0118-22479,Rejected,Medium,Major,DCM021CX0118,Bug,13/04/20 22:32,Paola Reichardt,3. Delivery Tracking,UAT US DS3 - Cement EPOD missing information,"Actual:
+Created 1 ticket in SAP. After loading the ticket into Driver App, we reviewed the Pre-EPOD and the Ticket Date, Beging Load and Ticket time info is Blank. The ticket info is the following:
+Ticket 8082648837
+Customer ID 3144803
+
+Expected Result: The information should be grabbed from SAP and posted in the EPOD. These fields cannot be blank."
+DCM021CX0118-22480,Rejected,Medium,Critical,DCM021CX0118,Bug,15/04/20 13:45,Paola Reichardt,3. Delivery Tracking,The epod is not being attached to the SAP reference,"When a delivery is scanned in the driver app, the trip is signed and closed, the generated ePOD must be sent to SAP and attached to the delivery document and this is not happening.
+
+User Stories related:
+DCM001CX1244-9801 [MX] - Send EPOD from Azure to SAP [1st Part]
+DCM001CX1244-9725[MX][BE] - Send EPOD from Azure to SAP [2nd Part]
+DCM001CX1244-9811[MX] - Send EPOD from Azure to SAP [3rd Part]
+
+Reproduction steps:
+1. Create an order in SAP
+2. Create the delivery and SAP shipment for the order
+3. Execute the dispatch process of the delivery in SAP
+4. Scan the ticket in Driver App application
+5. Advance the status in Driver App application until the last step (ePOD signature)
+6. Review the generated ePOD attached to the SAP delivery document in the transaction VL03N entering the Delivery document and click on the ""Servicios para Objeto"" icon
+"
+DCM021CX0118-22481,Rejected,Medium,Major,DCM021CX0118,Bug,16/04/20 16:54,Monica A. Salinas Flores,3. Delivery Tracking,The brand logo is not being always displayed in the ePOD ,"The logotype of the brand is not always being displayed in the ePOD document (see attachment)
+
+Steps to recreate:
+1. Create an Order in SAP
+2. Execute the planning process for the SAP Order, this step will create the SAP delivery and SAP Shipment document.
+3. Execute the dispatch process of the order 
+4. Scan the delivery ticket in the Driver App solution
+5. Enter to the details option and click on ""Ver Ticket de entrega"" option
+6. Check that the logotype is not displayed, only a black square is seeing
+
+"
+DCM021CX0118-22482,Closed,Medium,Critical,DCM021CX0118,Bug,17/04/20 18:16,Marco Corzo,3. Delivery Tracking,UAT ASD comments are not shown in the ePOD attachment in SAP,"h1. *17/04/2020*
+The comments entered by the ASD in the driver console are not shown into the ePOD attached in the SAP document
+
+Ticket  0155068979  Job Site 66372507
+Plant EA20 
+Version Driver App v1.7.0.8
+
+ !ePOD 0155068979 17042020 Driver App.jpg|thumbnail! 
+ !Ticket 0155068979 17042020(3) Comments in Console.jpg|thumbnail! 
+ !Ticket 0155068979 17042020(3) attachment in SAP.jpg|thumbnail! 
+ !Ticket 0155068979 17042020(3).jpg|thumbnail! 
+
+Other examples:
+Ticket 155069087   Job Site 66372507
+Ticket 155069089  Job Site 66372507
+Ticket 155069100  Job Site 66372507
+"
+DCM021CX0118-22483,Closed,Medium,Minor,DCM021CX0118,Bug,21/04/20 15:43,sergio.ramones@neoris.com,2. Orders & Delivery Schedule,RMX online - Product Specification wrong traslation,"User: rms_certification_10@mailinator.com
+Pass: Cemex2020
+Customer: 50025163
+
+1- Log in into cemex go  and select Expañol Mexico language 
+2- select customer
+3- go to ""Pedidos"" --> ""Historial de Ordenes""
+4- click on create order button  
+5- select product line Concreto
+6- Select deleivery method ""Entregado""
+7- click next 
+
+Expected result: in Location page you will see all menus with the proper lalnguage
+
+Actual Result : you are seegin wrong traslation in one of the options."
+DCM021CX0118-22484,Closed,Medium,Minor,DCM021CX0118,Bug,21/04/20 15:48,Javier Iracheta,2. Orders & Delivery Schedule,"RMX online - After Create Order Readymix ""Elemento a colar"" change value in order details ","Elemento a colar"" Change value when you search in order details.
+
+ Data: Customer #0050001311
+
+Jobsite: AB STEEL (EJPR) - 0065164797 
+
+Steps to reproduce.
+
+1- Login Cemex go [rms_certification_10@mailinator.com|mailto:rms_certification_10@mailinator.com]/Cemex2020 
+
+2- Go Orders History 
+
+3- Create Ready mix order (new experience) selecting profile ""Automation Piso"" 
+
+4- Validate ""Elemento a colar"" as ""Piso"" in resumen order page 
+
+5- Submit Order 
+
+6- Go ORder History and select order recently created 
+
+7- Validate ""Elemento a colar"" value."
+DCM021CX0118-22485,Closed,Medium,Major,DCM021CX0118,Bug,21/04/20 16:53,Daniela Garcia,2. Orders & Delivery Schedule,RMX online - Repeat order is displayed after create order with new experience,"User: rms_certification_10@mailinator.com
+Pass: Cemex2020
+Customer: 0050001311
+
+1- Log in into cemex go  and select Expañol Mexico language 
+2- select customer
+3- go to ""Pedidos"" --> ""Historial de Ordenes""
+5- select any confirmed order and go to the details
+6- click on repat order 
+7- click ""Enviar"" buton
+8- take the order number from order
+
+Actual result: in order history you will see two ordes in pending status
+
+Expected result: see only one order in Confirmado status"
+DCM021CX0118-22486,Closed,Medium,Minor,DCM021CX0118,Bug,21/04/20 19:55,Javier Iracheta,2. Orders & Delivery Schedule,Translation - OPC_SHOW_PRICES_RMS  no existe en la consola de internacionalización,"User: rms_certification_10@mailinator.com
+Pass: Cemex2020
+Customer: 50025163
+
+1- Log in into cemex go  and select Expañol Mexico language 
+2- Administración de usuarios
+
+OPC_SHOW_PRICES_RMS 
+no existe en la consola de internacionalización aplicación user provisioning ya que no fue solicitada (bajo)
+
+Ver imagen"
+DCM021CX0118-22487,Closed,Medium,Minor,DCM021CX0118,Bug,21/04/20 20:04,Javier Iracheta,2. Orders & Delivery Schedule,Translation - Wrong gender in request label,"When a request has been completed the message displayed is:
+
+""Número de pedido: 8008468847 enviada""
+
+The gender is wrong : Pedido - Enviada  
+
+see attached image as reference
+
+"
+DCM021CX0118-22488,Rejected,Medium,Major,DCM021CX0118,Bug,22/04/20 10:29,sergio.ramones@neoris.com,2. Orders & Delivery Schedule,"RMX online - ""Adicion"" can't be selected.","User: [rms_certification_10@mailinator.com|mailto:rms_certification_10@mailinator.com]
+Pass: Cemex2020
+customer: 0050001311
+Jobsite:  65164797 AB  STEEL (EJPR)
+Point of delivery:  65164797 AB  STEEL (EJPR)
+
+Product: 20000114 / F'C200 28DIAS REV14 TMA2 LINEA
+contract:  155064875
+
+1- Log in into cemex go  and select Expañol Mexico language 
+2- select customer
+3- go to ""Pedidos"" --> ""Historial de Ordenes""
+4- click on create order button  
+5- select product line Concreto
+6- Select deleivery method ""Entregado""
+7- click next 
+8- select Jobsite, Point of delivery 
+9- click next
+10-Select Product
+11-Select contract
+12-select adicion 1, adicion 2, adicion 3, adicion 4
+
+Expected Results: You should be able to select the last ""adicion""
+
+Actaul Result: dropdown is empty."
+DCM021CX0118-22489,Closed,Medium,Major,DCM021CX0118,Bug,22/04/20 10:48,sergio.ramones@neoris.com,2. Orders & Delivery Schedule,RMX online - Pump checkbox is checked,"User: rms_certification_10@mailinator.com
+Pass: Cemex2020
+customer: 0050001311
+Jobsite:  65164797 AB  STEEL (EJPR) 
+Point of delivery:  65164797 AB  STEEL (EJPR) 
+
+Product: 20000114 / F'C200 28DIAS REV14 TMA2 LINEA 
+contract:  155064875 
+Tipo de Carga: Directo
+Elemento a Colar: Piso
+Frecuencia: 1 hora
+Tiempo de carga: 30 minutos
+8008468874
+
+
+User: rms_certification_10@mailinator.com
+Pass: Cemex2020customer: 0050001311
+Jobsite:  65164797 AB  STEEL (EJPR)
+Point of delivery:  65164797 AB  STEEL (EJPR)
+
+Product: 20000114 / F'C200 28DIAS REV14 TMA2 LINEA
+contract:  155064875
+
+1- Log in into cemex go  and select Expañol Mexico language 
+2- select customer
+3- go to ""Pedidos"" --> ""Historial de Ordenes""
+4- click on create order button  
+5- select product line Concreto
+6- Select deleivery method ""Entregado""
+7- click next 
+8- select Jobsite, Point of delivery 
+9- click next
+10-Select Product
+11-Select contract
+12-select adicion 1, adicion 2, adicion 3, adicion 4
+13-select Tipo de carga,Elemento a colar,Frecuencia, Tiempo de carga
+14- click next
+15-click crear orden
+16-save order number
+17- go to SAP MRQ transaction 102B_ordertaking
+18- look the order and review the datailes
+
+Expected Results: the pump checkbox should not be checked.
+
+Actaul Result: the pump checkbox is checked."
+DCM021CX0118-22490,Closed,Medium,Minor,DCM021CX0118,Bug,22/04/20 11:14,Javier Iracheta,2. Orders & Delivery Schedule,Translation - RMX online - project profile  ajuste check is not selected.,"User: rms_certification_10@mailinator.com
+Pass: Cemex2020customer: 0050001311
+Jobsite:  65164797 AB  STEEL (EJPR)
+Point of delivery:  65164797 AB  STEEL (EJPR)
+
+Product: 20000114 / F'C200 28DIAS REV14 TMA2 LINEAcontract:  155064875
+
+1- Log in into cemex go  and select Expañol Mexico language 
+2- select customer
+3- go to ""Pedidos"" --> ""Historial de Ordenes""
+4- click on create order button  
+5- select product line Concreto
+6- Select deleivery method ""Entregado""
+7- click next 
+8- select Jobsite, Point of delivery 
+9- click next
+10-Select Product
+11-Select contract
+12-select adicion 1, adicion 2, adicion 3, adicion 4
+13-select profile Automation Pump
+
+Expected Results: all elements that you have selected when you create the profile should be selected
+
+Actaul Result: the ajust check is not selected."
+DCM021CX0118-22491,Rejected,Medium,Major,DCM021CX0118,Bug,22/04/20 15:54,Alejandro Soria,2. Orders & Delivery Schedule,"RMX online -Order Created is not displayed on ""Order and Product"" Catalog screen","Data:Customer #0050001311 Jobsite: AB STEEL (EJPR) - 0065164797
+
+Steps to reproduce.
+1- Login Cemex go [rms_certification_10@mailinator.com|mailto:rms_certification_10@mailinator.com]/Cemex2020
+2- Go Orders History
+3- Create Ready mix order (new experience) selecting profile ""Pisos""
+4- Submit Order
+5- Go Order History and select order recently created - The order is not listed on OLS: 8008468877
+7-Validate the order details on SAP SRM  - The order details is displayed."
+DCM021CX0118-22492,Closed,Medium,Minor,DCM021CX0118,Bug,23/04/20 16:23,Ricardo Avalos,2. Orders & Delivery Schedule,RMX online - Select product is disable after click back and select another jobsite,"Steps to reproduce:
+
+1 - Log in Cemex go rms_deployment_03@mailinator.com/Cemexgo2020
+2 - Select customer #0050776345
+3 - Click Order history
+4 - Create Order
+5 - Product line select ready mix
+6 - Select jobsite and POD 66606884 and click next
+7 - Select Product in product specifications page
+8 - Click Back
+9 - Select Jobsite and POD 66606882 and click next
+10 - Selection of product is disable
+11 - Click back
+12 - Select again the first jobsite 66606884 previously selected and click next
+13 - Selection of product is disable.
+
+Expected Result: Select product should be able for jobsite 66606884
+Actual Result: Select product is disable for 66606884
+"
+DCM021CX0118-22493,Rejected,Medium,Major,DCM021CX0118,Bug,23/04/20 22:45,Javier Iracheta,2. Orders & Delivery Schedule,Different plant on order creation,"-	Se programo con bomba y coloca el pedido en otra planta que no es del contrato, ni del cliente
+
+Please see word attached"
+DCM021CX0118-22494,Rejected,Medium,Minor,DCM021CX0118,Bug,23/04/20 22:50,Carlos Treviño,2. Orders & Delivery Schedule,Truck Capacity 7 Mts in MX  vs 12 Mts that is stored ,"It is understood that in MX the capacity of trucks for Ready Mix is 7 cubic meters, however  when a new order is created, the capacity in the order is 12 cubic meters
+
+Please see attached picture "
+DCM021CX0118-22495,Closed,Medium,Major,DCM021CX0118,Bug,23/04/20 22:56,Javier Iracheta,2. Orders & Delivery Schedule,Adjust of order created in OLS is stored greater than 10%,"A new order is created asking for 14 cubic meters and marking adjustment.
+
+The expectation is 10% of extra material, it means 1.4 cubic meters,  however in RMS the number shown is 1.5
+
+Please review attached picture"
+DCM021CX0118-22496,Rejected,Medium,Minor,DCM021CX0118,Bug,23/04/20 23:00,Carlos Treviño,2. Orders & Delivery Schedule,Order cannot be created,"A new order is tried to be created, all field are completed however the button to continue is displayed on screen
+
+
+Please see attached picture"
+DCM021CX0118-22497,Closed,Medium,Minor,DCM021CX0118,Bug,24/04/20 14:51,Jean Franco Caringi,"4. Credits, Invoices & Payments",REG CO DS4 Payment compensation isn't updated correctly for Company Cemex Administraciones ,"url: qa.cemexgo.com
+user: bolivar@mailinator.com
+pass: TestCOcxg0
+
+1. Login CemexGO
+2. Make an invoice payment in PSE for the company Cemex Administraciones (3032)
+ !Evidence1.jpg|thumbnail! 
+3. Validate the transactions in Payment History
+ !Evidence2.jpg|thumbnail! 
+4. Validate the payments were applied to the corresponding invoices
+ !Evidence3.jpg|thumbnail!  !Evidence4.jpg|thumbnail!  !Evidence5.jpg|thumbnail! 
+5. Validate the corresponding invoices in Financial documents view and the status isn't updated
+ !Evidence6.jpg|thumbnail!  !Evidence7.jpg|thumbnail!  !Evidence8.jpg|thumbnail! 
+
+Expected result
+The status of the invoices should be updated when a payment is done"
+DCM021CX0118-22498,Rejected,Medium,Critical,DCM021CX0118,Bug,28/04/20 11:55,Marco Corzo,3. Delivery Tracking,The Pre Epod is not being shown in the Driver App ,"The Pre Epod is not being shown in the driver app v1.7.0.8 for the preproduction environment
+
+Ticket 173940058
+Job Site 65004423
+Driver App version 1.7.0.8
+
+See attached files [^Version Driver App Preprod.pdf]  !2020-04-28_11-47-06.jpg|thumbnail! "
+DCM021CX0118-22499,Closed,Medium,Minor,DCM021CX0118,Bug,30/04/20 10:14,Christian Estrella,"4. Credits, Invoices & Payments",PrepProd CO DS4 Payment button is disable,"url: https://pp.cemexgo.com
+user: COCXGOV2@cemexlabs.com
+pass: C3m3xgo01
+
+1. Login Cemex GO
+2. Select Constructora Bolivar client
+3. Select Invoices & Payments section
+4. Make an advanced payment or try to pay an invoice
+5. The button is disable
+ !image-2020-04-30-10-08-18-411.png|thumbnail! 
+6. The roles to make payments are assigned to the user
+ !image-2020-04-30-10-09-04-255.png|thumbnail! 
+
+The issue is present when both configurations (rollout) are OFF
+- workflowV4 = OFF; not used for V4 of payments
+- construagil-ecollect = OFF; it's not calling V4 of payments (only visible in url of regular payment) 
+"
+DCM021CX0118-22500,Rejected,Medium,Critical,DCM021CX0118,Bug,30/04/20 13:28,Evert Jerson Sanchez Alvarez,2. Orders & Delivery Schedule,RMX online - Price is not being displayed at the end of the order,"Description:
+When trying to create an order, price is not being displayed at the end of the order and also the role price is not available !price.jpg|thumbnail!  !rol.jpg|thumbnail!  
+
+Data used:
+-User: ferregalauser@mailinator.com/TestCycleV2CemexGo
+-Client: 50776345
+-Jobsite: 66606882
+-Material: 20050711
+-Contract: 176065418"
+DCM021CX0118-22501,Closed,Medium,Major,DCM021CX0118,Bug,30/04/20 15:44,Javier Iracheta,2. Orders & Delivery Schedule,Zero price when additives are added,"Creating a new request, the prize is set to Zero when additives are added
+
+Data:
+
+Usuario	Password	Cliente	Nombre Cliente	Obra	Nombre Obra	Planta	Nombre Planta	Material	Contrato
+ferreterachamizaluser@mailinator.com	TestCycleV2CemexGo	50025163	CONSTRUCTORA VILLA DEL PALMAR	66637145	2019 Villa del Palmar	DE90	MX-PD0502 ARCO VIAL II	20000267	176065410
+
+
+Please see screenshot as reference
+
+"
+DCM021CX0118-22503,Closed,Medium,Critical,DCM021CX0118,Bug,04/05/20 17:35,Javier Iracheta,2. Orders & Delivery Schedule,Product is not being displayed as SAP,"We tried to create an order with the following data:
+
+Usuario	ferreterachamizaluser@mailinator.com
+Password	TestCycleV2CemexGo
+Cliente	50025163
+Nombre Cliente	CONSTRUCTORA VILLA DEL PALMAR
+Obra	66637145
+Nombre Obra	2019 Villa del Palmar
+Planta	DE90
+Nombre Planta	MX-PD0502 ARCO VIAL II
+Material	20000267
+Contrato	176065410
+Tp.Cte	B
+Cal Type	M
+
+
+Product is not displyed, however with the same data in SAP could be created the order"
+DCM021CX0118-22505,Open,Medium,Major,DCM021CX0118,Bug,06/05/20 17:47,Paola Reichardt,1. Customer Information & Commercial Conditions,DS01 - uploaded file in a quotation is not deleted.,"Follow the test cases steps:
+
+https://cemexpmo.atlassian.net/projects/DCMAUTTST?selectedItem=com.atlassian.plugins.atlassian-connect-plugin%3Acom.kanoah.test-manager__main-project-page#!/testCase/3580779
+
+Actual result: after deleted a quote file in status quoted in BSO console, the file is not deleted.
+Expected result: The file should be deleted and be posible to upload a new one."
+DCM021CX0118-22506,Closed,Medium,Major,DCM021CX0118,Bug,07/05/20 9:53,Javier Iracheta,2. Orders & Delivery Schedule,Order not found in SAP when created with zero in price,"A new order has been created using the following data:
+
+Usuario	ferreterachamizaluser@mailinator.com
+Password	TestCycleV2CemexGo
+Cliente	50025163
+Nombre Cliente	CONSTRUCTORA VILLA DEL PALMAR
+Obra	66637145
+Nombre Obra	2019 Villa del Palmar
+ZTERM	Z030
+Planta	DE90
+Nombre Planta	MX-PD0502 ARCO VIAL II
+Material	20000267
+Técnico	10017407
+Contrato	176065410
+Tp.Cte	B
+Cal Type	M
+
+Order is created: 8009919982
+
+however,  it is not found in SAP, please see attached images
+"
+DCM021CX0118-22507,Closed,Medium,Minor,DCM021CX0118,Bug,08/05/20 5:10,Warren Jason Román Hernández,3. Delivery Tracking,UAT CZ DS3 Internal Server error when submitting Track Signature,"User: VCES@mailinator.com
+Password: Tesxg0
+Customer: 50115483
+TicketCode: 0309700014
+
+For this scenario for AGG in CZ:
+
+ !image-2020-05-08-11-58-08-740.png|thumbnail! 
+
+When clicking on submitting the signature, an error appears:
+
+ !image-2020-05-08-12-07-28-883.png|thumbnail! 
+
+Expected behaviour:
+
+Signature should be able to be submitted.
+
+Actual behaviour:
+
+Error does not allow to submit Track Signature."
+DCM021CX0118-22508,Closed,Medium,Major,DCM021CX0118,Bug,08/05/20 12:16,hildaelisa.saldana,3. Delivery Tracking,UAT_USA_DS3_Signature Image is not centered as expected,"1. Created a RMX ticket
+2. Dispatched the RMX
+3. Take the load in QA Drivers app and move it to ""onsite"" right away.
+4. Log in in Track App QA now, and proceed to sign the ticket. 
+5. Right after, go straigh to check the EPOD. 
+6. The signature will not be centered as expected (show in the image attached).
+
+*Actual Result:* The signature is over some lines of the EPOD sections and this was not happening before.
+
+*Expected Result:* The signature should not go over the lines of the fields in the EPOD, should be located and centered inside the signature field."
+DCM021CX0118-22509,Rejected,Medium,Critical,DCM021CX0118,Bug,08/05/20 14:32,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Loads are displaying multiple statuses at the same time,"Steps to reproduce:
+1. Create an order in RMX - Command of 80 yards. involve 2 different materiasl such as 1601594 and 1605844. 
+2. Dispatch the load from the F42.
+3. Move the loads to loading so, the backend can send the status to track App. 
+4. Go to track App and see the loads of the order you created.
+
+*Actual result:* You will see load 1 as not ticketed and load 1 as Loading. Same Load, 2 statuses.
+*Expected Result: * See only 1 status per load."
+DCM021CX0118-22510,Closed,Medium,Critical,DCM021CX0118,Bug,08/05/20 15:21,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Labels incorretly shown,"1. Created a RMX ticket
+2. Dispatched the RMX
+3. Take the load in QA Drivers app and close the ticket without signature in Drivpers App and without providing the signature in Track App.
+4. Log in in Track App QA now, and proceed to check the ticket. 
+
+This example happens in the Load 2 of the attached image.
+
+*Actual Result: *The load in track app is showing the Signature Registered, when it should say Signature Pending and, the other label says, Review where it should say, SIGN.
+
+*Expected Result*: When the load was not signed in Driver app and in Track App either and, the driver finish the ticket without signature, the labels should say Signature Pending and Sign. "
+DCM021CX0118-22511,Closed,Medium,Critical,DCM021CX0118,Bug,08/05/20 15:37,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Label shown in an incorrectly status,"1. Created a RMX ticket
+2. Dispatched the RMX
+3. Take the load in QA Drivers app.
+4. Log in in Track App QA now, and proceed to check the load.
+
+Actual Result: The load status is ""To Job"" and, if I check Track App right away, the load on Track App will show the label, ""Signature Registered"" and also ""Review"".
+
+Expected Result: when a load is ""to Job"", no lables should be displayed so we don´t get to confuse the customer.  Just as happens when the load is loading. 
+
+Expected Result: The signature should not go over the lines of the fields in the EPOD, should be located and centered inside the signature field."
+DCM021CX0118-22512,Closed,Medium,Critical,DCM021CX0118,Bug,08/05/20 16:17,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Label incorrenctly shown 2,"1. Created a RMX ticket
+2. Dispatched the RMX
+3. Take the load in QA Drivers app and finish the ticket without signature.
+4. Log in in Track App QA now, and proceed go to the load to review if the signature pending label is shown.
+
+Actual Result: Signature is pending to sign and review lables are shown when the signature was not even provided by the customer. The parameters on this case are:
+-close ticket without signature and without customer Track App signature.
+Image attached: Load 3
+
+Expected Result:  Labes Signature is Pending and sign should be displayed here."
+DCM021CX0118-22513,Closed,Medium,Major,DCM021CX0118,Bug,08/05/20 16:33,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Review botton does not redirect sometimes to the right place,"1. Created a RMX ticket
+2. Dispatched the RMX
+3. Take the load in QA Drivers app. Close the ticket with no signature. 
+4. Log in in Track App QA now, and proceed to sign the ticket. 
+5. When you try to sign the ticket, in the label ""review"", you click there 4 times and in some of them you are not redirected to the webpage, you are redirected to the load info section. 
+6. Once you provide the signature, go back to track app and click on the review label once again, click there 4 times. Some of them you will not be redirected to the web page. some of them you will be redirected to the info load section. 
+
+Actual Result: The boton is not working as expected some of the times.
+
+Expected Result: whenever you click on review, you should be redirected to the web page.
+
+Please reach me or Hector Castro in order to explain you more about this bug."
+DCM021CX0118-22514,Rejected,Medium,Major,DCM021CX0118,Bug,11/05/20 1:06,Warren Jason Román Hernández,3. Delivery Tracking,UAT PH DS3 - Incorrect status of signature in Track app when status of load is Loading,"Test user: durawood@mailinator.com, password: Tesxg0
+Test environment: https://qa-eu.cemexgo.com/login
+Customer: 50000942, jobsite 65000881
+
+Steps to replicate: 
+1. Create sales order in ZRQ (examples of orders: 21016100, 21016201)
+2. Dispatch the sales order in ZRQ, status of load in CMX Go is Loading
+3. Upload the ticket to Driver app, status of ticket in Driver app is To Jobsite
+4. Access the Track app and check the load details
+
+Actual: 
+The status of load is Loading. Status of Signature is ""Registered"", there´s button Review available. When using the Review button, the user is transferred to link where he can type the signature. The signature cannot be submitted (error message). 
+
+Expected: 
+In case that the status of load is Loading, there shouldn´t be any details on signature (see attached ppt by DS3). "
+DCM021CX0118-22515,Closed,Medium,Critical,DCM021CX0118,Bug,11/05/20 2:01,Irena Krupkova,3. Delivery Tracking,UAT PH DS3 - Load status Finished - incorrect status of Signature,"Test user: durawood@mailinator.com, password: Tesxg0
+Test environment: [https://qa-eu.cemexgo.com/login|https://qa-eu.cemexgo.com/login]
+Test customer and jobsite: 50000942, 65000881
+
+Steps to replicate: 
+1. Create sales order (VA01) in ZRQ
+2. Dispatch the sales order in ZRQ, complete the statuses or shipment in ZRQ (without upload of ticket to Driver app as it´s not used in PH)
+3. Access the Track app to check the delivery&load details
+4. Sign the EPOD via Track app
+
+Actual: 
+The status of load in Track app never reaches ""On site"". It´s either Loading or Finished. 
+In case that the status is Finished, the status of Signature is Pending, button appearing is Sign, however the user is not able to submit the signature - there´s internal server error appearing, see attached images (I am not able to upload video).
+
+Expected: 
+1. The status of load needs to be ""On site"" in order to be able to sign the Epod via Track app. 
+2. In case that the status of load is ""Finished"", the status of signature cannot be Pending and button Sign shall not be appearing. "
+DCM021CX0118-22516,Analysis,Medium,Major,DCM021CX0118,Bug,11/05/20 9:06,Warren Jason Román Hernández,1. Customer Information & Commercial Conditions,DS01 - Create quote request confirmation email is not received,"Users affected.
+GT
+User Cemexgo: METRO.2000@mailinator.com	
+Password: TestGTcxg0
+Customer: 0050144320
+NI
+User Cemexgo: FERRETERIA.EL.REMATE@mailinator.com	
+Password: TestNIcxg0	
+Customer: 0050102909
+PA
+User Cemexgo: CARIBBEAN.TRADING@mailinator.com	
+Password: TestPAcxg0	
+Customer: 0050752884
+PE
+User Cemexgo: VASQUEZ.MENDOZA.JOSE@mailinator.com	
+Password: TestEScxg0	
+Customer: 0050140404
+
+EG
+User Cemexgo: {{MOHAMED.AHMED@mailinator.com}}	
+Password: {{Cemex2018@}}
+Customer: {{50021556}}
+
+
+
+
+
+Actual Result: after create a quote request we are not receiving the confirmation email.
+
+Expected Result: after create a quote request we should receive a confirmation email "
+DCM021CX0118-22517,Closed,Medium,Critical,DCM021CX0118,Bug,11/05/20 11:43,Carlos Rdz,3. Delivery Tracking,CO_SD3_EPOD Sign option in Track is missing,"Option to sign EPOD in Track app (Andorid) is missing
+
+Delivery 176066003 in Driver app is ON ROUTE
+Delivery in Track app is ON ROUTE
+Customer [sodimac@mailinator.com|mailto:sodimac@mailinator.com] pass: TestCOcxg0
+
+!image-2020-05-11-11-39-09-767.png|width=200,height=183!
+
+ 
+
+!image-2020-05-11-11-39-25-350.png|width=200,height=183!
+
+ 
+
+Expected behavior
+When Driver take a ticket and change status to ON ROUTE then option SIGN must be available in track app."
+DCM021CX0118-22518,Rejected,Medium,Minor,DCM021CX0118,Bug,12/05/20 6:09,Uliana Rosenbaum,3. Delivery Tracking,UAT UAE DS3 lables displayed with technical keys during TRACK APP signature,"process:
+create an order (example) 1008252643 
+customer 50017617 al Fursan
+deliver an order
+customer should sign it in track app on his own device 
+
+Actual:when customer clicks on SIGN button it re-directs him on the web page to input name and sign. but the lables remain with technical keys
+
+expected:
+keys translated"
+DCM021CX0118-22519,Rejected,Medium,Major,DCM021CX0118,Bug,12/05/20 6:25,Warren Jason Román Hernández,3. Delivery Tracking,UAT UAE DS3 customer's signature doesnt appear in epod,"process:
+create an order (example) 1008252643
+customer 50017617 AL FURSAN TRANSPORT & CONSTRUCTION
+deliver an order
+order in status FINISHED
+customer through track app clicks in SIGN
+it re-directs customer on web page for signature
+customer inputs the name and signature and clicks SEND
+now customer can review the signature and EPOD is available in track web, cemex go web
+
+actual:
+after customer signed the delivery through TRACK APP (TIME 12:47 signed with real signature- see the attachment), the driver still has an option to sign (TIME 12:49 signed with 3 crosses , see the attachment) it through the DRIVER APP.
+if it is signed in drivers app after the customer signed the delivery in track app, the signature that appears in epod is the one from drivers app and not from track app
+
+expected:
+
+once the customer signed the delivery in track app from his own device, the option to sign it in drives app shouldn't be there. no one else should be able to sign it and the signature that should be displayed is the first one from customer signed it in track app
+"
+DCM021CX0118-22520,Rejected,Medium,Critical,DCM021CX0118,Bug,12/05/20 6:27,Andrea De Hernando,3. Delivery Tracking,UAT_ES_DEP_DS3_ Paperless tickets not working,"+*Data:*+
+Customer: 0050000498
+Jobsite: 65422282
+User: miguelrd1190@gmail.com
+pass: cemex2020
+Driver v1.7.0.8
+Track APP  Android v3.14.1.1
+Generated delivery tickets:
+19950018
+19950019
+19950021
+
++*Steps*+
+1. Load ticket in Driver App
+2. Review the pre-ticket information.
+3. Complete information and events on Driver App.
+4. Sign ticket in Driver App or Track App.
+5. Ticket completed.
+6. Review ticket information on Track App (web and mobile) and Driver App (history)
++Actual behavior+
+Preview ticket Driver App: Doc 27- Middleware
+After completed, Driver App displays Doc 11- Middleware
+Track App, Track Web and other functionalities: not showing ticket before and after signing.
+
++Expected Behavior:+
+Preview ticket Driver App: Doc 03- HTC
+After completed, Driver App displays Doc 11- HTC
+Track App, Track Web and other functionalities: 
+Before signing: Doc 03- HTC
+After signing: Doc 11- HTC"
+DCM021CX0118-22521,Rejected,Medium,Major,DCM021CX0118,Bug,12/05/20 7:36,Andrea De Hernando,3. Delivery Tracking,UAT_UK_DEP_DS3_ Blank page when signing ticket,"+*Data*+
+User: tracksigngb@yopmail.com
+Password: Cemex2020
+Samsung Galaxy A40
+Android version 10
+Driver v1.7.0.8
+Track APP  Android v3.14.1.1
+Ticket Number: 214739450
+
++*Steps*+
+1. Load ticket in Driver App
+2. Complete information and events on Driver App.
+4. Sign ticket in Track App
+
++Actual Behaviour+
+When trying to sign the ticket: 214739450 a blank page appears. Is important to mention that is not happening with all devices.
+
+!image-20200512-123740.png|width=447,height=593!
+
+ 
+Attached video"
+DCM021CX0118-22522,Rejected,Medium,Critical,DCM021CX0118,Bug,12/05/20 8:59,Warren Jason Román Hernández,3. Delivery Tracking,UAT PH DS3 - EPOD not available for download,"Test user: durawood@mailinator.com, password: Tesxg0
+Test environment: https://qa-eu.cemexgo.com/login
+Test customer: 50000942 Durawood
+
+Steps to replicate: 
+1. Create sales order via VA01 in ZRQ
+2. Dispatch the order in ZRQ
+3. Put the timestamps in the shipment in ZRQ (without upload of ticket to Driver app as it´s not used in the Philippines)
+4. Once the load gets the status Finished, sign the EPOD in Track app
+5. Check if it´s possible to download the EPOD and check the signature is available
+
+Actual: 
+The EPOD document cannot be downloaded - both in Track App and in the Web Track. There´s a message saying that the document is not available yet. 
+
+Expected: 
+Once the delivery is completed, the EPOD is signed, it should be available for download. "
+DCM021CX0118-22523,Closed,Medium,Major,DCM021CX0118,Bug,12/05/20 9:29,Jose Santana Santana,3. Delivery Tracking,UAT PL DS3 Ticket finished without signature does not show Sign button,"User: strabag.da.uat@mailinator.com
+Password: Cemex2018!
+Customer: 50246137
+TicketSourceCode: K067000000015
+Driver v1.7.0.8
+Track APP  Android v3.14.1.1
+
+For this scenario for RMX in PL:
+
+ !image-2020-05-12-16-15-42-174.png|thumbnail! 
+
+# Create order 214739489
+# Dispatch ticket 214739497 / K067000000015
+# Add it to Drivers App
+# Finish ticket without signature in Drivers
+# Go to Track App and look for that load
+
+*Actual result:*
+
+No ""Sign"" button is shown for this ticket that has no signatures.
+
+ !image-2020-05-12-16-27-27-470.png|thumbnail! 
+
+*Expected result:*
+
+The ""Sign"" button should be available."
+DCM021CX0118-22524,Rejected,Medium,Critical,DCM021CX0118,Bug,12/05/20 11:12,Marco Corzo,3. Delivery Tracking,Sign option is not being shown in track ,"The sign option (customer signature option) is not being shown when the vehicle is On Route 
+
+See attachments
+Order Number: 0176066069
+Delivery Ticket: 0176066069
+Customer: 50003172
+Job Site: 65000236
+Country MX
+Track version: v3.14.1.0 "
+DCM021CX0118-22525,Rejected,Medium,Major,DCM021CX0118,Bug,12/05/20 11:20,Irena Krupkova,3. Delivery Tracking,UAT PH DS3 - Signature by customer cannot be seen in Driver app,"Test user: durawood@mailinator.com, password: Tesxg0
+Test environment: https://qa-eu.cemexgo.com/login
+Test customer: 50000942 (Philippines)
+Example: order 21016127
+
+Steps to replicate: 
+1. Create sales order via VA01 in ZRQ
+2. Dispatch delivery in ZRQ
+3. Upload ticket to Driver app
+4. Complete the delivery, confirm time stamps
+5. Go to Track app and sign the EPOD, submit the signature
+6.  Close the ticket in Driver app
+7. Go to History tab in Driver app and check the customer´s signature
+
+Actual: 
+The customer´s signature is not available when checking the delivery via Driver app. 
+
+Expected: 
+The user should be able to review the customer´s signature in Driver app assuming that the customer signed it via Track app. "
+DCM021CX0118-22526,Closed,Medium,Major,DCM021CX0118,Bug,12/05/20 11:27,Jose Santana Santana,3. Delivery Tracking,UAT UK DS3 Unable to Sign for Single Sign Order,"Order: 214739455
+Customer: 50215957
+TicketSourceCode: I4040214739472
+Driver v1.7.0.8
+Track APP  Android v3.14.1.1
+
+# Create order 214739455
+# Dispatch the first load
+# Add it to Drivers
+# Advance to On Site status
+# Login to Track with Single Order Sign In
+ !image-2020-05-12-18-25-38-219.png|thumbnail! 
+# Look for the ticket mentioned and click on ""Sign""
+ !image-2020-05-12-18-26-03-215.png|thumbnail!   !image-2020-05-12-18-26-23-298.png|thumbnail! 
+# Fill the information for name and signature and click on Send.
+
+*Actual result:*
+Internal Server Error
+ !image-2020-05-12-18-26-52-961.png|thumbnail! 
+*Expected result:*
+Signature should be submitted succesfully."
+DCM021CX0118-22527,Closed,Medium,Major,DCM021CX0118,Bug,12/05/20 11:56,Daniela Garcia,2. Orders & Delivery Schedule,Order created in OLS but not reflected in SAP,"a new order is created in OLS with the following data:
+
+Usuario	ferreterachamizaluser@mailinator.com
+Password	TestCycleV2CemexGo
+Cliente	50025163
+Nombre Cliente	CONSTRUCTORA VILLA DEL PALMAR
+Obra	66637145
+Nombre Obra	2019 Villa del Palmar
+ZTERM	Z030
+Planta	DE90
+Nombre Planta	MX-PD0502 ARCO VIAL II
+Material	20000267
+Técnico	10017407
+Contrato	176065410
+
+the order # 8009920240  is created but not reflected in SAP"
+DCM021CX0118-22528,Rejected,Medium,Major,DCM021CX0118,Bug,12/05/20 12:36,Javier Iracheta,2. Orders & Delivery Schedule,Price show flag not shown in apps and roles,"We cannot find the flag to enable a user to see a price
+
+please see picture"
+DCM021CX0118-22529,Closed,Medium,Critical,DCM021CX0118,Bug,12/05/20 17:30,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Status are not updating in the labels.,"Created a ticket: 28970201, order 9090, customer ID 3101088, Load #4. 
+Dispatched the ticket and move the ticket all the way to the end and finished the ticket without signature. 
+Track App shows the label: Loading even when the ticket was closed. 
+
+Attached a Driver´s App screenshot to prove the ticket was taken.
+
+Expected, if the ticket is on route, or closed, the labels should update. "
+DCM021CX0118-22530,Closed,Medium,Critical,DCM021CX0118,Bug,13/05/20 5:40,Jose Santana Santana,3. Delivery Tracking,UAT PL DS3 Ticket finished cannot be signed,"User: strabag.da.uat@mailinator.com
+Password: Cemex2018!
+Customer: 50246137
+TicketSourceCode: K067000000018
+Driver v1.7.0.8
+Track APP  Android v3.14.1.2
+
+For this scenario for RMX in PL:
+
+ !image-2020-05-13-12-31-37-035.png|thumbnail! 
+
+# Create order 214739596
+# Dispatch ticket 214739598 / K067000000018
+# Add it to Drivers App
+# Finish ticket without signature in Drivers
+# Go to Track App and look for that load
+ !image-2020-05-13-12-39-03-433.png|thumbnail! 
+# Click on Sign
+# Enter name and signature and click on Send
+
+*Actual result:*
+
+Internal Server Error.
+ !image-2020-05-13-12-39-26-974.png|thumbnail! 
+*Expected result:*
+
+Signature is submitted successfully.
+
+"
+DCM021CX0118-22531,Rejected,Medium,Major,DCM021CX0118,Bug,13/05/20 8:44,Andrea De Hernando,3. Delivery Tracking,UAT_ES_DEP_DS3_ Wrong times in delivery ticket -1 hour difference,"*+Data:+*
+Customer: 0050000498
+Jobsite: 65422282
+User: miguelrd1190@gmail.com
+pass: cemex2020
+Driver v1.7.0.8
+Track APP  Android v3.14.1.1
+Generated delivery tickets:
+19950018
+19950019
+19950021
+
+*+Steps+*
+1. Load ticket in Driver App
+2. Review the pre-ticket information.
+3. Complete information and events on Driver App.
+4. Sign ticket in Driver App or Track App.
+5. Ticket completed.
+6. Review ticket information on Track App (web and mobile)
+
++Actual Behaviour+
+There is a one hour time difference between the time of the status in track and on the delivery ticket (correct time on track)
+ !image-2020-05-13-15-42-20-628.png|thumbnail! 
+ !image-2020-05-13-15-43-04-671.png|thumbnail! 
+
++Expected Behaviour+
+Times should be the same on delivery ticket and track."
+DCM021CX0118-22532,Rejected,Medium,Minor,DCM021CX0118,Bug,13/05/20 8:54,Andrea De Hernando,3. Delivery Tracking,UAT_ES_DEP_DS3_Signing space not showing complete on Track App,"*+Data:+*
+Customer: 0050000498
+Jobsite: 65422282
+User: miguelrd1190@gmail.com
+pass: cemex2020
+Driver v1.7.0.8
+Track APP  Android v3.14.1.1
+Generated delivery tickets:
+19950018
+19950019
+19950021
+
+*+Steps+*
+1. Load ticket in Driver App
+2. Review the pre-ticket information.
+3. Complete information and events on Driver App.
+4. Sign ticket on Track App.
+
++Acual Behaviour:+
+The space to sign on track app is not showing complete because the keyboard stays on screen, is not hidding.
+
++Expected Behaviour+
+The signing space should show complete."
+DCM021CX0118-22533,Rejected,Medium,Critical,DCM021CX0118,Bug,13/05/20 9:53,Daniela Garcia,2. Orders & Delivery Schedule,Error getting price at the end of order creation of Ready Mix,"a new order was in the process to be created using the following data
+
+Usuario	ferreterachamizaluser@mailinator.com
+Password	TestCycleV2CemexGo
+Cliente	50025163
+Nombre Cliente	CONSTRUCTORA VILLA DEL PALMAR
+Obra	66637145
+Nombre Obra	2019 Villa del Palmar
+ZTERM	Z030
+Planta	DE90
+Nombre Planta	MX-PD0502 ARCO VIAL II
+Material	20000267
+Técnico	10017407
+Contrato	176065410
+
+but at the summary screen, a message is displayed about: Error Obteniendo precios "
+DCM021CX0118-22534,Closed,Medium,Critical,DCM021CX0118,Bug,13/05/20 10:46,Andrea De Hernando,3. Delivery Tracking,UAT_ES_DEP_DS3_ Signature not attached on ePOD - Paperless,"+*Data:*+
+Customer: 0050000498
+Jobsite: 65422282
+User: miguelrd1190@gmail.com
+pass: cemex2020
+Driver v1.7.0.8
+Track APP  Android v3.14.1.1
+Generated delivery tickets:
+19950035
+19950034
+
++*Steps*+
+1. Load ticket in Driver App
+2. Review the pre-ticket information.
+3. Complete information and events on Driver App.
+4. Sign ticket in Track App or Driver.
+5. Complete ticket
+6. Review ePOD.
+
++Actual Behaviour:+
+The signature is not attached to the ePOD.
+
+!image-2020-05-13-17-43-54-353.png|width=200,height=183!
+
+ 
+
+!image-2020-05-13-17-44-31-021.png|width=200,height=183!
+
+ 
+
++Expected Behaviour+
+Signature should be assigned to the ePOD"
+DCM021CX0118-22535,Rejected,Medium,Major,DCM021CX0118,Bug,14/05/20 4:31,Irena Krupkova,3. Delivery Tracking,UAT PH DS3 - Date and time are not completed in EPOD,"Test user: durawood@mailinator.com, password: Tesxg0
+Test environment: https://qa-eu.cemexgo.com/login
+Test customer: 50000942 Durawood
+
+Steps to replicate: 
+1. Create and dispatch sales order in ZRQ
+2. Move status of shipment in ZRQ 
+3. Access Track app, look for the delivery and sign the EPOD
+4. Check the content of EPOD pdf file
+
+Actual: 
+The pdf file with EPOD doesn´t have date and time of signature completed. See attachment. 
+
+Expected: 
+As we are displaying who signed the EPOD, incl. the signature, the date and time of signature should be replicated to EPOD too. "
+DCM021CX0118-22536,Closed,Medium,Critical,DCM021CX0118,Bug,14/05/20 4:37,Irena Krupkova,3. Delivery Tracking,"UAT IL DS3 - Signature, date and time are not replicated in EPOD of RMX deliveries","Test user: sharonim@mailinator.com, password: Cemex2020
+Test environment: [https://qa-eu.cemexgo.com/|https://qa-eu.cemexgo.com/]
+Test customer: 50045000
+
+Steps to replicate: 
+1. Create RMX sales order in SIMMA
+2. Batch and dispatch the order in SIMMA
+3. Create delivery note in SIMMA so that the status is On Site (or Finished)
+4. Access Track app and search for delivery
+5. Sign the EPOD and submit the signature
+6. Open the EPOD pdf file and check the details
+
+Actual: 
+In the pdf EPOD there´s replicated neither the signature, nor the time and date of signature. 
+
+Expected: 
+In the pdf EPOD there has to be replicated both the date and time and the signature itself. "
+DCM021CX0118-22537,Rejected,Medium,Critical,DCM021CX0118,Bug,14/05/20 5:17,Warren Jason Román Hernández,3. Delivery Tracking,UAT IL DS3 - EPOD not available for download for AGG deliveries,"Test user: sharonim@mailinator.com, password: Cemex2020
+Test environment: https://qa-eu.cemexgo.com
+Test customer: 50045000, Aggregates deliveries
+
+Steps to replicate: 
+1. Create sales order for AGG in SIMMA (order No. 999206)
+2. Create Weighing note for AGG delivery in SIMMA
+3. Create Delivery note for AGG delivery in SIMMA - status On Site or Finished
+4. Access Track app and search for AGG delivery
+5. Sign the EPOD in Track app
+6. Check the pdf file EPOD
+
+Actual: 
+For AGG deliveries in Israel, the EPOD pdf file is not available while for RMX the EPOD can be downloaded. 
+
+Expected: 
+Regardless the division (RMX or AGG), the EPOD file should be available for download. 
+"
+DCM021CX0118-22538,Rejected,Medium,Critical,DCM021CX0118,Bug,14/05/20 7:05,Andrea De Hernando,3. Delivery Tracking,UAT_UK_DEP_DS3_ Unable to sign ticket on Track App - Status not updating from Microlise,"+*Data:*+
+Jobsite: 70212154
+User: tracksigngb@yopmail.com
+Pass: Cemex2020
+Driver v1.7.0.8
+Track APP  Android v3.14.1.2
+Generated delivery tickets:
+214739659
+214739658
+214739680
+214739677
+
++*Steps*+
+1. Load ticket in Microlise
+2. Change status from ticket
+
++Actual Behaviour:+
+Status are not changing in Track (web or mobile), status are sticked on planned even if they change  on Microlise or OF, due to this, the ticket is not possible to be signed through track app.
+
+!image-2020-05-14-14-03-23-452.png|width=200,height=183!
+
+ 
+
+!image-2020-05-14-14-03-59-654.png|width=200,height=183!
+
+ 
+
+!image-2020-05-14-14-04-26-723.png|width=200,height=183!
+
+ 
+
+!image-2020-05-14-14-05-08-990.png|width=200,height=183!
+
+ 
+
++Expected Behaviour:+
+Status should change on Track, so when it is on site the sign option would appear on application"
+DCM021CX0118-22539,Closed,Medium,Minor,DCM021CX0118,Bug,14/05/20 11:08,Monica A. Salinas Flores,3. Delivery Tracking,EPOD USA RM - Cash Order - Azure,Review cash order where fields related to cash order in azure are empty in QA
+DCM021CX0118-22540,Closed,Medium,Major,DCM021CX0118,Bug,14/05/20 11:29,Daniela Garcia,2. Orders & Delivery Schedule,Producto técnico inválido message displayed,"A new order is being created using this data:
+
+normaenriquezuser@mailinator.com
+TestCycleV2CemexGo
+50778622
+CONSORCIO CIHP S DE RL DE CV
+66491027
+Playa Senator
+Z045
+DG24
+MX-PD0403 PETEMPICH II
+20061825
+10150626
+176065419
+A
+F
+
+however, despite any additive could added at the momment to load the dates the ""Producto tecnico invalido"" message is displayed as shown in attached image
+"
+DCM021CX0118-22541,Closed,Medium,Critical,DCM021CX0118,Bug,14/05/20 11:59,Carlos Rdz,3. Delivery Tracking,DO_DS3 Internal Server Error when try to complete SIGN process in TRACK app (SSO),"Entrega 176066636
+
+Orden 8009920320
+Pais Dominicana
+Cliente 50121381
+
+En Track logearse sin cuenta de usuario consultado solo la orden
+ !image-2020-05-14-11-56-33-276.png|thumbnail! 
+ !image-2020-05-14-11-55-46-174.png|thumbnail! 
+Al dar al boton de enviar marca error y no termina de enviar la firma ""Error de servidor interno""
+ !image-2020-05-14-11-55-09-865.png|thumbnail! 
+"
+DCM021CX0118-22542,Analysis,Medium,Major,DCM021CX0118,Bug,14/05/20 12:35,Warren Jason Román Hernández,1. Customer Information & Commercial Conditions,DS01 - Create New Point of Delivery confirmation email is not received,"Actual Result: after create a new point of delivery  we are not receiving the confirmation email.
+
+Users affected.
+IL
+User Cemexgo: {{MILLEX.CONST@mailinator.com}} 	
+Password: {{Tesxg0}}
+
+
+
+
+MX
+User Cemex go: [customer20cmxgo@mailinator.com|mailto:customer20cmxgo@mailinator.com]
+
+Passoword: TestCycleV2CemexGo
+
+Customer: 0050149982"
+DCM021CX0118-22543,Rejected,Medium,Critical,DCM021CX0118,Bug,14/05/20 13:00,Andrea De Hernando,3. Delivery Tracking,UAT_ES_DEP_DS3_ ePOD without signature not available - Paperless,"*+Data:+*
+Customer: 0050000498
+Jobsite: 65422282
+User: miguelrd1190@gmail.compass: cemex2020
+Driver v1.7.0.8
+Track APP  Android v3.14.1.2
+Generated delivery tickets:
+19950044
+
+*+Steps+*
+1. Load ticket in Driver App
+2. Review the pre-ticket information.
+3. Complete information and events on Driver App.
+4. Close ticket without signature on Driver
+5. Do not sign ticket with Track App
+6. Review ePOD.
+
++Actual Behaviour:+
+ePOD is not available
+
++Expected Behaviour+
+ePOD should be available without signature."
+DCM021CX0118-22544,Rejected,Medium,Major,DCM021CX0118,Bug,14/05/20 13:19,Andrea De Hernando,3. Delivery Tracking,UAT_ES_DEP_DS3_ Revoked ticket available ,"+*Data:*+
+User: miguelrd1190@gmail.compass: cemex2020
+Driver v1.7.0.8
+Track APP  Android v3.14.1.2
+
++Paperless+
+
+Customer: 0050000498
+Jobsite: 65422282
+Generated delivery tickets:
+19950043
+19950045
+
++No Paperless+
+
+Customer: 50011865 Ferrovial Agroman 
+
+Obra : 65459726
+
+Tickets: 19950053/ 19950054
+
++*Steps*+
+1. Load ticket in Driver App
+2. Review the pre-ticket information.
+3. Complete information and events on Driver App.
+4. Sign ticket on track App
+5. Revoke ticket on Driver
+6. Review ePOD.
+
++Actual Behaviour:+
+ePOD is  available without signature
+
++Expected Behavior:+
+ePOD should not be generated after revoked."
+DCM021CX0118-22545,Open,Medium,Major,DCM021CX0118,Bug,14/05/20 13:21,,1. Customer Information & Commercial Conditions,DS1 Modification of Jobsite - Modify Job Site button does not appears,"Modify Job Site button is not displayed when the user open the jobsite details.
+
+Test Data Used.
+
+Country: PH
+User: durawood@mailinator.com
+Pass: Tesxg0
+Customer:0050000942
+Jobsite:0065066947
+
+Expected results: The modify job site button should appears enable the user to make updates on the active jobsite details."
+DCM021CX0118-22546,Closed,Medium,Critical,DCM021CX0118,Bug,14/05/20 14:14,hector.castro,3. Delivery Tracking,SERVICE 3 CXTRACK  information for signature on Delivery failed,"step to reproduce:
+
+1. Created a RMX ticket
+2. Dispatched the RMX
+3. Take the load in QA Drivers app.  
+4. Log in in Track App QA now, and proceed to sign the ticket. on site 
+5. When you try to sign the ticket,  send a Error  
+
+!image-2020-05-14-14-11-24-949.png|width=200,height=183!
+
+ happen in Cash Customer
+
+Order 3002  date 14-may 2020"
+DCM021CX0118-22547,Rejected,Medium,Critical,DCM021CX0118,Bug,14/05/20 14:22,hildaelisa.saldana,3. Delivery Tracking,UAT US DS3 - Status in Load front page is not correctly shown,"I created the following load with the following info:
+Customer ID: CASH4499
+Order: 3002
+Tickets: 28970238 and 28970241
+Date: May 14th, 2020
+Loads: 1 and 2
+
+Actual: As showin in the image, the label ""Loaded 2:58"" or ""Loaded an Hour ago"" remains on the screen even when the last status is not Loaded.
+
+Expected: If the Load last status is Loaded, the label should be ""Loaded ...."", if he load status is ""On Route"". the label should say ""On Route X minutes ago..."", if the load status is ""Unloading start"", it should say ""Unloading started XX minutes ago..""
+
+
+"
+DCM021CX0118-22548,Closed,Medium,Critical,DCM021CX0118,Bug,14/05/20 17:35,hector.castro,3. Delivery Tracking,UAT_US_DS3_Order Date not showing up,"we created the following load with the following info:
+Order Code: 3002
+Customer: CASH4499
+Load: 1
+Ticket number: 28970238
+
+Actual: We can´t find the order date field in the EPOD.
+Expected: To identify the order date in the PDF."
+DCM021CX0118-22549,Closed,Medium,Critical,DCM021CX0118,Bug,14/05/20 18:01,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Total COD Order Amount to Collect without Standby Charges (only for cash customers):,"Customer ID: CASH4499
+Ticked ID: 28970240
+Load: 4
+Order #:  3009
+
+Actual: The field is blanc in all the loads.
+Expected: the amount to collect should be calculateed and every load should have their ownCOD Order Amount to Collect"
+DCM021CX0118-22550,Rejected,Medium,Major,DCM021CX0118,Bug,14/05/20 18:24,hildaelisa.saldana,3. Delivery Tracking,UAT _US_Address field is not showing all the info,"Order #: 3009
+Ticket #:28970240
+Load #: 4
+Customer ID: CASH4499
+
+Actual: The address field it only gathering the info from Address 1. Field such as Address 2, City, and postal code are currently being dismissed. 
+
+Expected: Bring all the fields menioned above to the EPOD.
+"
+DCM021CX0118-22551,Closed,Medium,Critical,DCM021CX0118,Bug,14/05/20 18:49,Carlos Rdz,3. Delivery Tracking,CO_DO Show an error when try to view order detail in track app & view signed EPOD (HOST NOT FOUND),"
+Iniciar como Single Sign in 
+Orden 8009920320
+Pais Dominicana
+Cliente 50121381
+
+Orden 8009920321 
+Pais Colombia
+Cliente 50125374
+
+Sucede tanto para Colombia como para Dominicana
+
+Dar click al servicio1
+ !image-2020-05-14-18-45-10-184.png|thumbnail! 
+
+Y marca error sin mostrar información
+ !image-2020-05-14-18-46-08-001.png|thumbnail! 
+
+"
+DCM021CX0118-22552,Closed,Medium,Major,DCM021CX0118,Bug,15/05/20 1:25,Warren Jason Román Hernández,3. Delivery Tracking,UAT IL DS3 - EPOD not available for download for AGG deliveries in Track App Android,"Test user: sharonim@mailinator.com, password: Cemex2020
+Test environment: https://qa-eu.cemexgo.com
+Test customer: 50045000, Aggregates deliveries
+
+Steps to replicate: 
+1. Create sales order for AGG in SIMMA (order No. 999206, 999208)
+2. Create Weighing note for AGG delivery in SIMMA
+3. Create Delivery note for AGG delivery in SIMMA - status On Site or Finished
+4. Access Track app and search for AGG delivery
+5. Sign the EPOD in Track app
+6. Check the pdf file EPOD in Track App
+
+Actual: 
+For AGG deliveries in Israel, the EPOD pdf file is not available while for RMX the EPOD can be downloaded. The EPOD cannot be downloaded in Track App, but can be downloaded in Track Web. See attachments.
+
+Expected: 
+Regardless the division (RMX or AGG), the EPOD file should be available for download both in Track Web and Track App."
+DCM021CX0118-22553,Rejected,Medium,Major,DCM021CX0118,Bug,15/05/20 2:58,Paola Reichardt,3. Delivery Tracking,UAT PH DS3 - Receiving person field - 100 characters are not displayed in EPOD,"Test user: durawood@mailinator.com, password: 
+Test environment: https://qa-eu.cemexgo.com/
+Test customer: 50000942 Durawood
+
+Steps to replicated: 
+1. Create sales order in ZRQ
+2. Dispatch the order in ZRQ
+3. Move statuses of Shipment manually in ZRQ (in PH there haven´t been deployed Drivers, they are using different GPS provider)
+4. Access Track App
+5. Type 100 characters in field Receiving person and sign the EPOD 
+6. Check how the 100 characters are replicated to pdf EPOD
+
+Actual: 
+1. There´s no counter of characters in field Receiving person. It´s difficult to estimate the 100 characters. 
+2. There are not all 100 allowed characters replicated in pdf file of EPOD. The PH customers intend to use this field for short comments and there´s risk that the comment won´t be displayed in the EPOD. 
+
+Expected: 
+1. For easier use, a character counter should be displayed in field Receiving person
+2. In case that the user types 100 allowed characters, all the test should be replicated to pdf EPOD.
+"
+DCM021CX0118-22554,Closed,Medium,Major,DCM021CX0118,Bug,15/05/20 9:34,Monica A. Salinas Flores,3. Delivery Tracking,Cambios de texto - Epod USA,"Cambio de etxto en el formato del epod USA RM
+
+ En lugar de “Order Total” debe decir “Total”
+En lugar de “Driver Notes” debe decir “Comments”
+"
+DCM021CX0118-22555,Rejected,Medium,Minor,DCM021CX0118,Bug,15/05/20 15:27,Paola Reichardt,3. Delivery Tracking,UAT_US_DS3_Line in EPOD not well marked,"Actual: The image attached shows in yellow (highlighed) the line is not well drawn as the right side is.
+
+Expected: Same line intensity in both sides.
+
+"
+DCM021CX0118-22556,Rejected,Medium,Critical,DCM021CX0118,Bug,15/05/20 23:26,Paola Reichardt,3. Delivery Tracking,UAT_US_DS3_EPOD NO COD displays amounts,"Actual: Created the following EPOD NO COD and it is showing amounts
+
+Info: 
+CustomerID: 3101088
+Order: 9090
+Date: May 15th, 2020
+Load 1
+Ticket: 28970291
+
+Expected: Per definition, when the EPOD belongs to Credit Customers, no amounts should be displayed. "
+DCM021CX0118-22557,Rejected,Medium,Critical,DCM021CX0118,Bug,15/05/20 23:47,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_NO EPOD displayed for CASH Customers,"Actual: Found customer considered as CASH has not the possibility to see the  VIEW E-Ticket option in Track App on any of the Loads.
+
+Info: 
+Customer: CASH4499
+Order: 3002
+Date: May 14th, 2020
+
+Expected: The option should be displayed for CASH customers as it happens for credit customers. 
+"
+DCM021CX0118-22558,Closed,Medium,Critical,DCM021CX0118,Bug,16/05/20 1:15,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Quantities displayed are not the right ones in the Pre-EPOD and EPOD for CASH Customers,"*Actual: * 
+1. Total COD Order Amount to Collect without Standy Charges field is displaying the quantity amount based on the delivery Quantity. 
+2. Subtotal, Tax and Total Amount displaying the same amount as the Total COD Order Amount to Collect without Standy Charges field
+*Expected:   *
+1. Total COD Order Amount to Collect without Standy Charges field should display the Total Order Amount which in this case would be 49,355.20 usd which is the Total Order Amount (image attached from command)
+2.  based on the example attached from command, the amounts expecteds are:
+* Subtotal should display the (whole subtotal amount of the order / # of loads of the order) = (45,384/400 loads) = 
+ Subtotal of 113.46
+* Tax should display the (whole tax amount of the order / # of loads) = (3,971.20 / 400) 
+Tax Amount = 9.928
+* Total should display the (whole total amout of the order / # of loads) = (49,355.20/400)
+Total: 123.388
+"
+DCM021CX0118-22559,Closed,Medium,Major,DCM021CX0118,Bug,16/05/20 3:00,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_Amount shown in the incorrect field,"Info
+Customer ID: Cash4499
+Order: 3002
+Date: May 14th
+
+*Actual: *In the ePOD, the field quoting ""I certify under penalty of perjury that the time records and entries above are true, full en correct to depict hours worked..."" is showing an amount over the field.
+
+*Expected:* No amount should be displayed over this field."
+DCM021CX0118-22560,Rejected,Medium,Critical,DCM021CX0118,Bug,16/05/20 3:17,Kenny J Franco,3. Delivery Tracking,UAT_US_DS3_Order Date field is not displayed,"we created the following load with the following info:
+Order Code: 3002
+Customer: CASH4499
+Load: 1
+Ticket number: 28970238
+
+Actual: We can´t find the order date field in the EPOD.
+Expected: To identify the order date in the PDF."
+DCM021CX0118-22561,Rejected,Medium,Major,DCM021CX0118,Bug,18/05/20 10:08,Andrea De Hernando,3. Delivery Tracking,UAT_ES_DEP_DS3_ ePOD without times on Goods Receipt Report,"*+Data:+*
+Customer: 0050000498
+Jobsite: 65422282
+User: miguelrd1190@gmail.com
+pass: cemex2020
+Driver v1.7.0.8
+Track APP  Android v3.14.1.2
+Generated delivery tickets:
+19950062
+19950061
+
+*+Steps+*
+1. Load ticket in Driver App
+2. Review the pre-ticket information.
+3. Complete information and events on Driver App.
+4. Close ticket without signature on Driver
+5. Do not sign ticket with Track App
+6. Review ePOD.
+
++Actual Behaviour:+
+ePOD on Track and Driver application appears correctly, ePOD on Good Receipt report appears without times.
+
+ !image-2020-05-18-17-07-06-792.png|thumbnail! 
+ !image-2020-05-18-17-06-31-152.png|thumbnail! 
+
++Expected Behaviour:+
+The ePOD should be correct on every view/download option."
+DCM021CX0118-22562,Closed,Medium,Critical,DCM021CX0118,Bug,18/05/20 11:40,hildaelisa.saldana,3. Delivery Tracking,UAT_US_DS3_EPOD NO COD displays amounts,"Actual: Created the following EPOD NO COD and it is showing amounts (images attach)
+
+Info: 
+CustomerID: 3101088
+Order: 8008
+Date: May 18th, 2020
+Load 1
+Ticket: 28970322
+
+Expected: Per definition, when the EPOD belongs to Credit Customers, no amounts should be displayed. 
+
+**PS: this is what the Yellow story mentions about this:
+To display Pricing Information (Unit Price, Amount) in ePOD the rule will be:
+Cash customers = True, then show pricing info in ePOD and also show the pricing at the list of line item level
+Cash customers = False , then don't show pricing info in ePOD neither pricing at line item level
+(See ""Cash Customers Scenarios"" attachment for guidance)
+
+Note: Cash Customer = (Credit Code = CSH)
+*If it has “CSH” for at least one company, it is consider Cash Customer
+
+NOTE: Even though the customer is paperless or not paperless, the flow will be the same."
+DCM021CX0118-22563,Rejected,Medium,Major,DCM021CX0118,Bug,19/05/20 13:12,Javier Iracheta,2. Orders & Delivery Schedule,Repeat order creates duplicated request,"A new order has been created and cancelled using the following the data
+
+ferregalauser@mailinator.com 
+TestCycleV2CemexGo
+50776345
+PROYECTOS Y DESARROLLOS URBANISTICO
+66606884
+2019 Astorias Rodhas
+Z045
+DG36
+MX-PD0300 PETEMPICH
+20000115
+No
+176065356
+Credito
+A
+F
+
+
+Orden: 
+8009920530
+
+"
+DCM021CX0118-22564,Closed,Medium,Major,DCM021CX0118,Bug,19/05/20 17:52,Javier Iracheta,2. Orders & Delivery Schedule,Calendar is not shown even after the message of successful dates,"An order has been repeated 8009920532
+
+two things were observed
+
+1) despite any mandatory field was empty, no calendar was shown
+2) once updated any mandatory field, the message about getting date and date successful appears, however, the calendars are not shown.
+
+please see attached image as a reference
+
+"
+DCM021CX0118-22565,Closed,Medium,Minor,DCM021CX0118,Bug,19/05/20 17:58,Javier Iracheta,2. Orders & Delivery Schedule,"Order created in spanish, mail received in english","When the order is created using Spanish as language and request the system to send the created order, it arrives in English, expected is Spanish
+
+Please see attached"
+DCM021CX0118-22566,Closed,Medium,Minor,DCM021CX0118,Bug,19/05/20 18:09,Javier Iracheta,2. Orders & Delivery Schedule,Refresh page is not working,"if when an order is being repeated, the browser is refreshed,  we got the url:
+
+https://qa.cemexgo.com/ordersnproduct/app/new-repeat-order/location-specification
+
+and the screen appears with empty fields and no option to move back or exit
+
+see attached image."
+DCM021CX0118-22567,Rejected,Medium,Minor,DCM021CX0118,Bug,19/05/20 18:20,Alejandra Betancourt,2. Orders & Delivery Schedule,botton of notification mail with no hyperlinks enabled,"When a mail is received, at the bottom there are three labels:
+
+Legal, Privacy, cemexgo.com
+
+but any of them are hyperlinks
+
+see attached image"
+DCM021CX0118-22568,Closed,Medium,Minor,DCM021CX0118,Bug,19/05/20 18:24,Javier Iracheta,2. Orders & Delivery Schedule,Transalation - Cancelation screen in English despite language is set in Spanish,Cancelation screen in english despite set language is spanish
+DCM021CX0118-22569,Closed,Medium,Critical,DCM021CX0118,Bug,20/05/20 5:46,Jose Santana Santana,3. Delivery Tracking,UAT UK DS3 Orders not replicated to CX Go,"Link: [https://pp.cemexgo.com/|https://pp.cemexgo.com/]
+User: GBCXGOV2@cemexlabs.com
+Password: C3m3xgo01\!
+
+Orders created in SAP PREPRD do not arrive to CX Go, they are stuck in status 1:
+
+!image-2020-05-20-12-39-00-885.png|width=200,height=183!
+
+ 
+
+UK orders:
+
+0217941816
+0217941815
+
+ 
+
+PL order:
+
+0217941817
+
+!image-2020-05-20-12-41-04-689.png|width=200,height=183!
+
+ 
+
+Expected result:
+
+Orders should appear in order to see them in Track App and Web.
+
+Actual result:
+
+Orders do not appear in Track App and Web"
+DCM021CX0118-22570,Closed,Medium,Minor,DCM021CX0118,Bug,20/05/20 13:20,Jose Santana Santana,3. Delivery Tracking,UAT UK DS3 Track App loads screen cannot be displayed,"User: GBCXGOV2@cemexlabs.com
+Password: C3m3xgo01!
+Driver App Android: v1.7.0.8
+Track App Android: v3.14.1.3
+Order: 217941815
+
+# Create an order with several loads and dispatch some.
+# Login to Track App
+# Select the order created
+# Click on the icon for loads or on any of the statuses
+
+*Actual behaviour:*
+The loads screen cannot be accessed, impeding the Signature functionality. Internal server error appears.
+ !image-2020-05-20-20-19-19-541.png|thumbnail! 
+
+*Expected behaviour:*
+The loads screen should be displayed.
+"
+DCM021CX0118-22571,Closed,Medium,Critical,DCM021CX0118,Bug,20/05/20 13:28,Jose Santana Santana,3. Delivery Tracking,UAT UK DS3 Load does not change status,"User: GBCXGOV2@cemexlabs.com
+Password: C3m3xgo01!
+Driver App Android: v1.7.0.8
+Track App Android: v3.14.1.3
+Order: 217941815
+
+# Create an order with several loads and dispatch a ticket.
+# Add ticket to Drivers App
+ !image-2020-05-20-20-21-29-552.png|thumbnail! 
+# Login to Track App
+# Select the order created
+
+*Actual behaviour:*
+The load is not on Route Status (the truck has GPS Provider ID 16)
+ !image-2020-05-20-20-23-14-576.png|thumbnail! 
+ !image-2020-05-20-20-27-11-196.png|thumbnail! 
+ !image-2020-05-20-20-26-07-010.png|thumbnail! 
+*Expected behaviour:*
+The load should be On Route Status, if the status is not updated the functionality cannot be tested.
+
+"
+DCM021CX0118-22572,Closed,Medium,Critical,DCM021CX0118,Bug,20/05/20 15:10,Carlos Rdz,3. Delivery Tracking,CO_DS3 Internal Server Error when try to complete SIGN process in TRACK app (SSO),"Entrega 173940077
+Orden 173940076
+Pais Colombia
+Cliente 50118066
+
+En Track logearse sin cuenta de usuario consultado solo la orden cuando esta EN RUTA en Driver app
+
+!image-2020-05-20-15-06-24-576.png|width=200,height=183!
+
+ 
+
+!image-2020-05-20-15-03-21-360.png|width=200,height=183!
+
+ 
+
+!image-20200520-201235.png|width=397,height=531!
+
+
+
+!image-2020-05-20-15-02-37-296.png|width=200,height=183!
+
+ "
+DCM021CX0118-22573,Closed,Medium,Critical,DCM021CX0118,Bug,20/05/20 16:46,Carlos Rdz,3. Delivery Tracking,CO_DS3 Incorrect status in Track when Driver app take a ticket ,"Entrega 173940077
+Orden 173940076
+Pais Colombia
+Cliente 50118066
+
+El estatus de Track aparece “CARGANDO” y debe ser en “RUTA” cuando Driver app toma el ticket.
+
+!image-20200520-215104.png|width=399,height=188!
+
+!image-20200520-215435.png|width=403,height=289!
+
+
+
+!image-20200520-215425.png|width=567,height=441!
+
+
+
+Comportamiento esperado es que el estatus de track debe aparecer en RUTA cuando Driver app es quien mueve estatus en track con el proveedor de GPS es 16 en el dato maestro de la placa."
+DCM021CX0118-22574,Validation In Progress,Medium,Critical,DCM021CX0118,Bug,20/05/20 17:03,Marco Corzo,3. Delivery Tracking,The status to Job from driver app is not being replicated to azure and the sign option in track is not shown ,"The status  ""to job"" is not being replicated to azure when the ticket is taken in driver app, the sign option is not being enabled in Track due the missing replication 
+
+Order Number: 0173940078
+Ticket Number: 0173940079
+Customer: 50008885
+Job Site; 65004423
+
+See attached screens
+"
+DCM021CX0118-22576,Rejected,Medium,Critical,DCM021CX0118,Bug,21/05/20 10:38,Iliana Garcia,1. Customer Information & Commercial Conditions,Service 1 Console of Service 1  is not working ,"step to reproduce
+
+Login on  URL   QA-CEMEXGO.com
+   User Deployment.team@mailinator.com/Cemex2019!
+
+select  Customer Blazona
+1 create a Request of jobsite for this customer 
+ !image-2020-05-21-10-28-48-737.png|thumbnail! 
+2  go inside of the Console of Service 1  Url  https://qa-cust-info-console.cemexgo.com/
+and  user salesmgr.rmx.usa@mailinator.com /  TestCycleV2CemexGo
+
+3  go to the option Requests
+
+ !image-2020-05-21-10-31-56-952.png|thumbnail! 
+we can not see any request from blazona customer
+
+and  we did the filters and  we write blazona  and doesnt appear  
+
+ !image-2020-05-21-10-37-04-341.png|thumbnail! 
+ !image-2020-05-21-10-37-10-507.png|thumbnail! 
+
+the actual behavior  need to show those request  right now  is not there  "
+DCM021CX0118-22577,Rejected,Medium,Major,DCM021CX0118,Bug,21/05/20 14:26,Alejandro Soria,2. Orders & Delivery Schedule,MOD DS2 Bag Cement order_Pick Up scenario_Cash - Prices Error,"The Summary display a message about there was an error retrieving Prices, and the “Finish“ button is not enabled.
+
+*Test Data Used for Bag Cement and Pick Up*
+
+Country: PH
+User: durawood@mailinator.com
+Pass: Tesxg0
+Customer:0500008352
+Jobsite: 65058145
+
+Product: 10004594-ISLAND PORTLAND CEMENT TYPE 1 40 KGS
+
+Credit
+
+*Test Data Used for Bulk Cement and Delivery*
+
+Country: PH
+User: [durawood@mailinator.com|mailto:durawood@mailinator.com]
+Pass: Tesxg0
+
+Customer:0050001056
+Jobsite: 65065765
+Product: 10000025
+
+Cash
+
+
+
+Expected results: 
+
+The Price is displayed on summary page and button should be enable to complete the order."
+DCM021CX0118-22579,Rejected,Medium,Major,DCM021CX0118,Bug,21/05/20 22:33,Javier Iracheta,2. Orders & Delivery Schedule,Cancel an order takes a lot of time to be refreshed,"When an order is created and displayed in order history, once cancelled, it takes almost 2 minutes to be refreshed
+
+Video could be provided on request, since by its size could not be attached"
+DCM021CX0118-22580,Closed,Medium,Major,DCM021CX0118,Bug,21/05/20 22:36,Daniela Garcia,2. Orders & Delivery Schedule,A blocked order could not be cancelled,"when order is created in cash and blocked in order history it could not be cancelled.
+
+Please see attached picture"
+DCM021CX0118-22581,Closed,Medium,Minor,DCM021CX0118,Bug,21/05/20 22:39,Javier Iracheta,2. Orders & Delivery Schedule,Translation - Cancel screen has labels in english when language is spanish,"Label in cancel screen has wrong language
+
+attached picture"
+DCM021CX0118-22582,Closed,Medium,Major,DCM021CX0118,Bug,21/05/20 22:42,Javier Iracheta,2. Orders & Delivery Schedule,when order is repeated no calendar is shown,"when order is repeated from order history, the new screen did not display any date or calendar
+
+see attached screen"
+DCM021CX0118-22583,Closed,Medium,Critical,DCM021CX0118,Bug,21/05/20 22:46,Ariel Pons Alonso,2. Orders & Delivery Schedule,A canceled order should not be modified,"Once an order is cancelled, in order history even a cancelled order could be modified
+
+see attached screen"
+DCM021CX0118-22584,Closed,Medium,Critical,DCM021CX0118,Bug,22/05/20 14:20,Javier Iracheta,2. Orders & Delivery Schedule,Cancelled order apperar with wrong status in OLS & SAP,"a order created with the following data:
+
+normaenriquezuser@mailinator.com
+TestCycleV2CemexGo
+50798682
+RIVIERA PARK SA DE CV
+66557023
+CP-I RIVIERA PARK
+ZCOC
+DG72
+MX-PD0270 PLANTA TALLER
+20006563
+No
+176065421
+Contado
+C
+S
+
+
+Order # 8009920635  was cancelled in OLS, however in OLS appers as confirmed and in SAP appears as completed.
+
+please see attached pictures
+
+
+
+
+"
+DCM021CX0118-22585,Closed,Medium,Minor,DCM021CX0118,Bug,25/05/20 9:15,Mario Reyna,3. Delivery Tracking,Track ios - Display List of Orders,"Al logearme cn el usaurio en QA
+Customer MX customer11cmxgouat@mailinator.com    TestUATV2CemexGo
+
+NO trae la lista de pedidos, se queda pensando, ya lleva mas de 10 min y no despliega la info "
+DCM021CX0118-22587,Rejected,Medium,Major,DCM021CX0118,Bug,25/05/20 9:22,Mario Reyna,3. Delivery Tracking,login screen - chueco,login screen sale cargado a la derecha
+DCM021CX0118-22588,Closed,Medium,Major,DCM021CX0118,Bug,25/05/20 13:55,Mario Reyna,3. Delivery Tracking,track Ios _ crash,"Cuando selecciono un rango de fechas May 18 al mayo 20, se depsliega la lista de jobistes, pero al seleccionar un jobsite crashea el app
+
+ya intente seleccionar oras fechas y crashea
+
+Customer MX customer11cmxgouat@mailinator.com    TestUATV2CemexGo"
+DCM021CX0118-22586,Closed,Medium,Critical,DCM021CX0118,Bug,25/05/20 13:56,Mario Reyna,3. Delivery Tracking,track Ios _ Filtro Fechas,"Cuando selecciono el icono para seleccoanr una fecha, no se despliegan todas las opciones en el card, Falta Next 7 Days, esta sale hasta quemeueves el card mas arriba
+
+Customer MX customer11cmxgouat@mailinator.com    TestUATV2CemexGo"
+DCM021CX0118-22589,Closed,Medium,Critical,DCM021CX0118,Bug,25/05/20 17:55,Mario Reyna,3. Delivery Tracking,Detale de ticket - en blanco,"consuktar detalle de ticket sale en blanco
+
+Customer MX customer11cmxgouat@mailinator.com    TestUATV2CemexGo
+seleccionar pedido dia 18 mayo
+pedido 8009920620
+ticket
+700035797602"
+DCM021CX0118-22590,Closed,Medium,Critical,DCM021CX0118,Bug,26/05/20 7:54,Mario Reyna,3. Delivery Tracking,Single Order- Crash,"al ingresar a single order con este pedido y cliente de mexico, crashea el app
+
+pedido 8009920620
+cliente 65011493"
+DCM021CX0118-22591,Closed,Medium,Critical,DCM021CX0118,Bug,26/05/20 7:57,Mario Reyna,3. Delivery Tracking,Error en Order again,"al ingresar con el usaurio Customer MX customer11cmxgouat@mailinator.com TestUATV2CemexGo
+
+y seleccionar el pedido 8009920620
+
+seleccionar la opcion prder again 
+
+capturar los datos y grabar, marca error"
+DCM021CX0118-22592,Closed,Medium,Critical,DCM021CX0118,Bug,26/05/20 8:08,Mario Reyna,3. Delivery Tracking,Report an Issue - error 6,"al ingresar con el usaurio Customer MX customer11cmxgouat@mailinator.com TestUATV2CemexGo
+
+y seleccionar el pedido 8009920620
+
+seleccionar la opcion Report an issue, capturar los datos y grabar, marca error"
+DCM021CX0118-22593,Closed,Medium,Major,DCM021CX0118,Bug,26/05/20 8:14,Mario Reyna,3. Delivery Tracking,"Screens cortado - T&C, user settings, Privacy, Copyright","al ingresar con el usaurio Customer MX customer11cmxgouat@mailinator.com TestUATV2CemexGo
+
+y seleccionar la opcion settings user, Terms & conditions, Privacy Policy, Copyright, la pantalla sale cortada"
+DCM021CX0118-22594,Closed,Medium,Minor,DCM021CX0118,Bug,26/05/20 12:46,Javier Iracheta,2. Orders & Delivery Schedule,Delivey method sent incorrect in CemexGo Notifications,"When notification of order creation is sent by mail,  the delivery method is set to 01 instead of ""Delivered"" 
+
+Please see attachment"
+DCM021CX0118-22595,Closed,Medium,Critical,DCM021CX0118,Bug,26/05/20 12:56,Hector Alvarado,3. Delivery Tracking,Single Order - pantalla cortada,"al ingresar como single order y ver un pedido, la pantalla sale cortada
+
+pais Mexico
+cliente 65011493
+Pedido 8009920620
+
+revisar todas las pantallas-- salen  cortadas
+
+"
+DCM021CX0118-22596,Closed,Medium,Critical,DCM021CX0118,Bug,26/05/20 13:00,Mario Reyna,3. Delivery Tracking,Single Order - sign out,"al ingresar como single order y ver un pedido, se navega y al final se selecciona sign Out - la pantalla se queda pensando y nunca termina la sesision, tuve que matar el app
+
+pais Mexico
+cliente 65011493
+Pedido 8009920620"
+DCM021CX0118-22597,Closed,Medium,Major,DCM021CX0118,Bug,26/05/20 13:12,Monica A. Salinas Flores,3. Delivery Tracking,login screen - chueco,"login screen sale cargado a la derecha, aparte la bandita negra “Track” esta separada del logo, NO tiene la cintilla roja, les anexo una imagen de produccion para que la revisen 
+
+
+
+asi mismo si seleccionan la opcion de Single Order Sin in se ve la diferencia de las cajitas de captura, y en produccion estan iguales"
+DCM021CX0118-22598,Closed,Medium,Critical,DCM021CX0118,Bug,26/05/20 14:56,Monica A. Salinas Flores,3. Delivery Tracking,Login TRack app & Order Taking Aapp,"Debido a la relacion de TRack & Order Taking, Al abrir el app despliega pantalla indicando si se quiere ingresar como un usuario de Order taking, (iimagen 1)
+
+al seleccionarlo se crashea el app 
+
+"
+DCM021CX0118-22599,Rejected,Medium,Minor,DCM021CX0118,Bug,26/05/20 16:30,Emmanuel Tejeda Romero,2. Orders & Delivery Schedule,Repeat Order page is not displayed correctly,"Data:
+
+ENVIRONMENT = QA
+COUNTRY = ES
+LANGUAGE = Español España
+CEMEXGO_URL = [https://qa.cemexgo.com|https://qa.cemexgo.com/]
+USER_CEMEXGO = HORMIGONES@MAILINATOR.COM
+PASS_CEMEXGO = Cemex2020
+CUSTOMER = HORMIGONES Y MORTEROS SERRANO, S.L.
+JOBSITE = 0065471127
+
+Steps to reproduce:
+
+1. Login Cemex go QA env
+2. Select Customer
+3. Select from left panel ""Orders History""
+4. Select Icon additional options
+5- Select Repeat Order
+
+Expected Result: Repeat Order should be displayed correctly and user should be able to repeat order previously selected.
+
+Actual Result: Repeat Order page is not displayed correctly, page looks without options
+
+Note: for better understand of this issue please check attached file.
+
+CGL-T597
+
+CGL-T843"
+DCM021CX0118-22600,Closed,Medium,Critical,DCM021CX0118,Bug,27/05/20 12:17,Jose Santana Santana,3. Delivery Tracking,"UAT UK, PL DS3 No orders in the timeframe","Track App iOS v2.25.0.3 
+User: tracksignGB@yopmail.com
+Password: Cemex2020
+Order: 214740380
+Delivery: 214740386
+
+Test steps:
+
+# Login to Track App iOS
+# Click on jobsite FALKIRK BLEACHFIELD...  to display the list of orders
+
+Actual result:
+No orders in the timeframe message appear. 
+
+!image-2020-05-27-19-14-33-455.png|width=200,height=183!
+
+  
+
+!image-2020-05-27-19-15-05-562.png|width=200,height=183!
+
+ 
+Expected result: 
+List of orders should be displayed."
+DCM021CX0118-22601,Closed,Medium,Critical,DCM021CX0118,Bug,27/05/20 12:30,Jose Santana Santana,3. Delivery Tracking,"UAT UK, PL DS3 No Signature - Review button for Single Order Sign In","*Track App iOS v2.25.0.3*
+*UK:*
+Order: 214740380
+Customer: 50215957
+*PL:*
+Order: 214740344
+Customer: 50246137
+
+*Test steps:*
+
+# Login to Track App iOS with the Single Order Sign In option
+# Look at the list of loads
+
+*Actual result:*
+The signature functionality is not displayed.
+
+!image-2020-05-27-19-26-45-576.png|width=200,height=183!
+
+ 
+
+*Expected result:*
+Track Customer signature option should be available (Sign or Review)"
+DCM021CX0118-22603,Rejected,Medium,Major,DCM021CX0118,Bug,28/05/20 5:33,Mario Reyna,3. Delivery Tracking,UAT IL DS3 - EPOD not available for download for AGG deliveries in Track App IOS,"Test user: sharonim@mailinator.com, password: Cemex2020
+Test environment: [https://qa-eu.cemexgo.com|https://qa-eu.cemexgo.com/], IOS v2.25.0.3
+Test customer: 50045000, Aggregates deliveries
+
+Steps to replicate: 
+1. Create sales order for AGG in SIMMA (order No. 999215)
+2. Create Weighing note for AGG delivery in SIMMA
+3. Create Delivery note for AGG delivery in SIMMA - status On Site or Finished
+4. Access Track app with IOS device and search for AGG delivery
+5. Sign the EPOD in Track app
+6. Check the pdf file EPOD in Track App
+
+Actual: 
+For AGG deliveries in Israel while using IOS device, the EPOD pdf file is not available while for RMX it can be downloaded. The EPOD cannot be downloaded in Track App IOS, but can be downloaded in Track Web. See attachments.
+
+Expected: 
+Regardless the division (RMX or AGG), the EPOD file should be available for download both in Track Web and Track App IOS."
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,
+,,,,,,,,,,

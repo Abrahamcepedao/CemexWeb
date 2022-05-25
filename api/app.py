@@ -170,33 +170,42 @@ def uploadFilesLDA(number_topics):
 
         username = json_data['user']
         access_token = json_data['accessToken']
+        print(username)
+        print(access_token)
 
         if validateUser(username, access_token):
             # get the uploaded file
             uploaded_file = request.files['file']
+
 
             #rename the file to filename+timestamp+username+filetype
             filename = uploaded_file.filename
             filename = filename.split('.')
             filename = filename[0] + '_' + str(int(time.time())) + '_' + username + '.' + filename[1]
 
+            print(filename)
             if uploaded_file.filename != '':
                 file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+                print("190", file_path)
                 # set the file path
                 uploaded_file.save(file_path)
-
                 #check if the file is a csv and is not valid:
                 if verifyFile(file_path) == False:
                     return jsonify({'message': 'File is not a valid CSV'})
 
                 # save the file
+                print("generating LDA...")
                 result = parseCSVLDA(file_path, username, number_topics)
+                print("generated LDA...")
+                return result
 
             # return the resulting dataframe
             return result
         else:
+            print("Access token is invalid")
             return jsonify({'message': 'Access token is invalid'})
     except:
+        print("Error uploading file")
         return jsonify({'message': 'Error uploading files'})
 
 #----------------------------------------------------------------------------------------------------------------------

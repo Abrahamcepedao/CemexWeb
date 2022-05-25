@@ -11,7 +11,7 @@ import { animated } from '@react-spring/web'
 const MyPie = ({ data /* see data tab */ }) => (
     <Pie
         data={data}
-        margin={{ top: 40, right: 100, bottom: 40, left: 40 }}
+        margin={{ top: 40, right: 85, bottom: 40, left: 100 }}
         innerRadius={0.5}
         padAngle={0.7}
         width={500}
@@ -46,6 +46,8 @@ const MyPie = ({ data /* see data tab */ }) => (
         arcLinkLabelsSkipAngle={10}
         arcLinkLabelsTextColor="#fff"
         arcLinkLabelsThickness={2}
+        arcLinkLabelsDiagonalLength={10}
+        arcLinkLabelsTextOffset={3}
         arcLinkLabelsColor={{ from: 'color' }}
         arcLabelsSkipAngle={10}
         arcLabelsComponent={({ datum, label, style }) => (

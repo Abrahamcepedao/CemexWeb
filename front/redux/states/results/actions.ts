@@ -14,7 +14,7 @@ export const setResultsDefects = (defects: Array<Defect>) => {
   };
 }
 
-export const serResultsReportType = (reportType: string) => {
+export const setResultsReportType = (reportType: string) => {
     localStorage.setItem("resultsReportType", reportType);
     return { 
         type: t.SET_RESULTS_REPORT_TYPE, 

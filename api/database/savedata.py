@@ -17,13 +17,16 @@ def create_data_defects(df):
 
     #drop frist row (header)
     df = df.drop(df.index[0])
-
     #drop Data column
     df = df.drop(columns=["Data"])
-
-    #convert Created column to iso8601
-    df["Created"] = df["Created"].apply(to_iso8601)
-
+    
+    #get first value of Created column
+    first_value = df["Created"].loc[df.index[0]]
+    #check if lenght of Created values is equal to 13
+    if len(first_value) == 13 or len(first_value) == 14:
+        #change all created to iso8601
+        df["Created"] = df["Created"].apply(to_iso8601)
+    
     #check if the issue already exists in the database
     for index, row in df.iterrows():
         if mycol.find_one({"Issue key":row['Issue key']}):

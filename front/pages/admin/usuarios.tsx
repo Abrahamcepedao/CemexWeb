@@ -38,6 +38,7 @@ import TablePagination from '@mui/material/TablePagination';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Select from '@mui/material/Select';
+import Tooltip from '@mui/material/Tooltip';
 
 /* Material - UI - icons */
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
@@ -487,21 +488,26 @@ const Usuarios: NextPage = (props) => {
           </StyledTableCell>
           <StyledTableCell align="left">{row.type ? row.type : "--"}</StyledTableCell>
           <StyledTableCell align="right">
-            <IconButton
-              size="small"
-              style={{ color: 'white' }}
-              onClick={() => handleEditUserModalChange(row)}
-            >
-              <CreateRoundedIcon/>
-            </IconButton>
-            <IconButton
-              aria-label="expand row"
-              size="small"
-              style={{ color: 'white' }}
-              onClick={() => handleDeleteUserModalChange(row)}
-            >
-              <DeleteRoundedIcon/>
-            </IconButton>
+            <Tooltip title="Edit user">
+              <IconButton
+                size="small"
+                style={{ color: 'white' }}
+                onClick={() => handleEditUserModalChange(row)}
+              >
+                <CreateRoundedIcon/>
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="Delete user">
+              <IconButton
+                aria-label="expand row"
+                size="small"
+                style={{ color: 'white' }}
+                onClick={() => handleDeleteUserModalChange(row)}
+              >
+                <DeleteRoundedIcon/>
+              </IconButton>
+            </Tooltip>
           </StyledTableCell>
         </StyledTableRow>
       </React.Fragment>
@@ -527,9 +533,11 @@ const Usuarios: NextPage = (props) => {
               <input type="text" id="searchText" placeholder="Type user here" className={styles.input} value={searchText} onChange={(e) => handleSearchTextChange(e.target.value)} />
               
               {/* filter button */}
-              <IconButton onClick={handleClick}>
-                <FilterAltRoundedIcon className={styles.icon}/>
-              </IconButton>
+              <Tooltip title="Filter">
+                <IconButton onClick={handleClick}>
+                  <FilterAltRoundedIcon className={styles.icon}/>
+                </IconButton>
+              </Tooltip>
 
               {/* Filter menu */}
               <StyledMenu
@@ -556,14 +564,18 @@ const Usuarios: NextPage = (props) => {
               </StyledMenu>
 
               {/* Add button */}
-              <IconButton onClick={handleCreateUserModalChange}>
-                <AddCircleRoundedIcon className={styles.icon}/>
-              </IconButton>
+              <Tooltip title="Add user">
+                <IconButton onClick={handleCreateUserModalChange}>
+                  <AddCircleRoundedIcon className={styles.icon}/>
+                </IconButton>
+              </Tooltip>
 
               {/* Refresh icon */}
-              <IconButton onClick={handleRefresh}>
-                <RefreshRoundedIcon className={styles.icon}/>
-              </IconButton>
+              <Tooltip title="Refresh">
+                <IconButton onClick={handleRefresh}>
+                  <RefreshRoundedIcon className={styles.icon}/>
+                </IconButton>
+              </Tooltip>
             </div>
 
             {/* lista de usuarios */}
