@@ -9,11 +9,10 @@ import Router from 'next/router'
 import React, { useEffect, useState, useRef } from 'react'
 
 /* Redux */
-import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters, setResultsDefects } from "../../redux/actions"
+import { setDropDepth, setInDropZone, setCurrentTab, setResultsDefects, setResultsReportType, setHistoricParametersType, setHistoricUsername, setHistoricDate1, setHistoricDate2, setHistoricIssueType } from "../../redux/actions"
 import { selectDropDepth } from "../../redux/states/file/reducer"
 import { selectUser } from "../../redux/states/user/reducer"
-import { selectResultsDefects } from '../../redux/states/results/reducer'
-import { selectParametersType, selectUsername, selectDate1, selectDate2, selectIssueType, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
+import { selectParametersType, selectUsername, selectDate1, selectDate2, selectIssueType } from '../../redux/states/historicReport/reducer'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
@@ -59,7 +58,6 @@ const Dashboard: NextPage = (props) => {
   /* useState - upload */
   const [state, setState] = useState({
     fileName: "",
-    file: undefined,
     loading: false,
     error: "",
     success: false,
@@ -88,11 +86,6 @@ const Dashboard: NextPage = (props) => {
   const historicDate1 = useAppSelector(selectDate1) //function that allows to get the historic date1 from the redux state
   const historicDate2 = useAppSelector(selectDate2) //function that allows to get the historic date2 from the redux state
   const historicIssueType  = useAppSelector(selectIssueType) //function that allows to get the historic issueType from the redux state
-  const historicReportType = useAppSelector(selectReportType) //function that allows to get the historic report type from the redux state
-  const historicNumClusters = useAppSelector(selectNumberClusters) //function that allows to get the historic number of clusters from the redux state
-
-  /* File btn upload */
-  //const fileUpload = useRef(null);
 
   
 
@@ -100,19 +93,11 @@ const Dashboard: NextPage = (props) => {
     /* Set current tab */
     dispatch(setCurrentTab('dashboard'));
 
-
-    /* Redirect user if needed */
-    //console.log(user);
-    if (!user) {
-      //Router.push('/');
-    }
-
     /* Check if there is a historic report */
-    if (historicReportType !== "") {
+    if (historicParametersType !== "") {
       setState({ ...state, isHistoric: true, step: 1 });
     }
 
-    
   }, []);
 
   /* Functions - handle drag and drop */
@@ -217,13 +202,21 @@ const Dashboard: NextPage = (props) => {
 
   /* Function to go to next step */
   const handleNextClick = (num: number) => {
-    if(num === 1) {
+    if (num === 0) {
+      //clear historic data
+      dispatch(setHistoricParametersType(""));
+      dispatch(setHistoricUsername(""));
+      dispatch(setHistoricDate1(""));
+      dispatch(setHistoricDate2(""));
+      dispatch(setHistoricIssueType(""));
+      
+      setState({ ...state, step: 0, isHistoric: false });
+    } else if(num === 1) {
       setState({
         ...state,
         step: num,
       });
     } else if(num === 2) {
-      dispatch(setReportType(state.reportType)); //set report type in redux state
       if(state.reportType === "lda") {
         if(state.numClusters <= 1) {
           setState({
@@ -237,13 +230,17 @@ const Dashboard: NextPage = (props) => {
             step: num,
             loading: true,
           });
-          dispatch(setNumberClusters(state.numClusters)); //set number of clusters in redux state
 
           //trigger action to get the report
           generateReport();
         }
       } else {
         //trigger action to get the report
+        setState({
+          ...state,
+          step: num,
+          loading: true,
+        });
         generateReport();
       }
     } 
@@ -311,7 +308,7 @@ const Dashboard: NextPage = (props) => {
 
       //make sure to serialize your JSON body
       body: JSON.stringify({
-        user: user.username,
+        username: user.username,
         accessToken: user.accessToken,
         analysis: state.reportType === "lda" ? state.numClusters : "default",
         startDate: `${historicDate1}T00:00:00`,
@@ -460,20 +457,23 @@ const Dashboard: NextPage = (props) => {
 
   /* Clusterize using BERT */
   async function clusterizeBERT(url:string): Promise<Array<Defect>> {
+
+    let data = new FormData();
+    //@ts-ignore
+    data.append("file", file);
+    
+    data.append("data", JSON.stringify({"user": user.username, "accessToken": user.accessToken}));
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        //'Accept': 'application/json',
+        //'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
 
       //make sure to serialize your JSON body
-      body: JSON.stringify({
-        user: user.username,
-        accessToken: user.accessToken,
-        file: state.file
-      }),
+      body: data
     })
     console.log(response)
     if (!response.ok) {
@@ -484,20 +484,33 @@ const Dashboard: NextPage = (props) => {
 
   /* Clusterize using LDA */
   async function clusterizeLDA(url:string): Promise<Array<Defect>> {
+    
+    let data = new FormData();
+    //@ts-ignore
+    data.append("file", file);
+    
+    data.append("data", JSON.stringify({"user": user.username, "accessToken": user.accessToken}));
+    /* fetch(target, {
+        method: "POST",
+        body: data
+    }); */
+
     const response = await fetch(url, {
       method: "POST",
       headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        //'Accept': 'application/json',
+        //'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*'
       },
+      body: data,
 
       //make sure to serialize your JSON body
-      body: JSON.stringify({
+      
+      /* body: JSON.stringify({
         user: user.username,
         accessToken: user.accessToken,
-        file: state.file
-      }),
+        file: file
+      }), */
     })
     console.log(response)
     if (!response.ok) {
@@ -508,8 +521,10 @@ const Dashboard: NextPage = (props) => {
 
   /* function to generate report */
   const setData = (data: Array<Defect>) => {
+    console.log(data)
     //set redux state
     dispatch(setResultsDefects(data));
+    dispatch(setResultsReportType(state.reportType));
 
     //redirect to admin results
     Router.push('/admin/results');
@@ -521,7 +536,7 @@ const Dashboard: NextPage = (props) => {
     if(state.isHistoric) {
       //generate historic report
 
-      if(historicReportType === "all") {
+      if(historicParametersType === "all") {
         //search all defects
         try {
            getAllDefects('http://localhost:5000/defects')
@@ -545,7 +560,7 @@ const Dashboard: NextPage = (props) => {
 
         
 
-      } else if(historicReportType === "user") {
+      } else if(historicParametersType === "user") {
         //search defects by user
         try {
            getUserDefects('http://localhost:5000/defects/get')
@@ -568,7 +583,7 @@ const Dashboard: NextPage = (props) => {
 
 
 
-      } else if(historicReportType === "date") {
+      } else if(historicParametersType === "date") {
         //search defects by range date
         try {
           getDateDefects('http://localhost:5000/defects/date')
@@ -591,7 +606,7 @@ const Dashboard: NextPage = (props) => {
 
 
 
-      } else if(historicReportType === "date_user") {
+      } else if(historicParametersType === "date_user") {
         //search defects by range date and user
         try {
           getDateUserDefects('http://localhost:5000/defects/date/get')
@@ -612,7 +627,7 @@ const Dashboard: NextPage = (props) => {
           setState({...state, error: error, loading: false, step: 1})
         }
           
-      } else if(historicReportType === "issue") {
+      } else if(historicParametersType === "issue") {
         //search defects by issue type
         try {
           getIssueDefects('http://localhost:5000/defects/issue')
@@ -633,7 +648,7 @@ const Dashboard: NextPage = (props) => {
           setState({...state, error: error, loading: false, step: 1})
         }
           
-      } else if(historicReportType === "issue_user") {
+      } else if(historicParametersType === "issue_user") {
         //search defects by issue type and user
         try {
           getIssueUserDefects('http://localhost:5000/defects/issue/get')
@@ -654,7 +669,7 @@ const Dashboard: NextPage = (props) => {
           setState({...state, error: error, loading: false, step: 1})
         }
           
-      } else if(historicReportType === "issue_date") {
+      } else if(historicParametersType === "issue_date") {
         //search defects by issue type and date
         try {
           getIssueDateDefects('http://localhost:5000/defects/issue/date')
@@ -675,7 +690,7 @@ const Dashboard: NextPage = (props) => {
           setState({...state, error: error, loading: false, step: 1})
         }
           
-      } else if(historicReportType === "issue_date_user") {
+      } else if(historicParametersType === "issue_date_user") {
         //search defects by issue type, date and user
         try {
           getIssueDateUserDefects('http://localhost:5000/defects/issue/date/get')
@@ -825,7 +840,7 @@ const Dashboard: NextPage = (props) => {
 
                       {/* issue */}
                       {(historicParametersType === "isse" || historicParametersType === "issue_user" || historicParametersType === "issue_date" || historicParametersType === "issue_date_user") && (
-                        <p><b>Issue type:</b> {historicDate2}</p>
+                        <p><b>Issue type:</b> {historicIssueType}</p>
                       )}
 
 
@@ -856,7 +871,11 @@ const Dashboard: NextPage = (props) => {
                   )}
 
                   {/* next btn */}
-                  <button className={styles.next__btn} onClick={() => {handleNextClick(2)}}>{`Generate ${state.isHistoric ? "historic" : ""} report`}</button>
+                  <button className={styles.next__btn} style={{marginBottom: state.isHistoric ? "20px": "0px"}} onClick={() => {handleNextClick(2)}}>{`Generate ${state.isHistoric ? "historic" : ""} report`}</button>
+                  {state.isHistoric && (
+                    <button className={styles.next__btn} style={{background: "#D24244"}} onClick={() => {handleNextClick(0)}}>Clear historic data</button>
+                  )}
+                  
 
                   {/* Error message */}
                   {state.error !== "" && (

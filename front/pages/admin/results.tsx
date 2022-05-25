@@ -9,11 +9,10 @@ import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setDropDepth, setInDropZone, setCurrentTab, setReportType, setNumberClusters, resetResultsDefects, resetResultsReportType } from "../../redux/actions"
-import { selectDropDepth } from "../../redux/states/file/reducer"
+import { resetResultsDefects, resetResultsReportType, setResultsDefects, setResultsReportType } from "../../redux/actions"
 import { selectUser } from "../../redux/states/user/reducer"
-import { selectParametersType, selectUsername, selectDate1, selectDate2, selectReportType, selectNumberClusters } from '../../redux/states/historicReport/reducer'
-import { selectResultsReportType } from '../../redux/states/results/reducer'
+import { selectParametersType, selectUsername, selectDate1, selectDate2 } from '../../redux/states/historicReport/reducer'
+import { selectResultsReportType, selectResultsDefects } from '../../redux/states/results/reducer'
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
 /* Components */
@@ -87,6 +86,22 @@ interface Label {
 
 //consant of a 100 colors array
 const colors = [
+    "#fca1a1",
+    "#ed1010",
+    "#ed2d2d",
+    "#ea4141",
+    "#ed5555",
+    "#ed6a6a",
+    "#ff7200",
+    "#fc8320",
+    "#f9913b",
+    "#f9a159",
+    "#f9ba86",
+    "#ffe500",
+    "#fce620",
+    "#fcea4b",
+    "#fced6a",
+    "#fcf085",
     "#F44336",
     "#E91E63",
     "#9C27B0",
@@ -167,6 +182,7 @@ const Dashboard: NextPage = (props) => {
     const [pieData, setPieData] = useState<any>([])
 
     /* useState - defects data */
+    const [totalDefects, setTotalDefects] = useState<number>(0)
     const [defectsAll, setAllDefects] = useState<Defect[]>([])
     const [defects, setDefects] = useState<Defect[]>([])
     const [labels, setLabels] = useState<Label[]>([])
@@ -177,44 +193,42 @@ const Dashboard: NextPage = (props) => {
 
     /* Redux */
     const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
-    
-    /* redux - user */
-    const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
-    
-    /* redux - historic report */
-    const historicParametersType = useAppSelector(selectParametersType) //function that allows to get the historic parametersType from the redux state
-    const historicUsername = useAppSelector(selectUsername) //function that allows to get the historic username from the redux state
-    const historicDate1 = useAppSelector(selectDate1) //function that allows to get the historic date1 from the redux state
-    const historicDate2 = useAppSelector(selectDate2) //function that allows to get the historic date2 from the redux state
-    const historicReportType = useAppSelector(selectReportType) //function that allows to get the historic report type from the redux state
-    const historicNumClusters = useAppSelector(selectNumberClusters) //function that allows to get the historic number of clusters from the redux state
 
     /* redux - results report */
-    const resultsReportType = useAppSelector(selectResultsReportType) //function that allows to get the results report type from the redux state
-    
+    const resultsReportType: string = useAppSelector(selectResultsReportType) //function that allows to get the results report type from the redux state
+    const resultsDefects: Defect[] = useAppSelector(selectResultsDefects) //function that allows to get the results defects from the redux state
 
     useEffect(() => {
-        /* Set current tab */
-        dispatch(setCurrentTab('dashboard'));
 
-        /* Redirect user if needed */
-        if (!user) {
-        //Router.push('/');
-        } else {
-        
-        }
-
+        var defectsAllTemp: Defect[] = []
         /* set defects */
-        //delete all -1 CLuster of Results
-        let defectsAllTemp = Results.filter(defect => defect.Cluster !== -1)
+        if(resultsDefects.length > 0){
+            //delete all -1 CLuster of Results
+            defectsAllTemp = resultsDefects.filter(defect => defect.Cluster !== -1)
+            setTotalDefects(resultsDefects.length)
+        } else {
+            if(localStorage.getItem('resultsDefects') !== null){
+                //@ts-ignore
+                defectsAllTemp = JSON.parse(localStorage.getItem('resultsDefects'))
+                dispatch(setResultsDefects(defectsAllTemp))
 
-        setAllDefects(defectsAllTemp);
-        setDefects(defectsAllTemp);
+                if(localStorage.getItem('resultsReportType')){
+                    //@ts-ignore
+                    dispatch(setResultsReportType(localStorage.getItem('resultsReportType')))
+                }
+
+                setTotalDefects(defectsAllTemp.length)
+            } else {
+                //delete all -1 CLuster of Results
+                defectsAllTemp = Results.filter(defect => defect.Cluster !== -1)
+                setTotalDefects(Results.length)
+            }
+        } 
 
     
         /* set labels */
         //@ts-ignore
-        var labelsTemp = [];
+        var labelsTemp: Label[] = [];
         labelsTemp.push({ number: -2, label: 'All', color: '#FFEB3B', status: false, value: Results.length, percentage: 100 });
         defectsAllTemp.forEach(element => {
             //check if label already exists
@@ -246,6 +260,7 @@ const Dashboard: NextPage = (props) => {
             let per = (element.value / defectsAllTemp.length) * 100;
             //@ts-ignore
             labelsTemp[i].percentage =  per.toFixed(2);
+            labelsTemp[i].color = colors[i];
         });
 
         console.log(labelsTemp);
@@ -273,12 +288,18 @@ const Dashboard: NextPage = (props) => {
             } 
         });
 
+        /* set local state */
+
         //@ts-ignore
         setPieData(pieDataTemp);
         //@ts-ignore
         setBarData(barDataTemp);
         //@ts-ignore
         setLabels(labelsTemp);
+
+        //set defects
+        setAllDefects(defectsAllTemp);
+        setDefects(defectsAllTemp);
         
     }, [graphType]);
 
@@ -413,9 +434,9 @@ const Dashboard: NextPage = (props) => {
             {/* <StyledTableCell component="th" scope="row">
                 {row["Issue key"]}
             </StyledTableCell> */}
-            <StyledTableCell align="right">{row["Created"] ? row["Created"] : "--"}</StyledTableCell>
-            <StyledTableCell align="right">{row["Assignee"] ? row["Assignee"] : "--"}</StyledTableCell>
-            <StyledTableCell align="right">{row["Priority"] ? row["Priority"] : "--"}</StyledTableCell>
+            <StyledTableCell align="left">{row["Created"] ? row["Created"].substring(0,10) : "--"}</StyledTableCell>
+            <StyledTableCell align="left">{row["Assignee"] ? row["Assignee"] : "--"}</StyledTableCell>
+            <StyledTableCell align="left">{row["Priority"] ? row["Priority"] : "--"}</StyledTableCell>
             <StyledTableCell align="right">
                 <IconButton
                 aria-label="expand row"
@@ -484,10 +505,10 @@ const Dashboard: NextPage = (props) => {
                         </div>
                         <div className={styles.fact__text__container}>
                             <p className={styles.fact__number}>
-                                {Results.length - defectsAll.length}
+                                {totalDefects - defectsAll.length}
                             </p>
                             <p className={styles.fact__text}>
-                                Unclassified
+                                Outliers
                             </p>
                         </div>
                     </div>
@@ -543,12 +564,16 @@ const Dashboard: NextPage = (props) => {
                             <div className={styles.graph__header}>
                                 <h2>Distribution of defects</h2>
                                 <div className={styles.graph__header__icons}>
-                                    <IconButton onClick={() => {setGraphType('pie')}}>
-                                        <DonutSmallRoundedIcon className={styles.icon} style={{opacity: graphType === "pie" ? 1 : 0.5}}/>
-                                    </IconButton>
-                                    <IconButton onClick={() => {setGraphType('bar')}}>
-                                        <BarChartRoundedIcon className={styles.icon} style={{opacity: graphType === "bar" ? 1 : 0.5}}/>
-                                    </IconButton>
+                                    <Tooltip title="Pie chart">
+                                        <IconButton onClick={() => {setGraphType('pie')}}>
+                                            <DonutSmallRoundedIcon className={styles.icon} style={{opacity: graphType === "pie" ? 1 : 0.5}}/>
+                                        </IconButton>
+                                    </Tooltip>
+                                    <Tooltip title="Bar chart">
+                                        <IconButton onClick={() => {setGraphType('bar')}}>
+                                            <BarChartRoundedIcon className={styles.icon} style={{opacity: graphType === "bar" ? 1 : 0.5}}/>
+                                        </IconButton>
+                                    </Tooltip>
                                 </div>
                             </div>
 
@@ -592,7 +617,7 @@ const Dashboard: NextPage = (props) => {
                                             onClick={() => {handleChipClick(label)}}
                                             icon={<CircleRoundedIcon style={{color: label.color}}/>}
                                             variant="filled"
-                                            style={{fontWeight: 'bold', color: 'white', marginRight: '10px', textDecoration: label.status ? 'underline': 'none', opacity: label.status ? 1 : 0.8}}
+                                            style={{fontWeight: label.status ? 'bold': 'light', color: 'white', marginRight: '10px', textDecoration: label.status ? 'underline': 'none', opacity: label.status ? 1 : 0.8}}
                                         />
                                     ))}
                                 </div>
@@ -609,9 +634,9 @@ const Dashboard: NextPage = (props) => {
                                                 <TableHead>
                                                 <TableRow>
                                                     <StyledTableCell />
-                                                    <StyledTableCell align="right">Date</StyledTableCell>
-                                                    <StyledTableCell align="right">Assignee</StyledTableCell>
-                                                    <StyledTableCell align="right">Priority</StyledTableCell>
+                                                    <StyledTableCell align="left">Date</StyledTableCell>
+                                                    <StyledTableCell align="left">Assignee</StyledTableCell>
+                                                    <StyledTableCell align="left">Priority</StyledTableCell>
                                                     <StyledTableCell />
                                                 </TableRow>
                                                 </TableHead>

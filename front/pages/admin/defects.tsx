@@ -11,17 +11,17 @@ import React, { useEffect, useState } from 'react'
 /* Redux */
 import { 
   setCurrentTab, 
-  setUsername, 
-  setDate1, 
-  setDate2, 
-  setParametersType, 
+  setHistoricUsername, 
+  setHistoricDate1, 
+  setHistoricDate2, 
+  setHistoricParametersType, 
+  setHistoricIssueType,
   setReduxDefects, 
   setReduxSearchType,
   setReduxUsername,
   setReduxDate1,
   setReduxDate2,
   setReduxIssue,
-  setIssueType
 } from "../../redux/actions"
 import { selectUser } from "../../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
@@ -222,31 +222,63 @@ const Defects: NextPage = (props) => {
 
     /* set defects if in local Storage */
     if (localStorage.getItem('defects') && localStorage.getItem("searchType")) {
+      console.log("localStorage");
       //set local state
       //@ts-ignore
       setAllDefects(JSON.parse(localStorage.getItem("defects")));
       //@ts-ignore
       setDefects(JSON.parse(localStorage.getItem("defects")));
-      //@ts-ignore
-      setSearchState({
-        ...searchState,
-        searchBy: localStorage.getItem("searchType") || "all",
-        username: localStorage.getItem("defectUsername") || "",
-        date1: localStorage.getItem("defectDate1") || "",
-        date2: localStorage.getItem("defectDate2") || "",
-      })
 
       //set redux state
       //@ts-ignore
       dispatch(setReduxDefects(JSON.parse(localStorage.getItem("defects"))));
+
+      //set local state
+      console.log(localStorage.getItem("searchType"));
       //@ts-ignore
-      dispatch(setReduxSearchType(localStorage.getItem("searchType") || "all"));
+      setSearchState({...searchState, 
+        //@ts-ignore
+        searchBy: localStorage.getItem("searchType"),
+        //@ts-ignore
+        username: localStorage.getItem("defectUsername") ? localStorage.getItem("defectUsername") : '',
+        //@ts-ignore
+        date1: localStorage.getItem("defectDate1") ? localStorage.getItem("defectDate1") : '',
+        //@ts-ignore
+        date2: localStorage.getItem("defectDate2") ? localStorage.getItem("defectDate2") : '',
+        //@ts-ignore
+        issue: localStorage.getItem("defectIssue") ? localStorage.getItem("defectIssue") : 'Bug',
+        //@ts-ignore
+        loading: false,
+        //@ts-ignore
+        buttonsDisabled: false,
+      });
       //@ts-ignore
-      dispatch(setReduxUsername(localStorage.getItem("defectUsername") || ""));
-      //@ts-ignore
-      dispatch(setReduxDate1(localStorage.getItem("defectDate1") || ""));
-      //@ts-ignore
-      dispatch(setReduxDate2(localStorage.getItem("defectDate2") || ""));
+      dispatch(setReduxSearchType(localStorage.getItem("searchType")));
+
+      //set username
+      if(localStorage.getItem("defectUsername")) {
+        //@ts-ignore
+        dispatch(setReduxUsername(localStorage.getItem("defectUsername")));
+      }
+
+      //set date1
+      if(localStorage.getItem("defectDate1")) {
+        //@ts-ignore
+        dispatch(setReduxDate1(localStorage.getItem("defectDate1")));
+      }
+
+      //set date2
+      if(localStorage.getItem("defectDate2")) {
+        //@ts-ignore
+        dispatch(setReduxDate2(localStorage.getItem("defectDate2")));
+      }
+
+      //set issue
+      if(localStorage.getItem("defectIssue")) {
+        //@ts-ignore
+        dispatch(setReduxIssue(localStorage.getItem("defectIssue")));
+      }
+      
     }
 
     /* fetch issues from api */
@@ -402,7 +434,25 @@ const Defects: NextPage = (props) => {
 
   //handle issue change
   const handleIssueChange = (value:string) => {
-    setSearchState({...searchState, issue: value});
+    if(searchState.searchBy === "issue_user") {
+      if(searchState.username) {
+        setSearchState({...searchState, issue: value, buttonsDisabled: false}); //enable button if username is set
+        
+      } else {
+        setSearchState({...searchState, issue: value, buttonsDisabled: true}); //disable button if username is not set
+        
+      }
+    } else if(searchState.searchBy === "issue_date_user"){
+      if(searchState.date1 && searchState.date2 && searchState.username) {
+        setSearchState({...searchState, issue: value, buttonsDisabled: false}); //enable button if username and dates are set
+        
+      } else {
+        setSearchState({...searchState, issue: value, buttonsDisabled: true}); //disable button if username or date is not set
+        
+      }
+    } else {
+      setSearchState({...searchState, issue: value, buttonsDisabled: false}); //enable button if issue is set
+    }
   }
 
   /* <------Search defects functions------> */
@@ -624,6 +674,14 @@ const Defects: NextPage = (props) => {
       //set loading to true and error to empty
       setSearchState({...searchState, loading: true});
       setError("");
+
+      //set items in local storage
+      localStorage.setItem("defects", JSON.stringify(defects));
+      localStorage.setItem("searchType", searchState.searchBy)
+      localStorage.setItem("defectUsername", searchState.username);
+      localStorage.setItem("defectIssue", searchState.issue);
+      localStorage.setItem("defectDate1", searchState.date1);
+      localStorage.setItem("defectDate2", searchState.date2);
 
       //clear defects
       setDefects([]);
@@ -949,15 +1007,16 @@ const Defects: NextPage = (props) => {
       setError("Please fill in all the fields or change the search criteria");
     } else {
       //set loading to true and error to empty
+      console.log(searchState);
       setSearchState({...searchState, loading: true});
       setError("");
 
       //dispatch values to generate report to redux store
-      dispatch(setParametersType(searchState.searchBy));
-      dispatch(setUsername(searchState.username));
-      dispatch(setDate1(searchState.date1));
-      dispatch(setDate2(searchState.date2));
-      dispatch(setIssueType(searchState.issue));
+      dispatch(setHistoricParametersType(searchState.searchBy));
+      dispatch(setHistoricUsername(searchState.username));
+      dispatch(setHistoricDate1(searchState.date1));
+      dispatch(setHistoricDate2(searchState.date2));
+      dispatch(setHistoricIssueType(searchState.issue));
 
       //redirect to dashboard to continue with report generation
       Router.push('/admin/dashboard');
@@ -1125,7 +1184,7 @@ const Defects: NextPage = (props) => {
                   id="demo-customized-select"
                   value={searchState.searchBy}
                   onChange={(e) => handleSearchByChange(e.target.value)}
-                  style={{width: "100% !important"}}
+                  //style={{width: "100% !important"}}
                   input={<TransparentInput />}
                 >
                   <MenuItem value={"all"}>All defects</MenuItem>

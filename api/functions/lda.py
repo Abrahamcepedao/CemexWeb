@@ -6,11 +6,12 @@ import nltk
 from nltk.corpus import stopwords
 from pprint import pprint
 import pandas as pd
+from functions.changeDateFormat import *
 import os
 #import all from functions cleaner
 from .cleaner import *
 
-#nltk.download('stopwords')
+nltk.download('stopwords')
 
 def generateClustersLDA(df,number_topics):
 
@@ -38,6 +39,15 @@ def generateClustersLDA(df,number_topics):
     df['dataProcessed'].map(lambda x: x.lower())
     # Print out the first rows of df
     df['dataProcessed'].head()
+
+    #get first value of Created column
+    first_value = df["Created"].loc[df.index[0]]
+    #check if lenght of Created values is equal to 13
+    print("46 - first_value", first_value)
+    if len(first_value) == 13 or len(first_value) == 14:
+        print("48 - df created", df["Created"])
+        #change all created to iso8601
+        df["Created"] = df["Created"].apply(to_iso8601)
 
 
     #PREPARE DATA
