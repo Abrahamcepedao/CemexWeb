@@ -22,6 +22,7 @@ import {
   setReduxDate1,
   setReduxDate2,
   setReduxIssue,
+  setReduxCurrentUser
 } from "../../redux/actions"
 import { selectUser } from "../../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
@@ -32,6 +33,7 @@ import SideBar from '../../components/admin/SideBar'
 import { TransparentInput } from '../../components/admin/Selects'
 import { StyledTableRow } from '../../components/admin/StyledTableRow'
 import { StyledTableCell } from '../../components/admin/StyledTableCell'
+import { StyledTextField } from '../../components/admin/StyledTextField'
 
 /* CSS */
 import styles from '../../styles/admin/Defects.module.css'
@@ -53,6 +55,8 @@ import Select from '@mui/material/Select';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Tooltip from '@mui/material/Tooltip';
+import TextField, { TextFieldProps } from '@mui/material/TextField';
+
 
 /* Material UI - icons */
 import ArrowCircleRightRoundedIcon from '@mui/icons-material/ArrowCircleRightRounded';
@@ -86,11 +90,15 @@ interface Defect {
   "Description": string,
 }
 
-
 interface User {
-  user: string,
+  username: string,
   type: string,
   createdAt: string,
+  accessToken: string,
+}
+
+interface Message {
+  message: string,
 }
 
 /* Styled menu for filter button */
@@ -144,6 +152,41 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
+/* Material UI - Input */
+const CssTextField = styled(TextField)({
+  '& label.Mui-focused': {
+    color: 'rgba(255, 255, 255, 0.75)',
+  },
+  '& label': {
+    color: 'rgba(255, 255, 255, 0.75)',
+    fontSize: '0.875rem',
+  },
+  '& .MuiInput-underline:after': {
+    //borderBottomColor: 'green',
+  },
+  '& .MuiOutlinedInput-root': {
+    backgroundColor: 'rgba(255, 255, 255, 0.19)',
+    borderRadius: 25,
+    fontSize: '0.8rem',
+    height: '40px',
+    color: 'white',
+    flex: '1 !important',
+    width: '100% !important',
+    marginRight: '20px !important',
+    //border: '1px solid rgba(255, 255, 255, 0.21)',
+    '& fieldset': {
+      borderColor: 'rgba(255, 255, 255, 0.21)',
+      //marginRight: '15px',
+    },
+    '&:hover fieldset': {
+      borderColor: 'rgba(255, 255, 255, 0.21)',
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: 'rgba(255, 255, 255, 0.21)',
+    },
+  },
+});
+
 const Defects: NextPage = (props) => {
   /* useState - currrent user */
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -160,7 +203,10 @@ const Defects: NextPage = (props) => {
   });
 
   /* useState - issues */
-  const [issues, setIssues] = useState<Array<string>>([]);
+  const [issues, setIssues] = useState<Array<string>>(["Bug"]);
+
+  /* useState - tempUser */
+  const [currentUser, setCurrentUser] = useState<User>({username: '', type: '', createdAt: '', accessToken: ''});
 
   /* useState - table pagination */
   const [page, setPage] = React.useState(0);
@@ -186,7 +232,7 @@ const Defects: NextPage = (props) => {
 
   /* handle fecthing issues - api */
   async function getIssues(url: string): Promise<Array<string>> {
-    return fetch(url, {
+    const response = await fetch(url, {
       method: "POST",
       headers: {
         'Accept': 'application/json',
@@ -196,16 +242,38 @@ const Defects: NextPage = (props) => {
 
       //make sure to serialize your JSON body
       body: JSON.stringify({
-        user: user.user,
-        accessToken: user.accessToken
+        user: user !== null ? user.username : currentUser.username,
+        accessToken: user !== null ? user.accessToken : currentUser.accessToken
       }),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error(response.statusText)
-      }
-      return response.json() as Promise<Array<string>>
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return response.json() as Promise<Array<string>>
+  }
+
+  /* Function to validate user */
+  async function validateUser(url: string, username:string, accessToken:string): Promise<Message> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: username,
+        accessToken: accessToken,
+      }),
     })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return response.json() as Promise<Message>
   }
 
   useEffect(() => {
@@ -214,15 +282,97 @@ const Defects: NextPage = (props) => {
 
     /* Redirect user if needed */
     console.log(user);
-    if (!user) {
-      //Router.push('/');
+    if (user === null) {
+      //get user from local storage
+      //@ts-ignore
+      const tempUser = JSON.parse(localStorage.getItem('user'));
+      console.log(tempUser)
+
+      if (tempUser) {
+          //set tempUser
+          setCurrentUser({username: tempUser.username, type: tempUser.role, createdAt: tempUser.createdAt, accessToken: tempUser.accessToken});
+
+          //validate if user session is still valid
+          try {
+            validateUser('http://localhost:5000/test-token', tempUser.username, tempUser.accessToken)
+            .then(data => {
+              console.log(data)
+              if (data.message === 'success') {
+                //set user state in redux
+                console.log('success')
+
+                //set current user in redux state
+                dispatch(setReduxCurrentUser({username: tempUser.username, role: tempUser.role, accessToken: tempUser.accessToken, validUntil: tempUser.validUntil}));
+
+                /* fetch issues from api */
+                console.log(user);
+                if(user !== null) {
+                  try {
+                    getIssues('http://localhost:5000/issues')
+                    .then(data => {
+                      console.log(data[0]);
+                      let temp: string[] = [];
+                      data.forEach(issue => {
+                        temp.push(issue[0]);
+                      })
+
+                      console.log("temp", temp);
+                      //set local state
+                      setIssues(temp);
+                    })
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }
+
+              } else {
+                //redirect to login page
+                console.log('invalid')
+                Router.push('/')
+              }
+            })
+        } catch (error) {
+          //redirect to login page
+          console.log('invalid')
+          Router.push('/')
+        }
+
+      } else {
+        Router.push('/')
+      }
     } else {
-      setIsLoggedIn(true);
+      /* fetch issues from api */
+      console.log(user);
+      if(user !== null) {
+        try {
+          getIssues('http://localhost:5000/issues')
+          .then(data => {
+            console.log(data[0]);
+
+            if(data.length > 0) {
+              let temp: string[] = [];
+              data.forEach(issue => {
+                temp.push(issue[0]);
+              })
+
+              console.log("temp", temp);
+              //set local state
+              setIssues(temp);
+            } else {
+              console.log("no issues");
+            }
+
+            
+          })
+        } catch (error) {
+          console.log(error);
+        }
+      }
     }
 
     /* set defects if in local Storage */
     if (localStorage.getItem('defects') && localStorage.getItem("searchType")) {
-      console.log("localStorage");
+      
       //set local state
       //@ts-ignore
       setAllDefects(JSON.parse(localStorage.getItem("defects")));
@@ -234,7 +384,6 @@ const Defects: NextPage = (props) => {
       dispatch(setReduxDefects(JSON.parse(localStorage.getItem("defects"))));
 
       //set local state
-      console.log(localStorage.getItem("searchType"));
       //@ts-ignore
       setSearchState({...searchState, 
         //@ts-ignore
@@ -279,26 +428,6 @@ const Defects: NextPage = (props) => {
         dispatch(setReduxIssue(localStorage.getItem("defectIssue")));
       }
       
-    }
-
-    /* fetch issues from api */
-    if(user !== null) {
-      try {
-        getIssues('http://localhost:5000/issues')
-        .then(data => {
-          console.log(data[0]);
-          let temp: string[] = [];
-          data.forEach(issue => {
-            temp.push(issue[0]);
-          })
-
-          console.log("temp", temp);
-          //set local state
-          setIssues(temp);
-        })
-      } catch (error) {
-        console.log(error);
-      }
     }
     
   }, []);
@@ -1100,10 +1229,10 @@ const Defects: NextPage = (props) => {
           <StyledTableCell component="th" scope="row">
             {row["Issue key"]}
           </StyledTableCell>
-          <StyledTableCell align="right">{row["Created"] ? row["Created"] : "--"}</StyledTableCell>
-          <StyledTableCell align="right">{row["Assignee"] ? row["Assignee"] : "--"}</StyledTableCell>
-          <StyledTableCell align="right">{row["Status"] ? row["Status"] : "--"}</StyledTableCell>
-          <StyledTableCell align="right">{row["Priority"] ? row["Priority"] : "--"}</StyledTableCell>
+          <StyledTableCell align="left">{row["Created"] ? row["Created"].substring(0,10) : "--"}</StyledTableCell>
+          <StyledTableCell align="left">{row["Assignee"] ? row["Assignee"] : "--"}</StyledTableCell>
+          <StyledTableCell align="left">{row["Status"] ? row["Status"] : "--"}</StyledTableCell>
+          <StyledTableCell align="left">{row["Priority"] ? row["Priority"] : "--"}</StyledTableCell>
           <StyledTableCell align="right">
             <IconButton
               aria-label="expand row"
@@ -1151,20 +1280,21 @@ const Defects: NextPage = (props) => {
                   <p className={styles.search__title} style={{flex: "1"}}>Search defects</p>
                 )}
                 {(searchState.searchBy === "user" || searchState.searchBy === "date_user" || searchState.searchBy === "issue_user" || searchState.searchBy === "issue_date_user") && (
-                    <input type="text" className={styles.input} placeholder="Enter username" value={searchState.username} onChange={(e) => handleUsernameChange(e.target.value)}/>
+                    <StyledTextField type="text" className={styles.input} size="small" label="Username" id="custom-css-outlined-input" value={searchState.username} onChange={(e) => handleUsernameChange(e.target.value)}/>
                 )}
 
                 {(searchState.searchBy === "date" || searchState.searchBy === "date_user" || searchState.searchBy === "issue_date" || searchState.searchBy === "issue_date_user") && (
-                    <input type="date" className={styles.input} value={searchState.date1} onChange={(e) => handleDate1Change(e.target.value)}/>
+                    <StyledTextField type="date" className={styles.input} size="small" label="Initial date" id="outlined-start-adornment" focused value={searchState.date1} onChange={(e) => handleDate1Change(e.target.value)}/>
                 )}
 
                 {(searchState.searchBy === "date" || searchState.searchBy === "date_user" || searchState.searchBy === "issue_date" || searchState.searchBy === "issue_date_user") && (
-                    <input type="date" className={styles.input} value={searchState.date2} onChange={(e) => handleDate2Change(e.target.value)}/>
+                    <StyledTextField type="date" className={styles.input} size="small" label="Final date" id="outlined-start-adornment" focused value={searchState.date2} onChange={(e) => handleDate2Change(e.target.value)}/>
                 )}
 
                 {(searchState.searchBy === "issue" || searchState.searchBy === "issue_user" || searchState.searchBy === "issue_date_user") && (
                   <Select
                     labelId="demo-customized-select-label"
+                    label="Issue type"
                     id="demo-customized-select"
                     value={searchState.issue}
                     onChange={(e) => handleIssueChange(e.target.value)}
@@ -1275,15 +1405,15 @@ const Defects: NextPage = (props) => {
                 <>
                     {/* list of defects */}
                     <div className={styles.defects__list__container}>
-                        <TableContainer sx={{ maxHeight: 'calc(100vh - 290px)', minHeight: 'cacl(100vh - 290px)'}}>
+                        <TableContainer sx={{ maxHeight: 'calc(100vh - 290px)', minHeight: 'cacl(100vh - 290px)', paddingRight: '15px'}}>
                           <Table aria-label="collapsible table" >
                             <TableHead>
-                              <TableRow>
+                              <TableRow style={{borderBottom: '1px solid rgba(255,255,255,0.19)'}}>
                                 <StyledTableCell>Issue key</StyledTableCell>
-                                <StyledTableCell align="right">Date</StyledTableCell>
-                                <StyledTableCell align="right">Assignee</StyledTableCell>
-                                <StyledTableCell align="right">Status</StyledTableCell>
-                                <StyledTableCell align="right">Priority</StyledTableCell>
+                                <StyledTableCell align="left">Date</StyledTableCell>
+                                <StyledTableCell align="left">Assignee</StyledTableCell>
+                                <StyledTableCell align="left">Status</StyledTableCell>
+                                <StyledTableCell align="left">Priority</StyledTableCell>
                                 <StyledTableCell />
                               </TableRow>
                             </TableHead>

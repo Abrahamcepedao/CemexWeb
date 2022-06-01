@@ -10,7 +10,7 @@ import Router from 'next/router'
 import React, { useEffect } from 'react'
 
 /* Redux */
-import { logoutUser, setCurrentUser } from "../../redux/actions"
+import { logoutUser, setReduxCurrentUser } from "../../redux/actions"
 import { selectUser } from "../../redux/states/user/reducer"
 import { selectTab } from "../../redux/states/header/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
@@ -59,7 +59,7 @@ const SideBar: NextPage = () => {
 
       //make sure to serialize your JSON body
       body: JSON.stringify({
-        user: username,
+        username: username,
         accessToken: accessToken,
       }),
     })
@@ -79,7 +79,7 @@ const SideBar: NextPage = () => {
       const user = JSON.parse(localStorage.getItem('user'));
       console.log(user)
 
-      if (user) {
+      /* if (user) {
           //validate if user session is still valid
           try {
             validateUser('http://localhost:5000/test-token', user.username, user.accessToken)
@@ -114,7 +114,7 @@ const SideBar: NextPage = () => {
 
       } else {
         Router.push('/')
-      }
+      } */
     }
   }, [])
 

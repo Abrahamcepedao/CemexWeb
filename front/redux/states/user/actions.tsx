@@ -6,7 +6,7 @@ import { User } from './state'
 
 import * as t from "./types";
 
-export const setCurrentUser = (user: User) => {
+export const setReduxCurrentUser = (user: User) => {
   localStorage.setItem('user', JSON.stringify(user));
   return { 
     type: t.SET_CURRENT_USER, 

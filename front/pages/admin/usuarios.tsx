@@ -19,6 +19,7 @@ import SideBar from '../../components/admin/SideBar'
 import { WhiteInput, TransparentInput } from '../../components/admin/Selects'
 import { StyledTableRow } from '../../components/admin/StyledTableRow'
 import { StyledTableCell } from '../../components/admin/StyledTableCell'
+import { StyledTextField } from '../../components/admin/StyledTextField'
 import ErrorMessage from '../../components/admin/ErrorMessage'
 import SuccessMessage from '../../components/admin/SuccessMessage'
 
@@ -530,7 +531,7 @@ const Usuarios: NextPage = (props) => {
             {/* header */}
             <div className={styles.list__header}>
               {/* search input */}
-              <input type="text" id="searchText" placeholder="Type user here" className={styles.input} value={searchText} onChange={(e) => handleSearchTextChange(e.target.value)} />
+              <StyledTextField size='small' type="text" className={styles.input} id="searchText" label="Type user here"  value={searchText} onChange={(e) => handleSearchTextChange(e.target.value)} />
               
               {/* filter button */}
               <Tooltip title="Filter">
@@ -585,7 +586,7 @@ const Usuarios: NextPage = (props) => {
                     <TableContainer sx={{ maxHeight: 'calc(100vh - 290px)', minHeight: 'cacl(100vh - 290px)' }}>
                       <Table aria-label="collapsible table" >
                         <TableHead>
-                          <TableRow>
+                          <TableRow style={{borderBottom: '1px solid rgba(255,255,255,0.19)'}}>
                             <StyledTableCell>user</StyledTableCell>
                             <StyledTableCell align="left">Role</StyledTableCell>
                             <StyledTableCell align="right"/>
