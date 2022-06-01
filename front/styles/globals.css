@@ -23,7 +23,7 @@ a {
 
 /* Track */
 ::-webkit-scrollbar-track {
-  background:rgba(255, 255, 255, 0.19);
+  background:rgba(255, 255, 255, 0);
   border-radius: 10px;
 }
  
@@ -38,13 +38,18 @@ a {
   background: rgba(255, 255, 255, 0.59);
 }
 
+/* calendar input */
+::-webkit-calendar-picker-indicator {
+    filter: invert(1);
+}
+
 input:-webkit-autofill,
 input:-webkit-autofill:hover, 
 input:-webkit-autofill:focus, 
 input:-webkit-autofill:active  {
   transition: background-color 5000s;
   color: gray;
-  -webkit-text-fill-color: gray !important;
+  -webkit-text-fill-color: rgba(5, 255, 255, 0.19);
 }
 
 .MuiTablePagination-selectLabel, .MuiTablePagination-selectIcon, .MuiTablePagination-root		 {

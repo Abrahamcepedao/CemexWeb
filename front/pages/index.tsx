@@ -8,7 +8,7 @@ import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setCurrentUser } from "../redux/actions"
+import { setReduxCurrentUser } from "../redux/actions"
 import { selectUser } from "../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../redux/hooks'
 
@@ -78,7 +78,7 @@ const Home: NextPage = (props) => {
       .then(data => {
         if (data.message === 'success') {
           setError(''); //clear error
-          dispatch(setCurrentUser({username: username, role: data.role, accessToken: data.accessToken, validUntil: data.validUntil})); //set user in redux
+          dispatch(setReduxCurrentUser({username: username, role: data.role, accessToken: data.accessToken, validUntil: data.validUntil})); //set user in redux
           Router.push('/admin/dashboard'); //redirect to dashboard
         } else {
           setError(data.message); //set error

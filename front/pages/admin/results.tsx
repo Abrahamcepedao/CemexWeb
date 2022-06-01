@@ -9,7 +9,7 @@ import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { resetResultsDefects, resetResultsReportType, setResultsDefects, setResultsReportType } from "../../redux/actions"
+import { resetResultsDefects, resetResultsReportType, setResultsDefects, setResultsReportType, setReduxCurrentUser } from "../../redux/actions"
 import { selectUser } from "../../redux/states/user/reducer"
 import { selectParametersType, selectUsername, selectDate1, selectDate2 } from '../../redux/states/historicReport/reducer'
 import { selectResultsReportType, selectResultsDefects } from '../../redux/states/results/reducer'
@@ -82,6 +82,11 @@ interface Label {
     value: number,
     percentage: number
 }
+
+interface Message {
+  message: string,
+}
+
 
 
 //consant of a 100 colors array
@@ -193,12 +198,81 @@ const Dashboard: NextPage = (props) => {
 
     /* Redux */
     const dispatch = useAppDispatch(); //function that allows to trigger actions that update the redux state
+    const user = useAppSelector(selectUser) //function that allows to get the current user from the redux state
 
     /* redux - results report */
     const resultsReportType: string = useAppSelector(selectResultsReportType) //function that allows to get the results report type from the redux state
     const resultsDefects: Defect[] = useAppSelector(selectResultsDefects) //function that allows to get the results defects from the redux state
 
+    /* Function to validate user */
+    async function validateUser(url: string, username:string, accessToken:string): Promise<Message> {
+        const response = await fetch(url, {
+        method: "POST",
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin':'*'
+        },
+
+        //make sure to serialize your JSON body
+        body: JSON.stringify({
+            username: username,
+            accessToken: accessToken,
+        }),
+        })
+        console.log(response)
+        if (!response.ok) {
+        throw new Error(response.statusText)
+        }
+        return response.json() as Promise<Message>
+    }
+
     useEffect(() => {
+        /* Redirect user if needed */
+        console.log(user);
+        if (user === null) {
+            //get user from local storage
+            //@ts-ignore
+            const tempUser = JSON.parse(localStorage.getItem('user'));
+            console.log(tempUser)
+            if (tempUser) {
+                //set tempUser
+            // setCurrentUser({username: tempUser.username, type: tempUser.role, createdAt: tempUser.createdAt, accessToken: tempUser.accessToken});
+
+                //validate if user session is still valid
+                try {
+                    validateUser('http://localhost:5000/test-token', tempUser.username, tempUser.accessToken)
+                    .then(data => {
+                    console.log(data)
+                    if (data.message === 'success') {
+                        //set user state in redux
+                        console.log('success')
+
+                        //set current user in redux state
+                        dispatch(setReduxCurrentUser({username: tempUser.username, role: tempUser.role, accessToken: tempUser.accessToken, validUntil: tempUser.validUntil}));
+
+                        /* fetch issues from api */
+                        console.log(user);
+                        
+
+                    } else {
+                        //redirect to login page
+                        console.log('invalid')
+                        Router.push('/')
+                    }
+                    })
+                } catch (error) {
+                    //redirect to login page
+                    console.log('invalid')
+                    Router.push('/')
+                }
+
+            } else {
+                Router.push('/')
+            }
+        } 
+        
+
 
         var defectsAllTemp: Defect[] = []
         /* set defects */
@@ -210,14 +284,22 @@ const Dashboard: NextPage = (props) => {
             if(localStorage.getItem('resultsDefects') !== null){
                 //@ts-ignore
                 defectsAllTemp = JSON.parse(localStorage.getItem('resultsDefects'))
-                dispatch(setResultsDefects(defectsAllTemp))
+                if(defectsAllTemp.length > 0){
 
-                if(localStorage.getItem('resultsReportType')){
-                    //@ts-ignore
-                    dispatch(setResultsReportType(localStorage.getItem('resultsReportType')))
+                    dispatch(setResultsDefects(defectsAllTemp))
+
+                    if(localStorage.getItem('resultsReportType')){
+                        //@ts-ignore
+                        dispatch(setResultsReportType(localStorage.getItem('resultsReportType')))
+                    }
+
+                    setTotalDefects(defectsAllTemp.length)
+                    defectsAllTemp = defectsAllTemp.filter(defect => defect.Cluster !== -1)
+                } else {
+                    //delete all -1 CLuster of Results
+                    defectsAllTemp = Results.filter(defect => defect.Cluster !== -1)
+                    setTotalDefects(Results.length)
                 }
-
-                setTotalDefects(defectsAllTemp.length)
             } else {
                 //delete all -1 CLuster of Results
                 defectsAllTemp = Results.filter(defect => defect.Cluster !== -1)

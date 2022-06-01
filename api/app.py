@@ -542,7 +542,7 @@ def test():
     try:
         #get the username and access token from json
         request_json = request.get_json()
-        username = request_json.get('user')
+        username = request_json.get('username')
         access_token = request_json.get('accessToken')
 
         if validateUser(username, access_token):
