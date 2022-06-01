@@ -680,7 +680,7 @@ const Usuarios: NextPage = (props) => {
                   
                   {/* submit */}
                   <div>
-                    <button type="submit" className={styles.form__btn}>Agregar</button>
+                    <button type="submit" className={styles.form__btn}>Create user</button>
                   </div>
 
                   {/* Error message */}
@@ -736,7 +736,7 @@ const Usuarios: NextPage = (props) => {
                   
                   {/* submit */}
                   <div>
-                    <button type="submit" className={styles.form__btn}>Guardar cambios</button>
+                    <button type="submit" className={styles.form__btn}>Save changes</button>
                   </div>
 
                   {/* Error message */}

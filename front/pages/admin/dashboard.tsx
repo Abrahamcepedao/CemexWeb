@@ -9,7 +9,19 @@ import Router from 'next/router'
 import React, { useEffect, useState, useRef } from 'react'
 
 /* Redux */
-import { setDropDepth, setInDropZone, setCurrentTab, setResultsDefects, setResultsReportType, setHistoricParametersType, setHistoricUsername, setHistoricDate1, setHistoricDate2, setHistoricIssueType } from "../../redux/actions"
+import { 
+  setDropDepth, 
+  setInDropZone, 
+  setCurrentTab, 
+  setResultsDefects, 
+  setResultsReportType, 
+  setHistoricParametersType, 
+  setHistoricUsername, 
+  setHistoricDate1, 
+  setHistoricDate2, 
+  setHistoricIssueType,
+  setReduxCurrentUser
+} from "../../redux/actions"
 import { selectDropDepth } from "../../redux/states/file/reducer"
 import { selectUser } from "../../redux/states/user/reducer"
 import { selectParametersType, selectUsername, selectDate1, selectDate2, selectIssueType } from '../../redux/states/historicReport/reducer'
@@ -53,6 +65,10 @@ interface Defect {
     "Cluster": number
 }
 
+interface Message {
+  message: string,
+}
+
 const Dashboard: NextPage = (props) => {
 
   /* useState - upload */
@@ -87,11 +103,69 @@ const Dashboard: NextPage = (props) => {
   const historicDate2 = useAppSelector(selectDate2) //function that allows to get the historic date2 from the redux state
   const historicIssueType  = useAppSelector(selectIssueType) //function that allows to get the historic issueType from the redux state
 
-  
+  /* Function to validate user */
+  async function validateUser(url: string, username:string, accessToken:string): Promise<Message> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: username,
+        accessToken: accessToken,
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return response.json() as Promise<Message>
+  }
 
   useEffect(() => {
     /* Set current tab */
     dispatch(setCurrentTab('dashboard'));
+
+    console.log(user);
+    if (user === null) {
+      //get user from local storage
+      //@ts-ignore
+      const tempUser = JSON.parse(localStorage.getItem('user'));
+      console.log(tempUser)
+
+      if (tempUser) {
+          //set tempUser
+          //validate if user session is still valid
+          try {
+            validateUser('http://localhost:5000/test-token', tempUser.username, tempUser.accessToken)
+            .then(data => {
+              console.log(data)
+              if (data.message === 'success') {
+                //set user state in redux
+                console.log('success')
+
+                //set current user in redux state
+                dispatch(setReduxCurrentUser({username: tempUser.username, role: tempUser.role, accessToken: tempUser.accessToken, validUntil: tempUser.validUntil}));
+              } else {
+                //redirect to login page
+                console.log('invalid')
+                Router.push('/')
+              }
+            })
+        } catch (error) {
+          //redirect to login page
+          console.log('invalid')
+          Router.push('/')
+        }
+
+      } else {
+        Router.push('/')
+      }
+    } 
 
     /* Check if there is a historic report */
     if (historicParametersType !== "") {
