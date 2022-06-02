@@ -714,13 +714,13 @@ const Dashboard: NextPage = (props) => {
                                             <TableContainer sx={{ maxHeight: 'calc(100vh - 470px)', minHeight: 'cacl(100vh - 470px)'}}>
                                             <Table aria-label="collapsible table" >
                                                 <TableHead>
-                                                <TableRow>
-                                                    <StyledTableCell />
-                                                    <StyledTableCell align="left">Date</StyledTableCell>
-                                                    <StyledTableCell align="left">Assignee</StyledTableCell>
-                                                    <StyledTableCell align="left">Priority</StyledTableCell>
-                                                    <StyledTableCell />
-                                                </TableRow>
+                                                    <TableRow>
+                                                        <StyledTableCell />
+                                                        <StyledTableCell align="left">Date</StyledTableCell>
+                                                        <StyledTableCell align="left">Assignee</StyledTableCell>
+                                                        <StyledTableCell align="left">Priority</StyledTableCell>
+                                                        <StyledTableCell />
+                                                    </TableRow>
                                                 </TableHead>
                                                 <TableBody>
                                                 {defects.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => (
@@ -741,7 +741,7 @@ const Dashboard: NextPage = (props) => {
                                             </Table>
                                             </TableContainer>
                                             <TablePagination
-                                            rowsPerPageOptions={[15, 25, 50]}
+                                            rowsPerPageOptions={[15, 25, 50, { label: 'all', value: -1 }]}
                                             component="div"
                                             style={{color: 'white !important'}}
                                             count={defects.length}

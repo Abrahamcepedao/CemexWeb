@@ -1434,7 +1434,7 @@ const Defects: NextPage = (props) => {
                           </Table>
                         </TableContainer>
                         <TablePagination
-                          rowsPerPageOptions={[15, 25, 50]}
+                          rowsPerPageOptions={[15, 25, 50, { label: 'all', value: -1 }]}
                           component="div"
                           style={{color: 'white !important'}}
                           count={defects.length}

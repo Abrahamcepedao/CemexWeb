@@ -130,6 +130,7 @@ const Dashboard: NextPage = (props) => {
     /* Set current tab */
     dispatch(setCurrentTab('dashboard'));
 
+    /* Handle set or redirect user */
     console.log(user);
     if (user === null) {
       //get user from local storage
