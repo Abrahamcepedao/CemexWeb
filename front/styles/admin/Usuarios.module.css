@@ -96,7 +96,6 @@
 
 
 /* <----Modals----> */
-
 /* Modal - create user */
 .form{
     position: absolute;
@@ -104,7 +103,7 @@
     left: 50%;
     transform: translate(-50%, -50%);
     width: 400px;
-    background: rgba(255, 255, 255, 0.9);
+    background: rgba(255, 255, 255, 0.20);
     padding: 20px;
     border-radius: 15px;
     //box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -122,18 +121,29 @@
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
-    color: gray;
+    color: rgba(255,255,255,0.5);
+}
+.form__head h4 {
+    font-size: 25px;
+    line-height: 25px;
+    margin: 0;
 }
 
 .form__input {
     width: 100%;
-    padding: 10px;
+    margin-bottom: 20px;
+    /* padding: 10px;
     border-radius: 25px;
-    border: 1px solid rgba(14, 51, 127, 0.21);
-    color: gray;
+    border: 1px solid rgba(255, 255, 255, 0.21);
+    color: white;
     flex: 1;
     outline: none;
     margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.19); */
+}
+.form__input::placeholder {
+    color: white;
+    opacity: 0.5;
 }
 
 .form__btn {

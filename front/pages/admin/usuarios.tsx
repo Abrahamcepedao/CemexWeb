@@ -9,7 +9,7 @@ import Router from 'next/router'
 import React, { useEffect, useState } from 'react'
 
 /* Redux */
-import { setCurrentTab, setUsers } from "../../redux/actions"
+import { setCurrentTab, setUsers, setReduxCurrentUser } from "../../redux/actions"
 import { selectUser } from "../../redux/states/user/reducer"
 import { useAppSelector, useAppDispatch } from '../../redux/hooks'
 
@@ -40,6 +40,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Select from '@mui/material/Select';
 import Tooltip from '@mui/material/Tooltip';
+import { InputLabel } from '@mui/material'
 
 /* Material - UI - icons */
 import FilterAltRoundedIcon from '@mui/icons-material/FilterAltRounded';
@@ -135,9 +136,6 @@ const Usuarios: NextPage = (props) => {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(15);
 
-  /* useState - current user */
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
   /* useState - edit user */
   const [openEditUserModal, setOpenEditUserModal] = useState(false);
   const [editUser, setEditUser] = useState<null | User>(null);
@@ -176,9 +174,70 @@ const Usuarios: NextPage = (props) => {
     })
   }
 
+  /* Function to validate user */
+  async function validateUser(url: string, username:string, accessToken:string): Promise<Message> {
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Access-Control-Allow-Origin':'*'
+      },
+
+      //make sure to serialize your JSON body
+      body: JSON.stringify({
+        username: username,
+        accessToken: accessToken,
+      }),
+    })
+    console.log(response)
+    if (!response.ok) {
+      throw new Error(response.statusText)
+    }
+    return response.json() as Promise<Message>
+  }
+
   useEffect(() => {
     /* Set current tab */
     dispatch(setCurrentTab('users'));
+
+    /* Handle set or redirect user */
+    console.log(user);
+    if (user === null) {
+      //get user from local storage
+      //@ts-ignore
+      const tempUser = JSON.parse(localStorage.getItem('user'));
+      console.log(tempUser)
+
+      if (tempUser) {
+          //set tempUser
+          //validate if user session is still valid
+          try {
+            validateUser('http://localhost:5000/test-token', tempUser.username, tempUser.accessToken)
+            .then(data => {
+              console.log(data)
+              if (data.message === 'success') {
+                //set user state in redux
+                console.log('success')
+
+                //set current user in redux state
+                dispatch(setReduxCurrentUser({username: tempUser.username, role: tempUser.role, accessToken: tempUser.accessToken, validUntil: tempUser.validUntil}));
+              } else {
+                //redirect to login page
+                console.log('invalid')
+                Router.push('/')
+              }
+            })
+        } catch (error) {
+          //redirect to login page
+          console.log('invalid')
+          Router.push('/')
+        }
+
+      } else {
+        Router.push('/')
+      }
+    } 
 
     /* Get all users */
     if(!localStorage.getItem('users')) {
@@ -365,12 +424,13 @@ const Usuarios: NextPage = (props) => {
       setEditRole('');
     };
     setOpenEditUserModal(!openEditUserModal);
-    if(editUser) {
+    console.log(user);
+    if(user) {
       //set edit state
-      console.log(editUser);
-      setEditUser(editUser);
-      setEditUsername(editUser.user);
-      setEditRole(editUser.type);
+      console.log(user);
+      setEditUser(user);
+      setEditUsername(user.user);
+      setEditRole(user.type);
     }
   };
 
@@ -636,12 +696,10 @@ const Usuarios: NextPage = (props) => {
           <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
-            className={styles.modal}
             open={openCreateUserModal}
             onClose={handleCreateUserModalChange}
           >
             <>
-              <input type="hidden" value="something"/>
               <form className={styles.form} onSubmit={(e) => {createUser(e)}} autoComplete="off">
                 <div className={styles.form__container}>
                   {/* header */}
@@ -652,26 +710,27 @@ const Usuarios: NextPage = (props) => {
 
                   {/* user */}
                   <div className={styles.form__container__input}>
-                    <input type="text" id="user" autoComplete='off' placeholder='user' className={styles.form__input} value={newUser.user} onChange={(e) => {setNewUser({...newUser, user: e.target.value})}} />
+                    <StyledTextField size='small' type="text" id="user" autoComplete='off' label='user' className={styles.form__input} value={newUser.user} onChange={(e) => {setNewUser({...newUser, user: e.target.value})}} />
                   </div>
 
                   {/* password */}
                   <div className={styles.form__container__input}>
-                    <input type="password" id="password" autoComplete='new-password' placeholder='password' className={styles.form__input} value={newUser.password} onChange={(e) => {setNewUser({...newUser, password: e.target.value})}} />
+                    <StyledTextField size='small' type="password" id="password" autoComplete='new-password' label='password' className={styles.form__input} value={newUser.password} onChange={(e) => {setNewUser({...newUser, password: e.target.value})}} />
                   </div>
 
                   {/* confirm password */}
                   <div className={styles.form__container__input}>
-                    <input type="password" id="password" autoComplete='new-password' placeholder='confirm password' className={styles.form__input} value={newUser.confirmPassword} onChange={(e) => {setNewUser({...newUser, confirmPassword: e.target.value})}} />
+                    <StyledTextField size='small' type="password" id="password" autoComplete='new-password' label='confirm password' className={styles.form__input} value={newUser.confirmPassword} onChange={(e) => {setNewUser({...newUser, confirmPassword: e.target.value})}} />
                   </div>
 
                   {/* role */}
+                  <InputLabel id="demo-customized-select-label" style={{color: 'rgba(255,255,255,0.5)', marginBottom: '-20px'}}>Select Role</InputLabel>
                   <Select
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"
                     value={newUser.type}
                     onChange={(e) => {setNewUser({...newUser, type: e.target.value})}}
-                    input={<WhiteInput />}
+                    input={<TransparentInput />}
                     style={{ width: '100%', marginBottom: '20px' }}
                   >
                     <MenuItem value={"admin"} defaultChecked>Admin</MenuItem>
@@ -712,22 +771,23 @@ const Usuarios: NextPage = (props) => {
                 <div className={styles.form__container}>
                   {/* header */}
                   <div className={styles.form__head}>
-                    <h4>Edit User</h4>
+                    <h4>Edit User: <span style={{color: 'white', fontSize: '15px'}}>{editUsername}</span></h4>
                     <PersonRoundedIcon/>
                   </div>
 
                   {/* user */}
                   <div className={styles.form__container__input}>
-                    <input type="text" id="user" autoComplete='off' placeholder='user' className={styles.form__input} value={editUsername} onChange={(e) => setEditUsername(e.target.value)} />
+                    <StyledTextField size="small" type="text" id="user" autoComplete='off' label='user' className={styles.form__input} value={editUsername} onChange={(e) => setEditUsername(e.target.value)} />
                   </div>
 
                   {/* role */}
+                  <InputLabel id="demo-customized-select-label" style={{color: 'rgba(255,255,255,0.5)', marginBottom: '-20px'}}>Select Role</InputLabel>
                   <Select
                     labelId="demo-customized-select-label"
                     id="demo-customized-select"
                     value={editRole}
                     onChange={(e) => setEditRole(e.target.value)}
-                    input={<WhiteInput />}
+                    input={<TransparentInput />}
                     style={{ width: '100%', marginBottom: '20px' }}
                   >
                     <MenuItem value={"admin"} defaultChecked>Admin</MenuItem>
@@ -768,7 +828,7 @@ const Usuarios: NextPage = (props) => {
                 <div className={styles.form__container}>
                   {/* header */}
                   <div className={styles.form__head}>
-                    <h4>Delete User: {deleteUser?.user}</h4>
+                    <h4>Delete User: <span style={{color: 'white', fontSize: '15px'}}>{deleteUser?.user}</span></h4>
                     <PersonRoundedIcon/>
                   </div>
 
