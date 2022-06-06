@@ -591,10 +591,10 @@ def loginUser():
         #check if user and password are not empty
         if user and pasword:
             #check if user exists
-            accepted,access_token, valid_until, user_role = login_user(user,pasword)
+            accepted,access_token, valid_until, user_role, user_name, user_department, user_birthdate, user_gender = login_user(user,pasword)
             if accepted:
                 print("accepted")
-                return jsonify({'message': 'success', 'accessToken': access_token, 'validUntil': valid_until, 'role': user_role})
+                return jsonify({'message': 'success', 'accessToken': access_token, 'validUntil': valid_until, 'role': user_role, 'name': user_name, 'department': user_department, 'birthdate': user_birthdate, 'gender': user_gender})
             else:
                 print("1")
                 return jsonify({'message': 'User does not exist or credentials are incorrect'})
@@ -633,6 +633,41 @@ def changePassword():
             return jsonify({'message': 'User or access token or new password cannot be empty'})
     except:
         return jsonify({'message': 'Error changing password'})
+
+#update use data
+@app.route("/user/update", methods=['POST'])
+@cross_origin()
+def updateUser():
+    
+        try:
+            request_json = request.get_json()
+            username = request_json.get('username')
+            access_token = request_json.get('accessToken')
+            user = request_json.get('user')
+            role = request_json.get('type')
+            name = request_json.get('name')
+            gender = request_json.get("gender")
+            birthdate = request_json.get("birthdate")
+            department = request_json.get("department")
+            
+            print(username)
+            print(access_token)
+    
+            #check if user and password are not empty
+            if username and access_token:
+                #validate user
+                if validateUser(username,access_token):
+                    #change password
+                    if update_user(user,name,gender,birthdate,department,role):
+                        return jsonify({'message': 'success'})
+                    else:
+                        return jsonify({'message': 'User could no be updated'})
+                else:
+                    return jsonify({'message': 'Access token is invalid'})
+            else:
+                return jsonify({'message': 'User or access token cannot be empty'})
+        except:
+            return jsonify({'message': 'Error updating user'})
 
 #Get all users
 @app.route("/users/get", methods=['POST'])

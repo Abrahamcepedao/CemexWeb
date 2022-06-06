@@ -249,7 +249,7 @@ const Dashboard: NextPage = (props) => {
                         console.log('success')
 
                         //set current user in redux state
-                        dispatch(setReduxCurrentUser({username: tempUser.username, role: tempUser.role, accessToken: tempUser.accessToken, validUntil: tempUser.validUntil}));
+                        dispatch(setReduxCurrentUser({username: tempUser.username, role: tempUser.role, accessToken: tempUser.accessToken, validUntil: tempUser.validUntil, department: tempUser.department, name: tempUser.name, birthdate: tempUser.birthdate, gender: tempUser.gender}));
 
                         /* fetch issues from api */
                         console.log(user);

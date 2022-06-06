@@ -27,6 +27,11 @@ interface Login {
   message: string,
   role: null | string,
   validUntil: null | string,
+  username: null | string,
+  name: null | string,
+  department: null | string,
+  gender: null | string,
+  birthdate: null | string
 }
 
 const Home: NextPage = (props) => {
@@ -74,11 +79,11 @@ const Home: NextPage = (props) => {
 
     //handle login in api
     try {
-      handleLogin<{ message: string, accessToken: string, role: string, validUntil: string }>('http://localhost:5000/user/login')
+      handleLogin<{ message: string, accessToken: string, role: string, validUntil: string, name: string, department: string, gender: string, birthdate: string }>('http://localhost:5000/user/login')
       .then(data => {
         if (data.message === 'success') {
           setError(''); //clear error
-          dispatch(setReduxCurrentUser({username: username, role: data.role, accessToken: data.accessToken, validUntil: data.validUntil})); //set user in redux
+          dispatch(setReduxCurrentUser({username: username, role: data.role, accessToken: data.accessToken, validUntil: data.validUntil, name: data.name, department: data.department, gender: data.gender, birthdate: data.birthdate})); //set user in redux
           Router.push('/admin/dashboard'); //redirect to dashboard
         } else {
           setError(data.message); //set error

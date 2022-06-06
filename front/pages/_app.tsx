@@ -4,6 +4,7 @@ import { Provider } from 'react-redux'
 import type { AppProps } from 'next/app'
 
 import store from "../redux/store"
+import Head from 'next/head'
 
 export default function MyApp({ Component, pageProps }: AppProps) {
   return (

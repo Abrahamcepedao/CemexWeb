@@ -33,9 +33,6 @@
 
 
 /* facts */
-.facts__container {
-    //background: red;
-}
 .facts__container, .fact__item {
     display: flex;
     flex-direction: row;

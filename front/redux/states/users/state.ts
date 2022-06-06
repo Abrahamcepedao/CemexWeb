@@ -5,5 +5,9 @@
 export interface User {
   user: string,
   type: string,
+  name: string,
+  birthdate: string,
+  gender: string,
+  department: string,
   createdAt: string,
 }
