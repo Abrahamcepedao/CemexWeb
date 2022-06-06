@@ -427,6 +427,8 @@ const Usuarios: NextPage = (props) => {
             })
             setDepartmentPieData(tempDepartments)
 
+            //set local storage
+            localStorage.setItem('users', JSON.stringify(data));
 
             //set users in redux state
             //@ts-ignore
@@ -485,7 +487,20 @@ const Usuarios: NextPage = (props) => {
           }
         })
         if(!flag){
-          departments.push({label: user.department ? user.department : "Other", value: 1})
+          if(!user.department){
+            let flag2 = false;
+            departments.forEach(department => {
+              if(department.label === "Other"){
+                department.value++;
+                flag2 = true;
+              }
+            })
+            if(!flag2){
+              departments.push({label: "Other", value: 1})
+            } 
+          } else {
+            departments.push({label: user.department, value: 1})
+          }
         }
       })
 
@@ -528,7 +543,7 @@ const Usuarios: NextPage = (props) => {
       //@ts-ignore
       dispatch(setReduxUsers(data));
     }
-  }, []);
+  }, [usersList]);
 
   /* <----Functions----> */
 
@@ -572,6 +587,16 @@ const Usuarios: NextPage = (props) => {
     if(openCreateUserModal)  {
       setError(''); //clear error message on close
       setSuccess(''); //clear success message on close
+      setNewUser({
+        user: '',
+        password: '',
+        confirmPassword: '',
+        type: 'user',
+        department: '',
+        birthdate: '',
+        name: '',
+        gender: '',
+      })
     }
     
     setOpenCreateUserModal(!openCreateUserModal);
@@ -609,6 +634,10 @@ const Usuarios: NextPage = (props) => {
         user: newUser.user,
         password: newUser.password,
         type: newUser.type,
+        department: newUser.department,
+        birthdate: newUser.birthdate,
+        name: newUser.name,
+        gender: newUser.gender
       }),
     })
     .then(response => {
@@ -641,15 +670,10 @@ const Usuarios: NextPage = (props) => {
               department: newUser.department
             });
             setUsersList(tempUsers); 
+            setAllUsers(tempUsers)
 
             //reset new user state
             setError('');
-            setNewUser({
-              ...newUser,
-              user: '',
-              password: '',
-              confirmPassword: ''
-            });
 
             //set success message
             setSuccess('User created successfully');
@@ -784,6 +808,7 @@ const Usuarios: NextPage = (props) => {
     })
     
     setUsersList(tempUsers);
+    setAllUsers(tempUsers);
   }
 
   /* Delete user functions */
@@ -1018,7 +1043,7 @@ const Usuarios: NextPage = (props) => {
                   {usersList.length !== 0 ? (
                     <>
                       <div className={styles.user__container}>
-                          <TableContainer sx={{ maxHeight: 'calc(100vh - 290px)', minHeight: 'cacl(100vh - 290px)' }}>
+                          <TableContainer sx={{ maxHeight: 'calc(100vh - 380px)', minHeight: 'cacl(100vh - 380px)', paddingRight: '15px' }}>
                             <Table aria-label="collapsible table" >
                               <TableHead>
                                 <TableRow style={{borderBottom: '1px solid rgba(255,255,255,0.19)'}}>
