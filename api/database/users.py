@@ -45,6 +45,18 @@ def login_user(user,password):
     #get user type/role
     user_role = mycol.find_one({"_id":user_id})['type']
 
+    #get user name
+    user_name = mycol.find_one({"_id":user_id})['name']
+
+    #get user department
+    user_department = mycol.find_one({"_id":user_id})['department']
+
+    #get user birthdate
+    user_birthdate = mycol.find_one({"_id":user_id})['birthdate']
+
+    #get user gender
+    user_gender = mycol.find_one({"_id":user_id})['gender']
+
     #generate access token
     access_token = encode_auth_token(user_id)
 
@@ -55,7 +67,7 @@ def login_user(user,password):
     mycol.update_one({"_id":user_id},{"$set":{"accessToken":access_token,"UpdatedAt":get_current_date(), "validUntil": valid_until}})
 
     #return true, access token, valid until and user type/role
-    return True, access_token, valid_until, user_role
+    return True, access_token, valid_until, user_role, user_name, user_department, user_birthdate, user_gender
   else:
     print("User does not exist or credentials are incorrect")
     return False, ""
@@ -107,6 +119,31 @@ def change_password(username, new_password):
   else:
     print("User does not exist")
     return False
+
+
+#update user
+def update_user(username, name, gender, birthdate,department,role):
+  myclient = MongoClient("mongodb+srv://SeaWar741:CemexGo2022@cluster0.4glnz.mongodb.net")
+
+  mydb = myclient["defectsCemex"]
+
+  mycol = mydb["users"]
+
+  #check if user exists
+  if mycol.find_one({"user":username}):
+      #get user id
+      user_id = mycol.find_one({"user":username})['_id']
+
+      #update password
+      mycol.update_one({"_id":user_id},{"$set":{"name":name,"gender":gender,"birthdate":birthdate,"department":department,"role":role,"UpdatedAt":get_current_date()}})
+      
+      print("Updated user")
+
+      return True
+  else:
+    print("User does not exist")
+    return False
+
 
 #get all users
 def get_all_users():

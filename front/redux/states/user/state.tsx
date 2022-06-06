@@ -7,4 +7,8 @@ export interface User {
   role: string,
   accessToken: string,
   validUntil: string,
+  name: null | string,
+  department: null | string,
+  gender: null | string,
+  birthdate: null | string
 }

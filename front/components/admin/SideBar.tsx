@@ -28,7 +28,6 @@ import PeopleRoundedIcon from '@mui/icons-material/PeopleRounded';
 import DashboardRoundedIcon from '@mui/icons-material/DashboardRounded';
 import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import ListAltRoundedIcon from '@mui/icons-material/ListAltRounded';
-import AccountCircleRoundedIcon from '@mui/icons-material/AccountCircleRounded';
 
 
 /* Interfaces */
@@ -111,19 +110,11 @@ const SideBar: NextPage = () => {
         </div>
 
         {/* other actions (logout) */}
-        <div>
-          <Link href="/admin/dashboard">
-              <a className={styles.logout__container}>
-                  {/* icono */}
-                  <AccountCircleRoundedIcon className={styles.item__icon}/>
-                  <p>Profile</p>
-              </a>
-            </Link>
-          <div className={styles.logout__container} onClick={handleLogout}>
-            <LogoutRoundedIcon className={styles.item__icon}/>
-            <p>Logout</p>
-          </div>
+        <div className={styles.logout__container} onClick={handleLogout}>
+          <LogoutRoundedIcon className={styles.item__icon}/>
+          <p>Logout</p>
         </div>
+        
       </main>
     </div>
   )
