@@ -181,6 +181,7 @@
 /* users - list */
 .user__container {
     width: 100%;
+    padding-right: 15px;
 } 
 
 

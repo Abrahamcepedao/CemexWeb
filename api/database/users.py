@@ -5,7 +5,7 @@ from security.accessToken import *
 from bson import ObjectId
 import pandas as pd
 
-def create_user(user,password, role):
+def create_user(user, password, role, department, birthdate, name, gender):
 
   myclient = MongoClient("mongodb+srv://SeaWar741:CemexGo2022@cluster0.4glnz.mongodb.net")
 
@@ -20,7 +20,7 @@ def create_user(user,password, role):
 
   #else, create user
   else:
-    userData = {"user":user,"password": hash_password(password),"createdAt":get_current_date(),"UpdatedAt":get_current_date(),"accessToken":"","validUntil":get_current_date(),"type":role}
+    userData = {"user":user,"password": hash_password(password),"createdAt":get_current_date(),"UpdatedAt":get_current_date(),"accessToken":"","validUntil":get_current_date(),"type":role,"department":department,"name":name,"birthdate":birthdate,"gender": gender}
 
     x = mycol.insert_one(userData)
 
