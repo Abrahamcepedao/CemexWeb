@@ -79,7 +79,7 @@ const Home: NextPage = (props) => {
 
     //handle login in api
     try {
-      handleLogin<{ message: string, accessToken: string, role: string, validUntil: string, name: string, department: string, gender: string, birthdate: string }>('http://localhost:5000/user/login')
+      handleLogin<{ message: string, accessToken: string, role: string, validUntil: string, name: string, department: string, gender: string, birthdate: string }>(process.env.NEXT_API_HOST+'/user/login')
       .then(data => {
         if (data.message === 'success') {
           setError(''); //clear error
@@ -118,7 +118,7 @@ const Home: NextPage = (props) => {
                 {/* password */}
                 <input type="password" id="password" placeholder='password' className={styles.input} value={password} onChange={(e) => {setPassword(e.target.value)}}/>
                 {/* forgot password */}
-                <a href='#forgot_password' className={styles.forgot__label}>Forgot password?</a>
+                {/* <a href='#forgot_password' className={styles.forgot__label}>Forgot password?</a>*/}
                 {/* submit */}
                 <button className={styles.submit__btn} type='submit'>Login</button>
 

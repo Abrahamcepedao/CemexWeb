@@ -142,7 +142,7 @@ const Dashboard: NextPage = (props) => {
           //set tempUser
           //validate if user session is still valid
           try {
-            validateUser('http://localhost:5000/test-token', tempUser.username, tempUser.accessToken)
+            validateUser(process.env.NEXT_API_HOST+'/test-token', tempUser.username, tempUser.accessToken)
             .then(data => {
               console.log(data)
               if (data.message === 'success') {
@@ -614,7 +614,7 @@ const Dashboard: NextPage = (props) => {
       if(historicParametersType === "all") {
         //search all defects
         try {
-           getAllDefects('http://localhost:5000/defects')
+           getAllDefects(process.env.NEXT_API_HOST+'/defects')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -638,7 +638,7 @@ const Dashboard: NextPage = (props) => {
       } else if(historicParametersType === "user") {
         //search defects by user
         try {
-           getUserDefects('http://localhost:5000/defects/get')
+           getUserDefects(process.env.NEXT_API_HOST+'/defects/get')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -661,7 +661,7 @@ const Dashboard: NextPage = (props) => {
       } else if(historicParametersType === "date") {
         //search defects by range date
         try {
-          getDateDefects('http://localhost:5000/defects/date')
+          getDateDefects(process.env.NEXT_API_HOST+'/defects/date')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -684,7 +684,7 @@ const Dashboard: NextPage = (props) => {
       } else if(historicParametersType === "date_user") {
         //search defects by range date and user
         try {
-          getDateUserDefects('http://localhost:5000/defects/date/get')
+          getDateUserDefects(process.env.NEXT_API_HOST+'/defects/date/get')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -705,7 +705,7 @@ const Dashboard: NextPage = (props) => {
       } else if(historicParametersType === "issue") {
         //search defects by issue type
         try {
-          getIssueDefects('http://localhost:5000/defects/issue')
+          getIssueDefects(process.env.NEXT_API_HOST+'/defects/issue')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -726,7 +726,7 @@ const Dashboard: NextPage = (props) => {
       } else if(historicParametersType === "issue_user") {
         //search defects by issue type and user
         try {
-          getIssueUserDefects('http://localhost:5000/defects/issue/get')
+          getIssueUserDefects(process.env.NEXT_API_HOST+'/defects/issue/get')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -747,7 +747,7 @@ const Dashboard: NextPage = (props) => {
       } else if(historicParametersType === "issue_date") {
         //search defects by issue type and date
         try {
-          getIssueDateDefects('http://localhost:5000/defects/issue/date')
+          getIssueDateDefects(process.env.NEXT_API_HOST+'/defects/issue/date')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -768,7 +768,7 @@ const Dashboard: NextPage = (props) => {
       } else if(historicParametersType === "issue_date_user") {
         //search defects by issue type, date and user
         try {
-          getIssueDateUserDefects('http://localhost:5000/defects/issue/date/get')
+          getIssueDateUserDefects(process.env.NEXT_API_HOST+'/defects/issue/date/get')
           .then(data => {
             if (data.length > 1) {
               console.log(data);
@@ -795,7 +795,7 @@ const Dashboard: NextPage = (props) => {
       if(state.reportType === "lda") {
         //generate report with lda
         try {
-          clusterizeLDA(`http://localhost:5000/clusterize/${state.numClusters}`)
+          clusterizeLDA(`process.env.NEXT_API_HOST/clusterize/${state.numClusters}`)
           .then(data => {
             if (data.length > 1) {
               console.log('data: ', data);
@@ -816,7 +816,7 @@ const Dashboard: NextPage = (props) => {
       } else {
         //generate report with bert
         try {
-          clusterizeBERT('http://localhost:5000/clusterize')
+          clusterizeBERT(process.env.NEXT_API_HOST+'/clusterize')
           .then(data => {
             if (data.length > 1) {
               console.log('data: ', data);

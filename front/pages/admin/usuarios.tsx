@@ -303,7 +303,7 @@ const Usuarios: NextPage = (props) => {
         //set tempUser
         //validate if user session is still valid
         try {
-          validateUser('http://localhost:5000/test-token', tempUser.username, tempUser.accessToken)
+          validateUser(process.env.NEXT_API_HOST+'/test-token', tempUser.username, tempUser.accessToken)
           .then(data => {
             console.log(data)
             if (data.message === 'success') {
@@ -345,7 +345,7 @@ const Usuarios: NextPage = (props) => {
     /* Get all users */
     if(localStorage.getItem('users') === undefined || localStorage.getItem('users') === null && user !== null) {
       try {
-        getAllUsers('http://localhost:5000/users/get')
+        getAllUsers(process.env.NEXT_API_HOST+'/users/get')
         .then(data => {
           if (data.length > 1) {
             
@@ -655,7 +655,7 @@ const Usuarios: NextPage = (props) => {
     if (validateCreateUser()) {
         //add user to database
         try {
-        handleCreateUser('http://localhost:5000/user/create')
+        handleCreateUser(process.env.NEXT_API_HOST+'/user/create')
         .then(data => {
           if (data.message === 'success') {
             //set state of users
@@ -777,7 +777,7 @@ const Usuarios: NextPage = (props) => {
     if (validateEditUser()) {
       //edit user in database
       try {
-        handleUpdateUser('http://localhost:5000/user/update')
+        handleUpdateUser(process.env.NEXT_API_HOST+'/user/update')
         .then(data => {
           if (data.message === 'success') {
             //set state of users
@@ -860,7 +860,7 @@ const Usuarios: NextPage = (props) => {
   /* Handle Refresh function */
   const handleRefresh = () => {
     try {
-      getAllUsers('http://localhost:5000/users/get')
+      getAllUsers(process.env.NEXT_API_HOST+'/users/get')
       .then(data => {
         if (data.length > 1) {
           console.log(data);
