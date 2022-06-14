@@ -340,7 +340,6 @@ const Usuarios: NextPage = (props) => {
       handleUserValidation();
     } 
 
-    console.log(localStorage.getItem("users"))
 
     /* Get all users */
     if(localStorage.getItem('users') === undefined || localStorage.getItem('users') === null && user !== null) {
@@ -543,7 +542,7 @@ const Usuarios: NextPage = (props) => {
       //@ts-ignore
       dispatch(setReduxUsers(data));
     }
-  }, [usersList]);
+  }, [users]);
 
   /* <----Functions----> */
 
@@ -1016,7 +1015,7 @@ const Usuarios: NextPage = (props) => {
                       </MenuItem>
                       <MenuItem onClick={() => {handleClose('user')}} disableRipple>
                         <PersonRoundedIcon />
-                        user
+                        User
                       </MenuItem>
                       <MenuItem onClick={() => {handleClose('role')}} disableRipple>
                         <AdminPanelSettingsRoundedIcon />
@@ -1055,7 +1054,7 @@ const Usuarios: NextPage = (props) => {
                               </TableHead>
                               <TableBody>
                                 {usersList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row, i) => (
-                                  <Row key={`${row.user}__${i}`} row={row} />
+                                  <Row key={`${row.user}__${i}`} row={row}/>
                                 ))}
                                 {emptyRows > 0 && (
                                   <TableRow
@@ -1136,7 +1135,7 @@ const Usuarios: NextPage = (props) => {
 
                   {/* name */}
                   <div className={styles.form__container__input}>
-                    <StyledTextField size='small' type="text" id="user" autoComplete='off' label='Complete name' className={styles.form__input} value={newUser.name} onChange={(e) => {setNewUser({...newUser, name: e.target.value})}} />
+                    <StyledTextField size='small' type="text" id="user" autoComplete='off' label='complete name' className={styles.form__input} value={newUser.name} onChange={(e) => {setNewUser({...newUser, name: e.target.value})}} />
                   </div>
 
                   {/* password */}
@@ -1230,7 +1229,7 @@ const Usuarios: NextPage = (props) => {
 
                   {/* user */}
                   <div className={styles.form__container__input}>
-                    <StyledTextField size="small" type="text" id="user" autoComplete='off' label='Complete name' className={styles.form__input} value={editName} onChange={(e) => setEditName(e.target.value)} />
+                    <StyledTextField size="small" type="text" id="user" autoComplete='off' label='complete name' className={styles.form__input} value={editName} onChange={(e) => setEditName(e.target.value)} />
                   </div>
 
                   {/* birthdate */}

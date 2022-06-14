@@ -176,12 +176,14 @@
 .table__header__role {
     width: 50px;
 }
+.table__row:hover {
+    background: rgba(255, 255, 255, 0.09);
+}
 
 
 /* users - list */
 .user__container {
     width: 100%;
-    padding-right: 15px;
 } 
 
 
@@ -248,14 +250,6 @@
 .form__input {
     width: 100%;
     margin-bottom: 20px !important;
-    /* padding: 10px;
-    border-radius: 25px;
-    border: 1px solid rgba(255, 255, 255, 0.21);
-    color: white;
-    flex: 1;
-    outline: none;
-    margin-bottom: 20px;
-    background: rgba(255, 255, 255, 0.19); */
 }
 .form__input::placeholder {
     color: white;
