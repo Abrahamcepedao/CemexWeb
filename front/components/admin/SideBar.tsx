@@ -65,7 +65,7 @@ const SideBar: NextPage = () => {
       <main className={styles.main}>
         {/* logo */}
         <div className={styles.logo__container}>
-        <Image src={Logo} width={50} height={50}/>
+        <Image src={Logo} width={95} height={95}/>
         </div>
 
         {/* links */}

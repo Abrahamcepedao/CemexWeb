@@ -795,7 +795,7 @@ const Dashboard: NextPage = (props) => {
       if(state.reportType === "lda") {
         //generate report with lda
         try {
-          clusterizeLDA(`process.env.NEXT_API_HOST/clusterize/${state.numClusters}`)
+          clusterizeLDA(process.env.NEXT_API_HOST+`/clusterize/${state.numClusters}`)
           .then(data => {
             if (data.length > 1) {
               console.log('data: ', data);

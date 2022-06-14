@@ -928,7 +928,7 @@ const Usuarios: NextPage = (props) => {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Cemex Fix - Usuarios</title>
+        <title>Cemex Fix - Users</title>
         <meta name="description" content="Cemex Fix web application - developed by DFuture" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
@@ -1083,7 +1083,7 @@ const Usuarios: NextPage = (props) => {
                     
                   ) : (
                     <div>
-                      <h2>No hay usuarios</h2>
+                      <h2>No existing users</h2>
                     </div>
                   )}
                   
