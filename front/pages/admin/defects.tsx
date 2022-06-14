@@ -55,7 +55,6 @@ import Select from '@mui/material/Select';
 import Snackbar from '@mui/material/Snackbar';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import Tooltip from '@mui/material/Tooltip';
-import TextField, { TextFieldProps } from '@mui/material/TextField';
 
 
 /* Material UI - icons */
@@ -152,44 +151,8 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
   return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
 
-/* Material UI - Input */
-const CssTextField = styled(TextField)({
-  '& label.Mui-focused': {
-    color: 'rgba(255, 255, 255, 0.75)',
-  },
-  '& label': {
-    color: 'rgba(255, 255, 255, 0.75)',
-    fontSize: '0.875rem',
-  },
-  '& .MuiInput-underline:after': {
-    //borderBottomColor: 'green',
-  },
-  '& .MuiOutlinedInput-root': {
-    backgroundColor: 'rgba(255, 255, 255, 0.19)',
-    borderRadius: 25,
-    fontSize: '0.8rem',
-    height: '40px',
-    color: 'white',
-    flex: '1 !important',
-    width: '100% !important',
-    marginRight: '20px !important',
-    //border: '1px solid rgba(255, 255, 255, 0.21)',
-    '& fieldset': {
-      borderColor: 'rgba(255, 255, 255, 0.21)',
-      //marginRight: '15px',
-    },
-    '&:hover fieldset': {
-      borderColor: 'rgba(255, 255, 255, 0.21)',
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: 'rgba(255, 255, 255, 0.21)',
-    },
-  },
-});
 
 const Defects: NextPage = (props) => {
-  /* useState - currrent user */
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   /* useState - searchBy */
   const [searchState, setSearchState] = useState({

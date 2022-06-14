@@ -306,18 +306,23 @@ const Dashboard: NextPage = (props) => {
                 setTotalDefects(Results.length)
             }
         } 
-
+        let flag = false;
     
         /* set labels */
         //@ts-ignore
         var labelsTemp: Label[] = [];
         labelsTemp.push({ number: -2, label: 'All', color: '#FFEB3B', status: false, value: Results.length, percentage: 100 });
+        console.log(defectsAllTemp)
+
+        //fileter defects by cluster
+        defectsAllTemp.sort((a, b) => (a.Cluster > b.Cluster) ? 1 : -1)
+
         defectsAllTemp.forEach(element => {
             //check if label already exists
             var found = false;
+            var tempLabel = 'Cluster ' + element.Cluster;
             //@ts-ignore
             labelsTemp.forEach((label, i) => {
-                var tempLabel = 'Cluster ' + element.Cluster;
                 if (label.label === tempLabel) {
                     found = true;
                     //@ts-ignore

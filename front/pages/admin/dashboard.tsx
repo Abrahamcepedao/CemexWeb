@@ -150,7 +150,7 @@ const Dashboard: NextPage = (props) => {
                 console.log('success')
 
                 //set current user in redux state
-                dispatch(setReduxCurrentUser({username: tempUser.username, role: tempUser.role, accessToken: tempUser.accessToken, validUntil: tempUser.validUntil}));
+                dispatch(setReduxCurrentUser({username: tempUser.username, role: tempUser.role, accessToken: tempUser.accessToken, validUntil: tempUser.validUntil, name: tempUser.name, department: tempUser.department, gender: tempUser.gender, birthdate: tempUser.birthdate}));
               } else {
                 //redirect to login page
                 console.log('invalid')
