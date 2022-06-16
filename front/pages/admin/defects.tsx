@@ -1243,15 +1243,21 @@ const Defects: NextPage = (props) => {
                   <p className={styles.search__title} style={{flex: "1"}}>Search defects</p>
                 )}
                 {(searchState.searchBy === "user" || searchState.searchBy === "date_user" || searchState.searchBy === "issue_user" || searchState.searchBy === "issue_date_user") && (
+                  <div style={{marginRight: '20px', flex: 1}}>
                     <StyledTextField type="text" className={styles.input} size="small" label="Username" id="custom-css-outlined-input" value={searchState.username} onChange={(e) => handleUsernameChange(e.target.value)}/>
+                  </div>
                 )}
 
                 {(searchState.searchBy === "date" || searchState.searchBy === "date_user" || searchState.searchBy === "issue_date" || searchState.searchBy === "issue_date_user") && (
+                  <div style={{marginRight: '20px', flex: 1}}>
                     <StyledTextField type="date" className={styles.input} size="small" label="Initial date" id="outlined-start-adornment" focused value={searchState.date1} onChange={(e) => handleDate1Change(e.target.value)}/>
+                  </div>
                 )}
 
                 {(searchState.searchBy === "date" || searchState.searchBy === "date_user" || searchState.searchBy === "issue_date" || searchState.searchBy === "issue_date_user") && (
+                  <div style={{marginRight: '20px', flex: 1}}>
                     <StyledTextField type="date" className={styles.input} size="small" label="Final date" id="outlined-start-adornment" focused value={searchState.date2} onChange={(e) => handleDate2Change(e.target.value)}/>
+                  </div>
                 )}
 
                 {(searchState.searchBy === "issue" || searchState.searchBy === "issue_user" || searchState.searchBy === "issue_date_user") && (
