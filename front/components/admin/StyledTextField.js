@@ -21,7 +21,7 @@ const StyledTextField = styled(TextField)({
     color: 'white',
     flex: '1 !important',
     width: '100% !important',
-    marginRight: '20px !important',
+    //marginRight: '20px !important',
     //border: '1px solid rgba(255, 255, 255, 0.21)',
     '& fieldset': {
       borderColor: 'rgba(255, 255, 255, 0.21)',
