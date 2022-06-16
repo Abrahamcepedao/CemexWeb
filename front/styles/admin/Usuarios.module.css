@@ -194,15 +194,18 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    overflow-y: scroll;
+    overflow-y: hidden;
 }
 
-.chart__container {
+.chart__container, .chart__container2 {
     background: rgba(255, 255, 255, 0.19);
     border-radius: 15px;
     padding: 20px;
     max-height: calc(50vh - 58px);
     min-height: calc(50vh - 58px);
+}
+.chart__container {
+    margin-bottom: 20px;
 }
 
 .pie__title {
@@ -359,4 +362,67 @@
 
 .outSelector{
     position: relative;
+}
+
+
+/* responsive - 1450px */
+@media (max-width: 1450px) {
+   /* fact text */
+    .fact__text {
+         font-size: 20px;
+         line-height: 20px;
+    }
+}
+
+/* responsive - 1400px */
+@media (max-width: 1400px) {
+    /* facts container */
+    .facts__container {
+        margin-bottom: 10px;
+    }
+
+    /* fact item */
+    .fact__item {
+        padding: 10px;
+        margin-right: 10px;
+    }
+    
+    /* action item */
+    .action__item {
+        padding: 10px;
+    }
+
+    .fact__icon__container__bug, .fact__icon__container__bug2, .fact__icon__container__defect, .fact__icon__container__report {
+        margin-right: 10px;
+    }
+
+    /* fact number */
+    .fact__number {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    /* fact text */
+    .fact__text {
+        font-size: 15px;
+        line-height: 20px;
+    }
+
+    /* left */
+    .left {
+        margin-right: 10px;
+    }
+
+    /* chart container */
+    .chart__container {
+        margin-bottom: 10px;
+        max-height: calc(50vh - 53px);
+        min-height: calc(50vh - 53px);
+    }
+
+    /* chart container 2 */
+    .chart__container2 {
+        max-height: calc(50vh - 53px);
+        min-height: calc(50vh - 53px);
+    }
 }

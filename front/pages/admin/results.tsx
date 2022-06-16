@@ -241,7 +241,7 @@ const Dashboard: NextPage = (props) => {
 
                 //validate if user session is still valid
                 try {
-                    validateUser('http://localhost:5000/test-token', tempUser.username, tempUser.accessToken)
+                    validateUser(process.env.NEXT_API_HOST+'/test-token', tempUser.username, tempUser.accessToken)
                     .then(data => {
                     console.log(data)
                     if (data.message === 'success') {
