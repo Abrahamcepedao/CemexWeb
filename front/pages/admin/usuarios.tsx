@@ -979,7 +979,7 @@ const Usuarios: NextPage = (props) => {
                             {departmentPieData.length}
                         </p>
                         <p className={styles.fact__text}>
-                            Departments
+                            Depts
                         </p>
                     </div>
                 </div>
@@ -1093,14 +1093,14 @@ const Usuarios: NextPage = (props) => {
               {/* <---------Right--------> */}
               <div className={styles.right}>
                 {/* Top Right - chart gender */}
-                <div className={styles.chart__container} style={{marginBottom: 20}}>
+                <div className={styles.chart__container}>
                   <h4 className={styles.pie__title}>Users by gender</h4>
                   <UserPie data={genderPieData}/>
                 </div>
                 
                 
                 {/* Bottom right - chart departments */}
-                <div className={styles.chart__container}>
+                <div className={styles.chart__container2}>
                   <h4 className={styles.pie__title}>Users by department</h4>
                   <UserPie data={departmentPieData}/>
                 </div>

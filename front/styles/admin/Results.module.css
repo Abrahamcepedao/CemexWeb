@@ -18,6 +18,7 @@
     padding: 20px;
     margin: auto;
     min-height: calc(100vh - 40px);
+    max-height: calc(100vh - 40px);
     background: rgba(255, 255, 255, 0.19);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(11.7px);
@@ -155,7 +156,6 @@
 .graph {
     width: 100%;
     height: 100%;
-    //background: rgba(255, 255, 255, 0.39);
     border-radius: 15px;
     padding: 20px;
     max-width: 600px;
@@ -245,4 +245,129 @@
     width: 20px;
     height: 20px;
     border-radius: 50%;
+}
+
+
+/* responsive - 1600px */
+@media (max-width: 1630px) {
+    /* graph */
+    .graph {
+        max-width: 500px;
+    }
+
+    /* labels */
+    .labels__list {
+        max-width: 500px;
+    }
+    .defects__list__container {
+        max-width: 500px;
+        overflow-x: scroll;
+        //background: rgba(255, 255, 255, 0.19);
+    }
+}
+
+
+/* responsive - 1450px */
+@media (max-width: 1450px) {
+    /* graph */
+    .graph {
+        max-width: 450px;
+    }
+
+    /* right */
+    .results__right {
+        max-width: 450px;
+    }
+}
+
+
+/* responsive - 1400px */
+@media (max-width: 1400px) {
+    /* graph */
+    .graph {
+        max-width: 450px;
+    }
+}
+
+/* responsive - 1380px */
+@media (max-width: 1380px) {
+    /* main */
+    .results__container {
+        overflow-y: scroll;
+    }
+
+    /* facts container */
+    .facts__container {
+        margin-bottom: 10px;
+    }
+
+    /* fact item */
+    .fact__item {
+        padding: 10px;
+        margin-right: 10px;
+    }
+    
+    /* action item */
+    .action__item {
+        padding: 10px;
+    }
+
+    .fact__icon__container__bug, .fact__icon__container__bug2, .fact__icon__container__defect, .fact__icon__container__report {
+        margin-right: 10px;
+    }
+
+    /* fact number */
+    .fact__number {
+        font-size: 30px;
+        line-height: 40px;
+    }
+
+    /* fact text */
+    .fact__text {
+        font-size: 15px;
+        line-height: 20px;
+    }
+
+    /* graph */
+    .graph {
+        max-width: 600px;
+        background: none;
+    }
+    /* lower container */
+    .lower__container {
+        flex-direction: column;
+    }
+
+    /* results left */
+    .results__left {
+        margin-right: 0px;
+        min-height: calc(100vh - 630px);
+        margin-bottom: 20px;
+    }
+
+    /* results right */
+    .results__right {
+        min-height: calc(100vh - 630px);
+        max-width: 100%;
+    }
+
+    /* labels */
+    .labels__list {
+        max-width: 100%;
+    }
+
+    /* defects table */
+    .defects__list__container {
+        max-width: 100%;
+    }
+}
+
+
+/* responsive - 1330px */
+@media (max-width: 1330px) {
+    /* fact number */
+    .fact__number {
+        font-size: 25px;
+        line-height: 30px;
+    }
 }

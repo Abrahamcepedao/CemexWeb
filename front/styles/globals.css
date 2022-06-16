@@ -27,10 +27,14 @@ a {
   border-radius: 10px;
 }
  
-/* Handle */
+/* Thumb */
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.19);
   border-radius: 10px;
+}
+/* Thumb */
+::-webkit-scrollbar-corner {
+  background: rgba(255, 255, 255, 0.0);
 }
 
 /* Handle on hover */
